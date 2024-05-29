@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "Genie-App",
+    "slug": "Genie-App",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth"
+    ],
+    "icon": "./App/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./App/assets/ginie.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to show the map."
+      }
+    },
+    "android": {
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ],
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./App/assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.culturtapgenieretailer.GenieApp"
+    },
+    "web": {
+      "favicon": "./App/assets/appIcon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a223dd99-024d-419f-ad2b-39dd8dce18df"
+      }
+    },
+    "owner": "culturtapgenieretailer"
+  }
+}
