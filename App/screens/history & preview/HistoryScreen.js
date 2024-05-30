@@ -2,7 +2,7 @@ import { Pressable ,ScrollView,StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import OngoingRequests from '../../components/OngoingRequests'
 import { useNavigation } from '@react-navigation/native'
-import Profile from "../../assets/HistoryIcon.svg"
+import Profile from "../../assets/ProfileIcon.svg"
 import GinieIcon from "../../assets/GinieBusinessIcon.svg"
 import History from "../../assets/HistoryIcon.svg"
 import { SafeAreaView } from 'react-native-safe-area-context'

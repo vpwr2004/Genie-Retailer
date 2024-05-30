@@ -36,7 +36,7 @@ const BidPageImageUpload = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
-  const { user,messages,setMessages} = route.params;
+  const { user, messages, setMessages } = route.params;
   const [imgIndex, setImgIndex] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [cameraScreen, setCameraScreen] = useState(false);
@@ -53,8 +53,7 @@ const BidPageImageUpload = () => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [scaleAnimation] = useState(new Animated.Value(0));
-  const requestInfo= useSelector(state => state.requestData.requestInfo);
-
+  const requestInfo = useSelector((state) => state.requestData.requestInfo);
 
   const handleImagePress = (image) => {
     setSelectedImage(image);
@@ -118,22 +117,21 @@ const BidPageImageUpload = () => {
     navigation.navigate("bidOfferedPrice", {
       user,
       messages,
-      setMessages
-    
+      setMessages,
     });
   };
 
   const takePicture = async () => {
     const options = {
-      mediaType: 'photo',
+      mediaType: "photo",
       saveToPhotos: true,
     };
-  
+
     launchCamera(options, async (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        console.log("User cancelled image picker");
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        console.log("ImagePicker Error: ", response.error);
       } else {
         try {
           const newImageUri = response.assets[0].uri;
@@ -144,7 +142,7 @@ const BidPageImageUpload = () => {
           );
           await getImageUrl(compressedImage);
         } catch (error) {
-          console.error('Error processing image: ', error);
+          console.error("Error processing image: ", error);
         }
       }
     });
@@ -198,12 +196,21 @@ const BidPageImageUpload = () => {
                 <View className="gap-[9px]">
                   <View className="flex-row gap-[18px]">
                     <View className="bg-[#F9F9F9] p-2 rounded-full">
-                      <Profile className="" />
+                      {requestInfo?.customerId?.pic ? (
+                        <Image
+                          source={{ uri: requestInfo?.customerId?.pic }}
+                          style={{ width: 40, height: 40, borderRadius: 20 }}
+                          // className="w-[40px] h-[40px] rounded-full"
+                        />
+                      ) : (
+                        <Profile className="" />
+                      )}
                     </View>
                     <View className="w-[70%]">
-                      <Text className="text-[14px] text-[#2e2c43]">
-                        {user?.storeName}
+                      <Text className="text-[14px] text-[#2e2c43] capitalize">
+                        {requestInfo?.customerId?.userName}
                       </Text>
+
                       <Text className="text-[12px] text-[#c4c4c4]">
                         Active 3 hr ago
                       </Text>
@@ -218,10 +225,10 @@ const BidPageImageUpload = () => {
               <View className="px-[50px] pb-[20px] flex bg-[#ffe7c8]">
                 <View className="flex-row gap-[10px] items-center">
                   <Text className="text-[16px] font-bold">Request Id</Text>
-                  <Text>{requestInfo?.requestId._id}</Text>
+                  <Text>{requestInfo?.requestId?._id}</Text>
                 </View>
                 <Text className="">
-                  {requestInfo?.requestId.requestDescription} ....
+                  {requestInfo?.requestId?.requestDescription} ....
                 </Text>
               </View>
 
@@ -271,68 +278,68 @@ const BidPageImageUpload = () => {
                       showsHorizontalScrollIndicator={false}
                     >
                       <View style={styles.container}>
-                    <View style={styles.imageContainer}>
-                      {images.map((image, index) => (
-                        <Pressable
-                          key={index}
-                          onPress={() => handleImagePress(image)}
+                        <View style={styles.imageContainer}>
+                          {images.map((image, index) => (
+                            <Pressable
+                              key={index}
+                              onPress={() => handleImagePress(image)}
+                            >
+                              <View style={styles.imageWrapper}>
+                                <Image
+                                  source={{ uri: image }}
+                                  style={styles.image}
+                                />
+                                <Pressable
+                                  onPress={() => deleteImage(index)}
+                                  style={styles.deleteIcon}
+                                >
+                                  <Entypo
+                                    name="circle-with-cross"
+                                    size={24}
+                                    color="gray"
+                                  />
+                                </Pressable>
+                              </View>
+                            </Pressable>
+                          ))}
+                        </View>
+                        <Modal
+                          transparent
+                          visible={!!selectedImage}
+                          onRequestClose={handleClose}
                         >
-                          <View style={styles.imageWrapper}>
-                            <Image
-                              source={{ uri: image }}
-                              style={styles.image}
+                          <View style={styles.modalContainer}>
+                            <Animated.Image
+                              source={{ uri: selectedImage }}
+                              style={[
+                                styles.modalImage,
+                                {
+                                  transform: [{ scale: scaleAnimation }],
+                                },
+                              ]}
                             />
                             <Pressable
-                              onPress={() => deleteImage(index)}
-                              style={styles.deleteIcon}
+                              style={styles.closeButton}
+                              onPress={handleClose}
                             >
                               <Entypo
                                 name="circle-with-cross"
-                                size={24}
-                                color="gray"
+                                size={40}
+                                color="white"
                               />
                             </Pressable>
                           </View>
-                        </Pressable>
-                      ))}
-                    </View>
-                    <Modal
-                      transparent
-                      visible={!!selectedImage}
-                      onRequestClose={handleClose}
-                    >
-                      <View style={styles.modalContainer}>
-                        <Animated.Image
-                          source={{ uri: selectedImage }}
-                          style={[
-                            styles.modalImage,
-                            {
-                              transform: [{ scale: scaleAnimation }],
-                            },
-                          ]}
-                        />
-                        <Pressable
-                          style={styles.closeButton}
-                          onPress={handleClose}
-                        >
-                          <Entypo
-                            name="circle-with-cross"
-                            size={40}
-                            color="white"
-                          />
-                        </Pressable>
+                        </Modal>
                       </View>
-                    </Modal>
-                  </View>
                     </ScrollView>
                     <Pressable
-                  onPress={() => setAddMore(!addMore)}
-                  style={{ alignSelf: "flex-start" }}
-                >
-                  <View style={{ marginLeft: 36, marginTop: 30 }}>
-                    <AddMoreImage />
-                  </View>
-                </Pressable>
+                      onPress={() => setAddMore(!addMore)}
+                      style={{ alignSelf: "flex-start" }}
+                    >
+                      <View style={{ marginLeft: 36, marginTop: 30 }}>
+                        <AddMoreImage />
+                      </View>
+                    </Pressable>
                   </View>
                 )}
                 {!addMore ? (
@@ -365,7 +372,7 @@ const BidPageImageUpload = () => {
                     <View className="h-[1px] w-full bg-gray-300 "></View>
                     <Pressable
                       onPress={() => {
-                      takePicture();
+                        takePicture();
                         setAddMore(false);
                       }}
                     >
@@ -393,7 +400,6 @@ const BidPageImageUpload = () => {
           {modalVisible && <View style={styles.overlay} />}
         </SafeAreaView>
       )}
-
 
       {loading && (
         <View style={styles.loadingContainer}>

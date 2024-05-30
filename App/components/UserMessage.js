@@ -9,22 +9,33 @@ const UserMessage = ({ bidDetails }) => {
     // console.log("bidDetails", bidDetails);
 
     // const userDetails = useSelector(store => store.user.userDetails);
+  const requestInfo= useSelector(state => state.requestData.requestInfo || {});
+
 
 
     return (
         <View className="flex gap-[19px]    rounded-3xl w-[297px] h-[max-content] py-[10px] items-center bg-[#fafafa]">
             <View className="flex-row gap-[18px] ">
                 <View >
-                    <Image
-                                                source={{ uri: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }}
+                {
+              requestInfo?.customerId?.pic ? (  <Image
+                source={{ uri:requestInfo?.customerId?.pic  }}
+                style={{ width: 40, height: 40, borderRadius: 20 }}
+            // className="w-[40px] h-[40px] rounded-full"
+            />):(
+                <Image
+                source={{ uri: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }}
+                style={{ width: 40, height: 40, borderRadius: 20 }}
+            // className="w-[40px] h-[40px] rounded-full"
+            />
+              )
 
-                        style={{ width: 40, height: 40, borderRadius: 20 }}
-                    />
-                     {/* <DPIcon size={20} className="object-contain" /> */}
+              
+          }
 
                 </View>
                 <View className="w-[60%]">
-                    <Text className="text-[14px] text-[#2e2c43] font-bold">Customer</Text>
+                <Text className="text-[14px] text-[#2e2c43] font-bold capitalize">{requestInfo?.customerId?.userName}</Text>
                     <Text className="text-[12px] text-[#2e2c43]">{bidDetails.message}</Text>
                 </View>
             </View>

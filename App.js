@@ -13,6 +13,7 @@ import navigationService from './App/navigation/navigationService';
 import {  notificationListeners } from './App/notificationServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { firebase } from '@react-native-firebase/auth'
+import { ActivityIndicator } from 'react-native-paper';
 // import firebase from '@react-native-firebase/app';
 // import { navigationRef, navigate } from './App/navigationRef';
 // import * as Device from "expo-device";
@@ -95,84 +96,32 @@ export default function App() {
   
 
 
-  // const [expoPushToken, setExpoPushToken] = useState("");
-
-  // useEffect(() => {
-  //   console.log("Registering for push notifications...");
-  //   registerForPushNotificationsAsync()
-  //     .then((token) => {
-  //       console.log("token: ", token);
-  //       setExpoPushToken(token);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-
-  // async function registerForPushNotificationsAsync() {
-  //   let token;
-
-  //   if (Platform.OS === "android") {
-  //     await Notifications.setNotificationChannelAsync("default", {
-  //       name: "default",
-  //       importance: Notifications.AndroidImportance.MAX,
-  //       vibrationPattern: [0, 250, 250, 250],
-  //       lightColor: "#FF231F7C",
-  //     });
-  //   }
-
-  //   if (Device.isDevice) {
-  //     const { status: existingStatus } =
-  //       await Notifications.getPermissionsAsync();
-  //     let finalStatus = existingStatus;
-  //     if (existingStatus !== "granted") {
-  //       const { status } = await Notifications.requestPermissionsAsync();
-  //       finalStatus = status;
-  //     }
-  //     if (finalStatus !== "granted") {
-  //       alert("Failed to get push token for push notification!");
-  //       return;
-  //     }
-  //     // Learn more about projectId:
-  //     // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
-  //     token = (
-  //       await Notifications.getExpoPushTokenAsync({
-  //         projectId: "a223dd99-024d-419f-ad2b-39dd8dce18df",
-  //       })
-  //     ).data;
-  //     console.log(token);
-  //   } else {
-  //     alert("Must use physical device for Push Notifications");
-  //   }
-
-  //   return token;
-  // }
-
-  
-  
- 
-  
-
+  // const linking = {
+  //   prefixes: ['myapp://'],
+  //   config: {
+  //     screens: {
+  //       home: 'home',
+  //       requestPage: 'requestPage',
+  //       about: 'about',
+  //     },
+  //   },
+  // };
   
   
 
   
   
   
-  
+  // <NavigationContainer linking={linking} fallback={<ActivityIndicator animating />}>
 
   return (
     <Provider store={store}>
-    <NavigationContainer ref={(ref) => navigationService.setTopLevelNavigator(ref)} >
+       <NavigationContainer ref={(ref) => navigationService.setTopLevelNavigator(ref)} >
       <GlobalNavigation />
       <StatusBar style="auto" />
     </NavigationContainer>
     </Provider>
-    // <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
-    //   <Button title="Send Notification to Users" onPress={sendCustomNotificationToUsers} />
-    // </View>
-    // <View style={{ marginTop: 100, alignItems: "center" }}>
-    // <Text style={{ marginVertical: 30 }}>Expo RN Push Notifications</Text>
-    // <Button title="Send push notification" onPress={sendNotification} />
-    // </View>
+    
   );
 }
 

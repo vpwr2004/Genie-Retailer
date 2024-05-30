@@ -95,7 +95,6 @@ const navigationState = useNavigationState(state => state);
             }
             
             
-            
             if (userData.location && userData.storeImages?.length > 0) {
                 setCompleteProfile(true);
             }

@@ -8,6 +8,7 @@ import {
   Platform,
   TouchableOpacity,
   StyleSheet,
+  Image
 } from "react-native";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ThreeDots from "../../assets/ThreeDotIcon.svg";
@@ -41,6 +42,7 @@ import RequestCancelModal from "../../components/RequestCancelModal";
 import { socket } from "../utils/socket.io/socket";
 import Attachment from "../../components/Attachment";
 import { setRequestInfo } from "../../redux/reducers/requestDataSlice";
+import { NotificationBidRejected } from "../../notification/notificationMessages";
 // import { setMessages } from "../../redux/reducers/requestDataSlice";
 
 const RequestPage = () => {
@@ -64,7 +66,7 @@ const RequestPage = () => {
   const [attachmentScreen, setAttachmentScreen] = useState(false);
   const [cameraScreen, setCameraScreen] = useState(false);
   const requestInfo= useSelector(state => state.requestData.requestInfo || {});
-    // console.log("params",JSON.parse(route.params.data.requestInfo));
+    console.log("params",route?.params?.data?.requestInfo);
       
       // useEffect(()=> {
       //   console.log('Hello there');
@@ -267,6 +269,15 @@ const RequestPage = () => {
         });
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
+        const notification={
+          title:user?.storeName,
+          body:lastMessage.message,
+          requestInfo:requestInfo,
+          tag:user?._id,
+          image:lastMessage?.bidImages[0],
+          redirect_to:"bargain",
+       }
+       await NotificationBidRejected(notification);
       } catch (error) {
         console.log("Error updating chat:", error);
       }
@@ -280,52 +291,52 @@ const RequestPage = () => {
 
 
 // New message recieved from socket code 
-  // useEffect(() => {
-  //   const handleMessageReceived = (newMessageReceived) => {
-  //     console.log("Message received from socket:", newMessageReceived);
-  //     setMessages((prevMessages) => {
-  //       if ( prevMessages[prevMessages.length - 1]?.chat?._id === newMessageReceived?.chat?._id) {
-  //         if (prevMessages[prevMessages.length - 1]?._id === newMessageReceived?._id ) {
-  //           // Update the last message if it's the same as the new one
-  //           return prevMessages.map((message) =>
-  //             message._id === newMessageReceived._id
-  //               ? newMessageReceived
-  //               : message
-  //           );
-  //         } else {
-  //           // Add the new message to the list
-  //           return [...prevMessages, newMessageReceived];
-  //         }
-  //       }
-  //       // If the chat ID does not match, return the previous messages unchanged
-  //       return prevMessages;
-  //     });
+  useEffect(() => {
+    const handleMessageReceived = (newMessageReceived) => {
+      console.log("Message received from socket:", newMessageReceived);
+      setMessages((prevMessages) => {
+        if ( prevMessages[prevMessages.length - 1]?.chat?._id === newMessageReceived?.chat?._id) {
+          if (prevMessages[prevMessages.length - 1]?._id === newMessageReceived?._id ) {
+            // Update the last message if it's the same as the new one
+            return prevMessages.map((message) =>
+              message._id === newMessageReceived._id
+                ? newMessageReceived
+                : message
+            );
+          } else {
+            // Add the new message to the list
+            return [...prevMessages, newMessageReceived];
+          }
+        }
+        // If the chat ID does not match, return the previous messages unchanged
+        return prevMessages;
+      });
 
-  //     // let mess = [...messages];
-  //     // if(mess[mess.length-1]?.chat?._id===newMessageReceived?.chat?._id){
-  //     //   if(mess[mess.length-1]?._id===newMessageReceived?._id){
-  //     //     mess[mess.length-1]=newMessageReceived;
-  //     //   }
-  //     //   else{
-  //     //     mess.push(newMessageReceived);
-  //     //   }
-  //     // }
-  //     // // dispatch(setMessages(mess));
-  //     // setMessages(mess);
+      // let mess = [...messages];
+      // if(mess[mess.length-1]?.chat?._id===newMessageReceived?.chat?._id){
+      //   if(mess[mess.length-1]?._id===newMessageReceived?._id){
+      //     mess[mess.length-1]=newMessageReceived;
+      //   }
+      //   else{
+      //     mess.push(newMessageReceived);
+      //   }
+      // }
+      // // dispatch(setMessages(mess));
+      // setMessages(mess);
 
-  //   };
+    };
 
-  //   // dispatch(setMessages(handleMessageReceived));
+    // dispatch(setMessages(handleMessageReceived));
 
-  //   socket.on("message received", handleMessageReceived);
-  //   console.log("Listening for 'message received' events");
+    socket.on("message received", handleMessageReceived);
+    console.log("Listening for 'message received' events");
 
-  //   // Cleanup the effect
-  //   return () => {
-  //     socket.off("message received", handleMessageReceived);
-  //      console.log("Stopped listening for 'message received' events");
-  //   };
-  // }, []);
+    // Cleanup the effect
+    return () => {
+      socket.off("message received", handleMessageReceived);
+       console.log("Stopped listening for 'message received' events");
+    };
+  }, []);
 
   // const messages = useSelector(state => state.requestData.messages);
 
@@ -360,11 +371,22 @@ const RequestPage = () => {
           <View className="gap-[9px]">
             <View className="flex-row gap-[18px]">
               <View className="bg-[#F9F9F9] p-2 rounded-full">
-                <Profile className="" />
+              {
+              requestInfo?.customerId?.pic ? (  <Image
+                source={{ uri:requestInfo?.customerId?.pic  }}
+                style={{ width: 40, height: 40, borderRadius: 20 }}
+            // className="w-[40px] h-[40px] rounded-full"
+            />):(
+                 <Profile className="" />
+              )
+
+              
+          }
+                
               </View>
               <View className="w-[60%]">
-                <Text className="text-[14px] text-[#2e2c43]">
-                  {user?.storeName}
+                <Text className="text-[14px] text-[#2e2c43] capitalize">
+                  {requestInfo?.customerId?.userName}
                 </Text>
                 <Text className="text-[12px] text-[#c4c4c4]">
                   Active 3 hr ago
@@ -392,18 +414,18 @@ const RequestPage = () => {
               }
             }
             >
-              <Text className="mx-5 border-1 border-b-[1px] py-3">
+              <Text className="mx-5  py-3">
                 View Request
               </Text>
             </Pressable>
-            <Pressable
+            {/* <Pressable
               onPress={() => {
                 setCloseRequestModal(true);
                 setModal(!modal);
               }}
             >
               <Text className="mx-5 py-3">Close Request</Text>
-            </Pressable>
+            </Pressable> */}
           </View>
         )}
 
@@ -513,7 +535,7 @@ const RequestPage = () => {
           attachmentScreen ? "-z-50" : "z-50"
         } `}
       >
-        { (requestInfo?.requestType === "new" && available === false) && (
+        { (requestInfo?.requestType !== "closed" && requestInfo?.requestType === "new" && available === false) && (
           <View className="gap-[20px] items-center bg-white pt-[20px] shadow-2xl">
             <View>
               <Text className="text-[14px] font-bold text-center">
@@ -550,7 +572,7 @@ const RequestPage = () => {
           </View>
         )}
 
-        {   requestInfo?.requestType !== "cancelled" &&  
+        {  requestInfo?.requestType !== "closed" &&   requestInfo?.requestType !== "cancelled" && requestInfo?.requestType !== "new"  &&  
           ((requestInfo?.requestId?.requestActive=== "completed" && requestInfo?.requestId?.requestAcceptedChat === user?._id) || (messages[messages.length - 1]?.bidType === "true" &&
             messages[messages.length - 1]?.bidAccepted === "accepted") ||
             (messages[messages.length - 1]?.bidType === "true" &&
@@ -597,7 +619,7 @@ const RequestPage = () => {
               </TouchableOpacity>
             </View>
           )}
-          {  (requestInfo?.requestType !== "cancelled" && requestInfo?.requestId?.requestActive === "active"  &&
+          {  (requestInfo?.requestType !== "closed" && requestInfo?.requestType !== "cancelled" && requestInfo?.requestId?.requestActive === "active"  &&
               messages &&
               messages.length > 0 &&
               messages[messages.length - 1]?.bidType === "true" &&
@@ -631,7 +653,7 @@ const RequestPage = () => {
           </View>
         </View>
         }
-        {requestInfo?.requestType === "ongoing" && requestInfo?.requestType !== "cancelled" &&
+        {requestInfo?.requestType !== "closed" && requestInfo?.requestType === "ongoing" && requestInfo?.requestType !== "cancelled" &&
           requestInfo?.requestId?.requestActive === "active" &&
           messages &&
           messages.length > 0 &&
@@ -669,6 +691,7 @@ const RequestPage = () => {
         setModalVisible={setCloseRequestModal}
       /> */}
       <RequestAcceptModal
+        user={user}
         modalVisible={acceptRequestModal}
         setModalVisible={setAcceptRequestModal}
          messages={messages}

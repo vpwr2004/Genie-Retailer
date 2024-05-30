@@ -13,8 +13,8 @@ const SplashScreen = () => {
         // Check if user data exists in local storage
         const userData = JSON.parse(await AsyncStorage.getItem("userData"));
         if (userData) {
-
-          navigation.navigate("home");
+            // await AsyncStorage.removeItem('userData');
+         navigation.navigate("home");
          
         }
         else{

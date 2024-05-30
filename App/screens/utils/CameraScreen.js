@@ -10,6 +10,7 @@ import axios from 'axios';
 import { manipulateAsync } from 'expo-image-manipulator';
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { launchCamera } from 'react-native-image-picker';
+import { sendCustomNotificationAttachment } from '../../notification/notificationMessages';
 
 // import { setMessages } from '../../redux/reducers/requestDataSlice';
 
@@ -44,16 +45,27 @@ const CameraScreen = () => {
             bidAccepted: "new",
             chat:requestInfo?._id,
         })
-            .then(res => {
+            .then(async(res )=> {
                 console.log(res.data);
                 let mess=[...messages];
              console.log("query send",mess);
              mess.push(res.data);
-             console.log("query update",mess);
+            //  console.log("query update",mess);
 
              setMessages(mess);
                 // setAttachmentScreen(false);
-                navigation.navigate('requestPage',{data:requestInfo});
+                const notification={
+                    title:user?.storeName,
+                    body:query,
+                    requestInfo:requestInfo,
+                    tag:user?._id,
+                    redirect_to:"bargain",
+                    image:imageUri
+                 }
+                 console.log("notification send",notification)
+                 navigation.navigate('requestPage',{data:requestInfo});
+                 await sendCustomNotificationAttachment(notification);
+               
             })
             .catch(err => {
                 console.log(err);
@@ -227,7 +239,7 @@ const CameraScreen = () => {
                         />
                     </KeyboardAvoidingView>
                     <View className=" flex-row justify-between items-center mx-[25px] pb-[10px]">
-                        <Text className="text-white font-semibold pl-[40px] capitalize">Customer</Text>
+                        <Text className="text-white font-semibold pl-[40px] capitalize">{requestInfo?.customerId?.userName}</Text>
                         <TouchableOpacity onPress={() => { sendAttachment() }}>
                             <Send />
                         </TouchableOpacity>

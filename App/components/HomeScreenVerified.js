@@ -10,6 +10,9 @@ import OngoingRequests from './OngoingRequests';
 import HomeScreenRequests from './HomeScreenRequests';
 import ProductOrderCard from './ProductOrderCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import messaging from '@react-native-firebase/messaging';
+import { notificationListeners } from '../notificationServices';
+
 
 const HomeScreenVerified = () => {
   const navigation = useNavigation();
@@ -17,6 +20,37 @@ const HomeScreenVerified = () => {
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [tab, setTab] = useState("New");
+  const [request,setRequest]=useState(true)
+
+
+  
+  // async function requestUserPermission() {
+  //   const authStatus = await messaging().requestPermission();
+  //   const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+  //   if (enabled) {
+  //     console.log('Authorization status:', authStatus);
+  //   }
+  // }
+
+  // useEffect(()=>{
+
+
+  //   if(requestUserPermission()){
+  //       messaging().getToken().then(token=>{
+  //         console.log(token)
+  //       })
+  //   }
+  //   else{
+  //     console.log("permission not granted",authStatus);
+  //   }
+  //   // createNotificationChannels();
+  //   notificationListeners();
+    
+
+  // },[]);
 
   useEffect(() => {
     if (isFocused) {
@@ -28,6 +62,7 @@ const HomeScreenVerified = () => {
     try {
       const userData = JSON.parse(await AsyncStorage.getItem('userData'));
       const response = await axios.get(`https://genie-backend-meg1.onrender.com/chat/retailer-new-spades?id=${userData?._id}`);
+      setRequest(true);
       dispatch(setNewRequests(response.data));
     } catch (error) {
       dispatch(setNewRequests());
@@ -39,6 +74,7 @@ const HomeScreenVerified = () => {
     try {
       const userData = JSON.parse(await AsyncStorage.getItem('userData'));
       const ongoingresponse = await axios.get(`https://genie-backend-meg1.onrender.com/chat/retailer-ongoing-spades?id=${userData?._id}`);
+      setRequest(true);
       dispatch(setOngoingRequests(ongoingresponse.data));
     } catch (error) {
       dispatch(setOngoingRequests());
@@ -74,6 +110,7 @@ const HomeScreenVerified = () => {
           />
         }
       >
+        {request && 
         <View className="flex items-center">
           <View>
             <View className="flex-row justify-between px-[20px] py-[10px] gap-[5x]">
@@ -130,7 +167,7 @@ const HomeScreenVerified = () => {
                   ongoingRequests && ongoingRequests.length>0 ?(
                 ongoingRequests?.map((product)=>(
                   
-                  <Pressable key={product._id} onPress={()=>{dispatch(setRequestInfo(product));navigation.navigate("requestPage")}}>
+                  <Pressable key={product._id} onPress={()=>{dispatch(setRequestInfo(product)); console.log("requestInfo at homeScreen",product);navigation.navigate("requestPage")}}>
                   
                      <ProductOrderCard key={product._id} product={product}/>
                   </Pressable>
@@ -145,7 +182,10 @@ const HomeScreenVerified = () => {
         </SafeAreaView> 
 }
           </View>
-        </View>
+        </View>}
+        {
+          !request && <HomeScreenRequests/>
+        }
       </ScrollView>
     </View>
   );

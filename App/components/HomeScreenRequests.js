@@ -37,7 +37,7 @@ const HomeScreenRequests = () => {
                     <Text className="text-[16px] font-extrabold text-[#2E2C43] px-[32px] text-center">
                     You will receive notification first, like this
                     </Text>
-                    {/* <Card/> */}
+                    <Card width={350} height={250}/>
                  </View>
                  <View className="flex items-center">
                     <Text className="text-[14px] px-[32px]  text-[#2E2C43]  text-center">

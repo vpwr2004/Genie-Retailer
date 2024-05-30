@@ -6,8 +6,9 @@ import axios from 'axios';
 import {  setRequestInfo } from '../redux/reducers/requestDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { socket } from '../screens/utils/socket.io/socket';
+import { NotificationRequestAccepted } from '../notification/notificationMessages';
 
-const RequestAcceptModal= ({modalVisible,setModalVisible,setAcceptLocal,messages,setMessages}) => {
+const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,messages,setMessages}) => {
   // const [modalVisible, setModalVisible] = useState(true);
   const navigation=useNavigation();
   const dispatch=useDispatch();
@@ -63,7 +64,7 @@ const RequestAcceptModal= ({modalVisible,setModalVisible,setAcceptLocal,messages
                 ...requestInfo?.requestId,
                 requestActive: "completed"
               };
-          dispatch(setRequestInfo(tmp));
+              dispatch(setRequestInfo(tmp));
               const updatedMessages = messages.map((message) => {
                 if (message?._id === lastMessage?._id) {
                   return { ...message, bidAccepted: "accepted" };
@@ -72,7 +73,16 @@ const RequestAcceptModal= ({modalVisible,setModalVisible,setAcceptLocal,messages
               });
               setAcceptLocal(true);
               setMessages(updatedMessages);
-              setModalVisible(false);
+              const notification={
+                title:user?.storeName,
+                requestInfo:requestInfo,
+                tag:user?._id,
+                redirect_to:"bargain",
+             }
+             console.log("new notification",notification);
+             setModalVisible(false);
+             await  NotificationRequestAccepted(notification);
+             
             } catch (error) {
               console.error("Error updating chat details:", error);
             }

@@ -4,6 +4,7 @@ import ModalImg from "../assets/Logout.svg"
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 
 
 const ModalLogout= ({modalVisible,setModalVisible}) => {
@@ -15,6 +16,8 @@ const ModalLogout= ({modalVisible,setModalVisible}) => {
             await AsyncStorage.removeItem('userData');
             setModalVisible(false);
             // await auth().signOut();
+            // await messaging().deleteToken();
+            // console.log('FCM token deleted.');
             console.log('User data deleted successfully');
             navigation.navigate("mobileNumber")
         } catch (error) {

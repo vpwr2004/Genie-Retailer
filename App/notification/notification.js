@@ -42,7 +42,7 @@ import axios from "axios";
 
 export const getAccessToken = async () => {
     try {
-        const response = await axios.get('https://genie-notifications.onrender.com/getAccessToken');
+        const response = await axios.get('https://genie-notifications.onrender.com/customerAccessToken');
         // const data = await response.json();
         // console.log("access frontend", data.accessToken);
         // console.log('res',response.data.accessToken);

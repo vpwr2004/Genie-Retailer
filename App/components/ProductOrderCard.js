@@ -43,8 +43,8 @@ const ProductOrderCard = ({product}) => {
                         
 
                         <View className="w-10/12"> 
-                            <View>
-                                <Text className="text-[14px] ">{prod?.requestId?.requestDescription}</Text>
+                            <View className="flex flex-wrap w-full ">
+                                <Text className="text-[14px] w-full">{prod?.requestId?.requestDescription}</Text>
                             </View>
 
                             <View className="flex-row py-1">
