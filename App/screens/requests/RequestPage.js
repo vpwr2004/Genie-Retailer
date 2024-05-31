@@ -8,7 +8,8 @@ import {
   Platform,
   TouchableOpacity,
   StyleSheet,
-  Image
+  Image,
+  TouchableOpacityBase
 } from "react-native";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ThreeDots from "../../assets/ThreeDotIcon.svg";
@@ -66,7 +67,7 @@ const RequestPage = () => {
   const [attachmentScreen, setAttachmentScreen] = useState(false);
   const [cameraScreen, setCameraScreen] = useState(false);
   const requestInfo= useSelector(state => state.requestData.requestInfo || {});
-    console.log("params",route?.params?.data?.requestInfo);
+    // console.log("params",route?.params?.data?.requestInfo); 
       
       // useEffect(()=> {
       //   console.log('Hello there');
@@ -110,10 +111,10 @@ const RequestPage = () => {
           setMessages(response?.data);
           console.log('Messages found successfully');
           // console.log("user joined chat with chatId", response.data[0].chat._id);
-          socket.emit("join chat", response?.data[0]?.chat?._id);
+          socket.emit("join chat", response?.data[0].chat._id);
 
           console.log('socket join chat setup successfully');
-          socket.emit("join chat",response?.data[0]?.chat._id);
+          socket.emit("join chat",response?.data[0].chat._id);
         } catch (error) {
           console.error("Error fetching messages:", error);
         }
@@ -126,7 +127,7 @@ const RequestPage = () => {
           if(route?.params?.data){
             req=JSON.parse(route?.params?.data?.requestInfo);
            }
-          socket.emit("setup", requestInfo?.users[0]?._id?requestInfo?.users[0]._id:req?.users[0]?._id);
+          socket.emit("setup", requestInfo?.users[0]?requestInfo?.users[0]._id:req?.users[0]._id);
           console.log("socket setup for personal user setup successfully");
           // console.log("user connected with userId", requestInfo.users[0]._id);
       
@@ -144,13 +145,14 @@ const RequestPage = () => {
         if(route?.params?.data){
           console.log("Params data found");
             let req=JSON.parse(route?.params?.data?.requestInfo);
-            console.log('reqInfo from notification section',req);
+            // console.log('reqInfo from notification section',req);
             dispatch(setRequestInfo(req));
             // setTimeout(()=>{
             //   console.log('reqInfo from params',requestInfo);
             // },2000);
         }
-          fetchRequestData();SocketSetUp();
+          fetchRequestData();
+          SocketSetUp();
           
         // }
           
@@ -270,6 +272,7 @@ const RequestPage = () => {
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
         const notification={
+          token:requestInfo?.customerId?.uniqueToken,
           title:user?.storeName,
           body:lastMessage.message,
           requestInfo:requestInfo,
@@ -293,9 +296,9 @@ const RequestPage = () => {
 // New message recieved from socket code 
   useEffect(() => {
     const handleMessageReceived = (newMessageReceived) => {
-      console.log("Message received from socket:", newMessageReceived);
+      // console.log("Message received from socket:", newMessageReceived);
       setMessages((prevMessages) => {
-        if ( prevMessages[prevMessages.length - 1]?.chat?._id === newMessageReceived?.chat?._id) {
+        if ( prevMessages[prevMessages.length - 1]?.chat._id === newMessageReceived?.chat._id) {
           if (prevMessages[prevMessages.length - 1]?._id === newMessageReceived?._id ) {
             // Update the last message if it's the same as the new one
             return prevMessages.map((message) =>
@@ -370,14 +373,14 @@ const RequestPage = () => {
 
           <View className="gap-[9px]">
             <View className="flex-row gap-[18px]">
-              <View className="bg-[#F9F9F9] p-2 rounded-full">
+              <View className="bg-[#F9F9F9] flex items-center justify-center rounded-full">
               {
               requestInfo?.customerId?.pic ? (  <Image
                 source={{ uri:requestInfo?.customerId?.pic  }}
-                style={{ width: 40, height: 40, borderRadius: 20 }}
+                style={{ width: 40, height: 40, borderRadius: 20 ,objectFit:"cover"}}
             // className="w-[40px] h-[40px] rounded-full"
             />):(
-                 <Profile className="" />
+                 <Profile className="w-full h-full rounded-full" />
               )
 
               
@@ -395,7 +398,7 @@ const RequestPage = () => {
             </View>
           </View>
 
-          <Pressable
+          <TouchableOpacity
             onPress={() => {
               setModal(!modal);
             }}
@@ -403,11 +406,11 @@ const RequestPage = () => {
             <View className="px-[20px] py-[10px] ">
               <ThreeDots />
             </View>
-          </Pressable>
+          </TouchableOpacity>
         </View>
         {modal && (
           <View className="absolute top-[20px] right-[80px]  bg-white rounded-md">
-            <Pressable
+            <TouchableOpacity
             onPress={() =>{
               setModal(!modal);
               navigation.navigate("viewrequest")
@@ -417,7 +420,7 @@ const RequestPage = () => {
               <Text className="mx-5  py-3">
                 View Request
               </Text>
-            </Pressable>
+            </TouchableOpacity>
             {/* <Pressable
               onPress={() => {
                 setCloseRequestModal(true);

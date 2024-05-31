@@ -44,6 +44,29 @@ const LocationScreen = () => {
     fetchLocation();
   }, []);
 
+  const getLocationName = async (lat, lon) => {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      const data = await response.json();
+      // console.log("location", data);
+      if (!data.error) {
+        // return data.display_name;
+        setAddress(data?.display_name);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching location:", error);
+      return null;
+    }
+  };
+
   const fetchLocation = async () => {
     setLoading(true);
     try {
@@ -54,9 +77,13 @@ const LocationScreen = () => {
       }
 
       let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.High,
+        accuracy: Location.Accuracy.BestForNavigation,
+        // Add timeout to avoid infinite wait in case of failure
+        timeout: 10000,
+        // Optionally, maximum age of a previously cached location
+        maximumAge: 1000,
       });
-      console.log(location);
+      // console.log(location);
       const { latitude, longitude } = location.coords;
       setLatitude(Number(latitude)); // Ensure values are stored as numbers
       setLongitude(Number(longitude));
@@ -64,17 +91,11 @@ const LocationScreen = () => {
       setStoreLocationLocal(latitude + "," + longitude);
 
       setLoc({ latitude, longitude });
-      console.log(latitude, longitude);
-      const addressResponse = await Location.reverseGeocodeAsync({
-        latitude,
-        longitude,
-      });
+     
+      await getLocationName(latitude, longitude);
+     
 
-      if (addressResponse.length > 0) {
-        console.log(addressResponse[0]);
-        const { city, postalCode, region, street } = addressResponse[0];
-        setAddress(`${street}, ${city}, ${region}, ${postalCode}`);
-      }
+      // }
     } catch (error) {
       console.error("Error fetching location:", error);
     } finally {
@@ -166,14 +187,16 @@ const LocationScreen = () => {
                 Fetched Location
               </Text>
               <KeyboardAvoidingView>
-                <View className="flex  items-center">
+                <View style={styles.container}>
                   <TextInput
-                    placeholder="189/2,  Out Side Datia Gate ,Jhansi, 28402"
-                    placeholderTextColor={"#dbcdbb"}
+                    placeholder="189/2, Out Side Datia Gate ,Jhansi, 28402"
+                    placeholderTextColor="#dbcdbb"
                     value={address}
                     onChangeText={handleLocation}
-                    readOnly
-                    className="w-[330px] overflow-x-scroll  text-[14px]  px-[20px] py-[15px] bg-[#F9F9F9] font-semibold text-black rounded-[16px]"
+                    editable={false} // if you want to make it read-only
+                    multiline={true}
+                    scrollEnabled={true}
+                    style={styles.input}
                   />
                 </View>
               </KeyboardAvoidingView>
@@ -200,14 +223,14 @@ const LocationScreen = () => {
               </View>
             </View>
           </View>
-          <TouchableOpacity>
-            <Pressable disabled={!location} onPress={handleLocationFetching}>
+          <TouchableOpacity disabled={!location} onPress={handleLocationFetching}>
+          
               <View className="w-full h-[63px] bg-[#fb8c00] absolute bottom-0 right-0 left-0  flex items-center justify-center ">
                 <Text className="text-white text-[18px] font-extrabold">
                   Continue
                 </Text>
               </View>
-            </Pressable>
+           
           </TouchableOpacity>
         </View>
         <View className="absolute flex justify-center items-center">
@@ -238,6 +261,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  input: {
+    width: 330,
+    textAlignVertical: 'top', // Align text to the top
+    fontSize: 14,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: '#F9F9F9',
+    fontWeight: 'bold',
+    color: 'black',
+    borderRadius: 16,
+    height:"max-content", // Adj
+  }
 });
 
 export default LocationScreen;

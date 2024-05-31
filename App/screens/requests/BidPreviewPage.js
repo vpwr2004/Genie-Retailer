@@ -102,8 +102,9 @@ const BidPreviewPage = () => {
 
         setMessages(mess);
         const notification = {
+         token:requestInfo?.customerId?.uniqueToken,
           title: user?.storeName,
-          body: query,
+          body: bidDetails,
           requestInfo: requestInfo,
           tag: user?._id,
           price: bidOfferedPrice,
@@ -134,7 +135,7 @@ const BidPreviewPage = () => {
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="bg-[#F9F9F9] p-2 rounded-full">
+                <View className="bg-[#F9F9F9]  rounded-full">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}
@@ -238,7 +239,7 @@ const BidPreviewPage = () => {
       <View className="absolute bottom-0 left-0 right-0">
         <View className="gap-[20px]">
           <TouchableOpacity onPress={sendBid}>
-            <View className="h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
+            <View className="w-full h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
               <Text className="font-bold text-[16px] text-white">Next</Text>
             </View>
           </TouchableOpacity>

@@ -44,6 +44,8 @@ const MobileNumberEntryScreen = () => {
   const [code, setCode] = useState("");
   const [mobileScreen, setMobileScreen] = useState(true);
   const countryCode = "+91";
+  const uniqueToken=useSelector(state=>state.storeData.uniqueToken)
+
 
  
 
@@ -73,7 +75,7 @@ const MobileNumberEntryScreen = () => {
     setMobileNumberLocal(mobileNumber);
 
     // Log the mobile number value
-    console.log(mobileNumber);
+    // console.log(mobileNumber);
   };
 
   const handleOtp = (otp) => {
@@ -133,10 +135,16 @@ const MobileNumberEntryScreen = () => {
       setMobileScreen(true);
       if (response.data.storeMobileNo) {
         // If mobile number is registered, navigate to home screen
-        dispatch(setUserDetails(response.data));
-        await AsyncStorage.setItem("userData", JSON.stringify(response.data));
+        
+      
         setOtp("");
         setMobileNumberLocal("");
+        const res = await axios.patch(`https://genie-backend-meg1.onrender.com/retailer/editretailer`, {
+          _id: response?.data?._id,
+          uniqueToken:uniqueToken
+        });
+        dispatch(setUserDetails(res.data));
+        await AsyncStorage.setItem('userData', JSON.stringify(res.data));
         navigation.navigate("home");
       } else if (response.data.status === 404) {
         // If mobile number is not registered, continue with the registration process
@@ -230,6 +238,7 @@ const MobileNumberEntryScreen = () => {
                     alignItems: "center",
                   }}
                 >
+                  <View className="w-full flex justify-center items-center">
                   <Text
                     style={{
                       fontSize: 18,
@@ -243,6 +252,7 @@ const MobileNumberEntryScreen = () => {
                   >
                     Next
                   </Text>
+                  </View>
                 </TouchableOpacity>
               </View>
             </View>
@@ -325,7 +335,7 @@ const MobileNumberEntryScreen = () => {
                     <Text style={{ fontSize: 16, color: "#2e2c43" }}>
                       Didn't receive it?
                     </Text>
-                    <Pressable onPress={sendVerification}>
+                    <TouchableOpacity onPress={sendVerification}>
                       <Text
                         style={{
                           fontSize: 14,
@@ -335,7 +345,7 @@ const MobileNumberEntryScreen = () => {
                       >
                         RESEND
                       </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -354,11 +364,23 @@ const MobileNumberEntryScreen = () => {
               justifyContent: "center",
               alignItems: "center",
               paddingVertical: 18,
+              width:"100%"
             }}
           >
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
-              Next
-            </Text>
+             <View className="w-full flex justify-center items-center">
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      color: "white",
+                      backgroundColor: "#fb8c00",
+                      width: "100%",
+                      textAlign: "center",
+                    }}
+                  >
+                    Next
+                  </Text>
+                  </View>
           </TouchableOpacity>
 
           {loading && (

@@ -3,6 +3,7 @@ import React from 'react'
 import ItemImg from "../assets/ItemImg.svg"
 import Time from "../assets/time.svg"
 import Calendar from "../assets/calendar.svg"
+import { formatDateTime } from '../screens/utils/lib'
 
 const ProductOrderCard = ({product}) => {
     // console.log("productdetails",product);
@@ -13,20 +14,7 @@ const ProductOrderCard = ({product}) => {
     // console.log("prod",prod.requestId?.requestImages[0]);
     
 
-    const formatDateTime = (dateTimeString) => {
-        const date = new Date(dateTimeString);
-        const timeOptions = { hour: 'numeric', minute: 'numeric' };
-        const dateFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-
-        // Format time
-        const formattedTime = date.toLocaleTimeString('en-US', timeOptions);
-
-        // Format date
-        const formattedDate = date.toLocaleDateString('en-US', dateFormatOptions);
-        // console.log(formattedDate,formattedTime)
-
-        return { formattedTime, formattedDate };
-    };
+   
 
     // Call the function to format the date and time
     const { formattedTime, formattedDate } = formatDateTime(prod?.updatedAt);

@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   Modal,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ThreeDots from "../../assets/ThreeDotIcon.svg";
@@ -247,7 +248,7 @@ const BidPageImageUpload = () => {
                 {images.length === 0 && (
                   <View className="z-0">
                     <View>
-                      <Pressable
+                      <TouchableOpacity
                         onPress={() => {
                           takePicture();
                         }}
@@ -255,8 +256,8 @@ const BidPageImageUpload = () => {
                         <View className="flex-row justify-center">
                           <ClickImage />
                         </View>
-                      </Pressable>
-                      <Pressable
+                      </TouchableOpacity>
+                      <TouchableOpacity
                         onPress={() => {
                           pickImage();
                           console.log("pressed pickimg");
@@ -267,7 +268,7 @@ const BidPageImageUpload = () => {
                             Browse Image
                           </Text>
                         </View>
-                      </Pressable>
+                      </TouchableOpacity>
                     </View>
                   </View>
                 )}
@@ -345,16 +346,18 @@ const BidPageImageUpload = () => {
                 {!addMore ? (
                   images.length > 0 && (
                     <View className="w-full h-[68px]  bg-[#fb8c00] justify-center absolute bottom-0 left-0 right-0">
-                      <Pressable onPress={handleNext}>
-                        <Text className="text-white font-bold text-center text-[16px]">
+                      <TouchableOpacity onPress={handleNext}>
+                        <View className="w-full flex justify-center items-center">
+                        <Text className=" text-white font-bold text-center text-[16px]">
                           Next
                         </Text>
-                      </Pressable>
+                        </View>
+                      </TouchableOpacity>
                     </View>
                   )
                 ) : (
                   <View className="w-full absolute bottom-0 items-center left-0 right-0 px-[10px]">
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => {
                         pickImage();
                         setAddMore(false);
@@ -368,9 +371,9 @@ const BidPageImageUpload = () => {
                           color="black"
                         />
                       </View>
-                    </Pressable>
+                    </TouchableOpacity>
                     <View className="h-[1px] w-full bg-gray-300 "></View>
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => {
                         takePicture();
                         setAddMore(false);
@@ -384,7 +387,7 @@ const BidPageImageUpload = () => {
                           color="black"
                         />
                       </View>
-                    </Pressable>
+                    </TouchableOpacity>
                   </View>
                 )}
               </View>

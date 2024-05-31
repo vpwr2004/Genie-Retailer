@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity} from 'react-native';
 import ModalImg from "../assets/Cancel.svg"
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import {  setRequestInfo } from '../redux/reducers/requestDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { socket } from '../screens/utils/socket.io/socket';
-import { NotificationRequestAccepted } from '../notification/notificationMessages';
+import { BidAcceptedOtherRetailer, NotificationBidAccepted, NotificationRequestAccepted } from '../notification/notificationMessages';
 
 const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,messages,setMessages}) => {
   // const [modalVisible, setModalVisible] = useState(true);
@@ -19,7 +19,7 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
   const handleModal = async () => {
     try {
       const lastMessage = messages[messages.length - 1];
-      console.log("last message",lastMessage);
+      // console.log("last message",lastMessage);
       if (!lastMessage) {
         console.log("No messages available to update.");
         return;
@@ -35,12 +35,22 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
               type:"ongoing"
             }
           );
-          console.log("RequestType new response", res.data);
+           console.log("RequestType new response", res.data);
           let tmp={...requestInfo,requestType:"ongoing"};
           dispatch(setRequestInfo(tmp));
 
           setAcceptLocal(true);
           setModalVisible(false);
+          const notification={
+            token:requestInfo?.customerId?.uniqueToken,
+            title:user?.storeName,
+            requestInfo:requestInfo,
+            tag:user?._id,
+            image:requestInfo?.requestId?.requestImages[0],
+            redirect_to:"bargain",
+         }
+        //  console.log("new notification",notification);
+         await  NotificationRequestAccepted(notification);
         } catch (error) {
           console.error("Error updating requestType 'new':", error);
           return;
@@ -54,12 +64,11 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
               userRequestId: requestInfo?.requestId?._id,
             }
           );
-          console.log("Accept response", accept.data);
+           console.log("Accept response", accept.data?.message);
   
           if (accept.status === 200) {
             try {
-            
-              socket.emit("new message",accept.data)
+              socket.emit("new message",accept.data?.message);
               let tmp = {
                 ...requestInfo?.requestId,
                 requestActive: "completed"
@@ -74,14 +83,17 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
               setAcceptLocal(true);
               setMessages(updatedMessages);
               const notification={
+                token:accept?.data?.uniqueTokens,
                 title:user?.storeName,
                 requestInfo:requestInfo,
                 tag:user?._id,
-                redirect_to:"bargain",
+                price:lastMessage?.bidPrice,
+                image:requestInfo?.requestId?.requestImages[0],
              }
-             console.log("new notification",notification);
+            //  console.log("new notification",notification);
              setModalVisible(false);
-             await  NotificationRequestAccepted(notification);
+             await  NotificationBidAccepted(notification);
+             await  BidAcceptedOtherRetailer(notification);
              
             } catch (error) {
               console.error("Error updating chat details:", error);
@@ -120,16 +132,16 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
                         
                             <View className="w-full flex flex-row  justify-center">
                               <View className="flex-1 mt-[5px]">
-                                  <Pressable onPress={()=>{setModalVisible(false)}} >
+                                  <TouchableOpacity onPress={()=>{setModalVisible(false)}} >
                                     <Text className="text-[14.5px] text-[#FB8C00] font-normal text-center">Close</Text>
                           
-                                  </Pressable> 
+                                  </TouchableOpacity> 
                               </View>
                             <View className="flex-1 mt-[5px]">
-                                <Pressable  onPress={handleModal}>
+                                <TouchableOpacity onPress={handleModal}>
                                   <Text className="text-[14.5px] text-[#FB8C00] font-semibold text-center">Accept</Text>
                        
-                                </Pressable> 
+                                </TouchableOpacity> 
                             </View>
                         
                   

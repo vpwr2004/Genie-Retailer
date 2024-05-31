@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity} from 'react-native';
 import ModalImg from "../assets/Cancel.svg"
 import { useNavigation } from '@react-navigation/native';
 
@@ -41,16 +41,16 @@ const ModalCancel= ({modalVisible,setModalVisible,index,imagesLocal,setImagesLoc
                         
                             <View className="w-full flex flex-row  justify-center">
                               <View className="flex-1 mt-[5px]">
-                                  <Pressable onPress={()=>{setModalVisible(false)}} >
+                                  <TouchableOpacity onPress={()=>{setModalVisible(false)}} >
                                     <Text className="text-[14.5px] text-[#FB8C00] font-normal text-center">Cancel</Text>
                           
-                                  </Pressable> 
+                                  </TouchableOpacity> 
                               </View>
                             <View className="flex-1 mt-[5px]">
-                                <Pressable  onPress={handleModal}>
+                                <TouchableOpacity onPress={handleModal}>
                                   <Text className="text-[14.5px] text-[#FB8C00] font-semibold text-center">Remove</Text>
                        
-                                </Pressable> 
+                                </TouchableOpacity> 
                             </View>
                         
                   

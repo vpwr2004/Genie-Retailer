@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, Image, Pressable, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -60,12 +60,12 @@ const HelpScreen = () => {
                 </ScrollView>
             </KeyboardAvoidingView>
 
-            <Pressable
+            <TouchableOpacity
                 onPress={handleHelp} disabled={!query}
                 style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#fb8c00', height: 68, justifyContent: 'center' }}
             >
                 <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}>Submit</Text>
-            </Pressable>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 }

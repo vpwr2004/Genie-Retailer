@@ -129,9 +129,9 @@ const PanCardScreen = () => {
               >
                 <FontAwesome name="arrow-left" size={15} color="black" />
               </Pressable>
-              <Pressable onPress={handleNext}>
+              <TouchableOpacity onPress={handleNext}>
                 <Text style={{ fontSize: 14, padding: 2 }}>Skip</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <StoreName height={350} width={256} />
@@ -177,10 +177,12 @@ const PanCardScreen = () => {
             justifyContent: "center",
             alignItems: "center",
           }}
-        >
+        > 
+         <View className="w-full flex items-center justify-center">
           <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
             NEXT
           </Text>
+          </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>
 

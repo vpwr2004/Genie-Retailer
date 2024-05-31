@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity} from 'react-native';
 import ModalImg from "../assets/ModalImg.svg"
 import { useNavigation } from '@react-navigation/native';
 
@@ -34,16 +34,16 @@ const ModalScreen = ({modalVisible,setModalVisible,setModalConfirmVisible}) => {
                         
                             <View className="w-full flex flex-row  justify-center">
                               <View className="flex-1 mt-[10px]">
-                                  <Pressable onPress={handleModal} >
+                                  <TouchableOpacity onPress={handleModal} >
                                     <Text className="text-[14.5px] font-normal text-center">No</Text>
                           
-                                  </Pressable> 
+                                  </TouchableOpacity> 
                               </View>
                             <View className="flex-1 mt-[10px]">
-                                <Pressable onPress={()=>{setModalVisible(false)}} >
+                                <TouchableOpacity onPress={()=>{setModalVisible(false)}} >
                                   <Text className="text-[14.5px] font-normal text-center">Yes</Text>
                        
-                                </Pressable> 
+                                </TouchableOpacity> 
                             </View>
                         
                   

@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome} from '@expo/vector-icons';
@@ -58,7 +58,7 @@ const MenuScreen = () => {
                  <Text className="text-[16px] font-bold flex-1 flex text-center">Menu</Text>
              </View>
 
-            <Pressable onPress={()=>navigation.navigate("profile")}>
+            <TouchableOpacity onPress={()=>navigation.navigate("profile")}>
                 <View className="flex items-center">
                     <View className="flex flex-row gap-[32px] bg-white py-[48px] w-[90%] justify-center items-center rounded-md shadow-lg">
                     <Image source={{ uri: user?.storeImages[0] }} className="w-[36px] h-[36px] rounded-full" />
@@ -69,11 +69,11 @@ const MenuScreen = () => {
                     </View>
 
                 </View>
-            </Pressable>
+            </TouchableOpacity>
 
              <View className="px-[32px] flex flex-col gap-[40px]">
                
-                    <Pressable onPress={()=>navigation.navigate("about")}>
+                    <TouchableOpacity onPress={()=>navigation.navigate("about")}>
                         <View className="flex flex-row justify-between items-center">
                         <Text className="text-[15px]">
                             About CulturTap Genie 
@@ -81,8 +81,8 @@ const MenuScreen = () => {
                         <FontAwesome6 name="arrow-right" size={15} color="black" />
 
                         </View>
-                    </Pressable>
-                    <Pressable >
+                    </TouchableOpacity>
+                    <TouchableOpacity >
                         <View className="flex flex-row justify-between items-center">
                         <Text className="text-[15px]">
                         Terms & Conditions 
@@ -90,8 +90,8 @@ const MenuScreen = () => {
                         <FontAwesome6 name="arrow-right" size={15} color="black" />
 
                         </View>
-                    </Pressable>
-                    <Pressable onPress={()=>navigation.navigate("help")}>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.navigate("help")}>
                         <View className="flex flex-row justify-between items-center">
                         <Text className="text-[15px]">
                         Need any Help ? 
@@ -99,16 +99,16 @@ const MenuScreen = () => {
                         <FontAwesome6 name="arrow-right" size={15} color="black" />
 
                         </View>
-                    </Pressable>
+                    </TouchableOpacity>
 
-                    <Pressable onPress={deleteUserData}>
+                    <TouchableOpacity onPress={deleteUserData}>
                         <View className="flex flex-row justify-between items-center">
                         <Text className="text-[15px]">
                         Log Out
                         </Text>
                         <FontAwesome6 name="arrow-right" size={15} color="black" />
                         </View>
-                    </Pressable>
+                    </TouchableOpacity>
                     
         
              </View>
@@ -116,6 +116,7 @@ const MenuScreen = () => {
              <View className="absolute flex justify-center items-center">
             
           <ModalLogout
+            user={user}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
             

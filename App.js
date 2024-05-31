@@ -5,12 +5,13 @@ import GlobalNavigation from './App/navigation/appNavigation';
 import './global.css';
 import 'tailwindcss/tailwind.css';
 import { Provider } from 'react-redux';
+import 'react-native-gesture-handler';
 import store from './App/redux/store';
 import messaging from '@react-native-firebase/messaging';
 import { Alert } from 'react-native';
 import { useEffect,useState } from 'react';
 import navigationService from './App/navigation/navigationService';
-import {  notificationListeners } from './App/notificationServices';
+import {  notificationListeners } from './App/notification/notificationServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { firebase } from '@react-native-firebase/auth'
 import { ActivityIndicator } from 'react-native-paper';
@@ -32,31 +33,20 @@ import { ActivityIndicator } from 'react-native-paper';
 
 export default function App() {
 
-  async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  // async function requestUserPermission() {
+  //   const authStatus = await messaging().requestPermission();
+  //   const enabled =
+  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
   
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
-  }
+  //   if (enabled) {
+  //     console.log('Authorization status:', authStatus);
+  //   }
+  // }
 
   useEffect(()=>{
-
-
-    if(requestUserPermission()){
-        messaging().getToken().then(token=>{
-          console.log(token)
-        })
-    }
-    else{
-      console.log("permission not granted",authStatus);
-    }
-    // createNotificationChannels();
+  
     notificationListeners();
-    
 
   },[]);
   

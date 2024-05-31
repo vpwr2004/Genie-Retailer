@@ -1,4 +1,4 @@
-import { Pressable ,ScrollView,StyleSheet, Text, View } from 'react-native'
+import { Pressable ,ScrollView,StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import OngoingRequests from '../../components/OngoingRequests'
 import { useNavigation } from '@react-navigation/native'
@@ -15,15 +15,15 @@ const HistoryScreen = () => {
 
          <View className="flex flex-row justify-between items-center px-[32px] ">
                     <View>
-                        <Pressable onPress={()=>navigation.navigate("menu")}>
+                        <TouchableOpacity onPress={()=>navigation.navigate("menu")}>
                             <Profile />
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                     <GinieIcon/>
                     <View>
-                        <Pressable onPress={()=>navigation.navigate("history")}>
+                        <TouchableOpacity onPress={()=>navigation.navigate("history")}>
                             <History />
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                     
                 </View>

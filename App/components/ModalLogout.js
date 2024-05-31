@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity} from 'react-native';
 import ModalImg from "../assets/Logout.svg"
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
 
 
-const ModalLogout= ({modalVisible,setModalVisible}) => {
+const ModalLogout= ({user,modalVisible,setModalVisible}) => {
   // const [modalVisible, setModalVisible] = useState(true);
   const navigation=useNavigation();
   const handleModal=async()=>{
@@ -18,12 +19,16 @@ const ModalLogout= ({modalVisible,setModalVisible}) => {
             // await auth().signOut();
             // await messaging().deleteToken();
             // console.log('FCM token deleted.');
+            const res = await axios.patch(`https://genie-backend-meg1.onrender.com/retailer/editretailer`, {
+             _id: user?._id,
+             uniqueToken:""
+             });
+           
             console.log('User data deleted successfully');
             navigation.navigate("mobileNumber")
         } catch (error) {
             console.error('Error deleting user data:', error);
         }
-   
    
   }
   return (
@@ -48,16 +53,16 @@ const ModalLogout= ({modalVisible,setModalVisible}) => {
                         
                             <View className="w-full flex flex-row  justify-center">
                               <View className="flex-1 mt-[5px]">
-                                  <Pressable onPress={()=>{setModalVisible(false)}} >
+                                  <TouchableOpacity onPress={()=>{setModalVisible(false)}} >
                                     <Text className="text-[14.5px] text-[#FB8C00] font-normal text-center">Cancel</Text>
                           
-                                  </Pressable> 
+                                  </TouchableOpacity> 
                               </View>
                             <View className="flex-1 mt-[5px]">
-                                <Pressable  onPress={handleModal}>
+                                <TouchableOpacity  onPress={handleModal}>
                                   <Text className="text-[14.5px] text-[#FB8C00] font-semibold text-center">Logout</Text>
                        
-                                </Pressable> 
+                                </TouchableOpacity> 
                             </View>
                         
                   

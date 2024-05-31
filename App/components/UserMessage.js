@@ -4,9 +4,11 @@ import { Entypo } from '@expo/vector-icons';
 import Tick from "../assets/tick.svg";
 import DPIcon from "../assets/DPIcon.svg";
 import { useSelector } from 'react-redux';
+import { formatDateTime } from '../screens/utils/lib';
 
 const UserMessage = ({ bidDetails }) => {
     // console.log("bidDetails", bidDetails);
+    const { formattedTime, formattedDate } = formatDateTime( bidDetails?.updatedAt);
 
     // const userDetails = useSelector(store => store.user.userDetails);
   const requestInfo= useSelector(state => state.requestData.requestInfo || {});
@@ -35,7 +37,13 @@ const UserMessage = ({ bidDetails }) => {
 
                 </View>
                 <View className="w-[60%]">
-                <Text className="text-[14px] text-[#2e2c43] font-bold capitalize">{requestInfo?.customerId?.userName}</Text>
+                <View className="flex flex-row justify-between">
+            <Text className="text-[14px] text-[#2e2c43] font-bold capitalize">
+              {requestInfo?.customerId?.userName}
+            </Text>
+
+            <Text className="text-[14px] text-[#2e2c43] ">{formattedTime}</Text>
+          </View>
                     <Text className="text-[12px] text-[#2e2c43]">{bidDetails.message}</Text>
                 </View>
             </View>

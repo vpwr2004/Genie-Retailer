@@ -120,15 +120,13 @@ const UserNameEntryScreen = () => {
               </KeyboardAvoidingView>
             </View>
           </View>
-          <TouchableOpacity>
-            <Pressable
-              disabled={!storeName || !storeOwnerName}
-              onPress={storeDetails}
-            >
-              <View className=" h-[63px] bg-[#fb8c00]  flex items-center justify-center  ">
+          <TouchableOpacity disabled={!storeName || !storeOwnerName}
+              onPress={storeDetails}>
+            
+              <View className=" w-full h-[63px] bg-[#fb8c00]  flex items-center justify-center  ">
                 <Text className="text-white text-[18px] font-bold">NEXT</Text>
               </View>
-            </Pressable>
+           
           </TouchableOpacity>
         </View>
       </ScrollView>

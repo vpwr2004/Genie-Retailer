@@ -93,8 +93,8 @@ const WriteAboutStoreScreen = () => {
           </View>
         </View>
 
-        <TouchableOpacity>
-          <Pressable disabled={!query} onPress={storeDescription}>
+        <TouchableOpacity  disabled={!query} onPress={storeDescription}>
+          
             <View
               style={{
                 height: 63,
@@ -109,7 +109,7 @@ const WriteAboutStoreScreen = () => {
                 NEXT
               </Text>
             </View>
-          </Pressable>
+          
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </SafeAreaView>

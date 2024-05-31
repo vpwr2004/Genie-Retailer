@@ -60,12 +60,12 @@ const ServiceDeliveryScreen = () => {
                         </KeyboardAvoidingView>
                     </View>
                 </View>
-                <TouchableOpacity>
-                    <Pressable  onPress={handleService}>
+                <TouchableOpacity onPress={handleService}>
+                    
                         <View className="w-full h-[63px] bg-[#fb8c00]  flex items-center justify-center">
                             <Text className="text-white text-[18px] font-bold">NEXT</Text>
                         </View>
-                    </Pressable>
+                   
                 </TouchableOpacity>
             </View>
         </ScrollView>

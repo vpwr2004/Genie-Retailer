@@ -55,6 +55,7 @@ const CameraScreen = () => {
              setMessages(mess);
                 // setAttachmentScreen(false);
                 const notification={
+                    token:requestInfo?.customerId?.uniqueToken,
                     title:user?.storeName,
                     body:query,
                     requestInfo:requestInfo,

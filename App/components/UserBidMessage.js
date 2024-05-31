@@ -5,65 +5,77 @@ import { Entypo } from "@expo/vector-icons";
 import Tick from "../assets/tick.svg";
 
 import { useSelector } from "react-redux";
+import { formatDateTime } from "../screens/utils/lib";
 
 const UserBidMessage = ({ bidDetails }) => {
+  const { formattedTime, formattedDate } = formatDateTime(
+    bidDetails?.updatedAt
+  );
+
   // console.log("bidDetails", bidDetails);
   // const userDetails = useSelector(store => store.user.userDetails);
-  const requestInfo= useSelector(state => state.requestData.requestInfo || {});
+  const requestInfo = useSelector(
+    (state) => state.requestData.requestInfo || {}
+  );
 
   // console.log('userDetails', userDetails);
   return (
     <View className="flex gap-[19px]   rounded-3xl w-[297px]  py-[20px] items-center bg-[#fafafa]">
       <View className="flex-row gap-[18px]">
         <View>
-          {
-              requestInfo?.customerId?.pic ? (  <Image
-                source={{ uri:requestInfo?.customerId?.pic  }}
-                style={{ width: 40, height: 40, borderRadius: 20 }}
-            // className="w-[40px] h-[40px] rounded-full"
-            />):(
-                <Image
-                source={{ uri: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }}
-                style={{ width: 40, height: 40, borderRadius: 20 }}
-            // className="w-[40px] h-[40px] rounded-full"
+          {requestInfo?.customerId?.pic ? (
+            <Image
+              source={{ uri: requestInfo?.customerId?.pic }}
+              style={{ width: 40, height: 40, borderRadius: 20 }}
+              // className="w-[40px] h-[40px] rounded-full"
             />
-              )
+          ) : (
+            <Image
+              source={{
+                uri: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+              }}
+              style={{ width: 40, height: 40, borderRadius: 20 }}
+              // className="w-[40px] h-[40px] rounded-full"
+            />
+          )}
 
-              
-          }
-        
           {/* <DPIcon size={20} className="object-contain" /> */}
         </View>
         <View className="w-[60%]">
-          <Text className="text-[14px] text-[#2e2c43] font-bold capitalize">{requestInfo?.customerId?.userName}</Text>
+          <View className="flex flex-row justify-between">
+            <Text className="text-[14px] text-[#2e2c43] font-bold capitalize">
+              {requestInfo?.customerId?.userName}
+            </Text>
+
+            <Text className="text-[14px] text-[#2e2c43] ">{formattedTime}</Text>
+          </View>
           <Text className="text-[12px] text-[#2e2c43]">
             {bidDetails.message}
           </Text>
         </View>
       </View>
       <View className="flex-row gap-[4px]">
-            <ScrollView horizontal={true}>
-                <View className="justify-center pl-[30px]">
-                  <View className="flex-row gap-2 items-center">
-                    {bidDetails?.bidImages.map((image, index) => (
-                      <Image
-                        key={index}
-                        source={{ uri: image }}
-                        className="h-[132px] w-[96px] rounded-3xl"
-                      />
-                    ))}
-                  </View>
-                </View>
-              </ScrollView>
-                {/* {
+        <ScrollView horizontal={true}>
+          <View className="justify-center pl-[30px]">
+            <View className="flex-row gap-2 items-center">
+              {bidDetails?.bidImages.map((image, index) => (
+                <Image
+                  key={index}
+                  source={{ uri: image }}
+                  className="h-[132px] w-[96px] rounded-3xl"
+                />
+              ))}
+            </View>
+          </View>
+        </ScrollView>
+        {/* {
                     bidDetails.bidImages?.map((image, index) => (
                         <View key={index}>
                             <Image source={{ uri: image }} className="h-[132px] w-[96px] rounded-3xl bg-[#EBEBEB]" />
                         </View>
                     ))
                 } */}
-
-            </View>
+      </View>
       <View className="gap-[4px]">
         <View className="flex-row gap-[5px]">
           <Text>Expected Price: </Text>

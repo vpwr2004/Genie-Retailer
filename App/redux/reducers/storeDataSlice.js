@@ -12,6 +12,7 @@ const initialState = {
   storeImage:"",
   storeCategory:"",
   images: [],
+  uniqueToken:"",
   userDetails: [],
   authData:"",
 };
@@ -53,9 +54,12 @@ const storeDataSlice = createSlice({
     setAuthData: (state, action) => {
       state.authData = action.payload;
     },
+    setUniqueToken: (state, action) => {
+      state.uniqueToken = action.payload;
+    },
   
   },
 });
 
-export const { setMobileNumber ,setStoreName,setStoreOwnerName,setPanCard,setStoreService,setStoreLocation,setStoreCategory,setStoreDescription,setImages,setUserDetails,setAuthData} = storeDataSlice.actions;
+export const { setMobileNumber ,setStoreName,setStoreOwnerName,setPanCard,setStoreService,setStoreLocation,setStoreCategory,setStoreDescription,setImages,setUserDetails,setAuthData,setUniqueToken} = storeDataSlice.actions;
 export default storeDataSlice.reducer;

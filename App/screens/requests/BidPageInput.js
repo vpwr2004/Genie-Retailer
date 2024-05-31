@@ -6,7 +6,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ThreeDots from "../../assets/ThreeDotIcon.svg";
@@ -69,7 +70,7 @@ const BidPageInput = () => {
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="bg-[#F9F9F9] p-2 rounded-full">
+                <View className="bg-[#F9F9F9]  rounded-full">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}
@@ -132,11 +133,11 @@ const BidPageInput = () => {
       {/* Typing Area */}
       <View className="absolute bottom-0 left-0 right-0">
         <View className="gap-[20px]">
-          <Pressable disabled={!bidDetails} onPress={handleNext}>
-            <View className="h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
+          <TouchableOpacity disabled={!bidDetails} onPress={handleNext}>
+            <View className="w-full h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
               <Text className="font-bold text-[16px] text-white">Next</Text>
             </View>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

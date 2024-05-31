@@ -19,6 +19,7 @@ import {
   setBidOfferedPrice,
   setProductWarranty,
 } from "../../redux/reducers/bidSlice";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const BidOfferedPrice = () => {
   const route = useRoute();
@@ -83,7 +84,7 @@ const BidOfferedPrice = () => {
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="bg-[#F9F9F9] p-2 rounded-full">
+                <View className="bg-[#F9F9F9]  rounded-full">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}
@@ -155,11 +156,11 @@ const BidOfferedPrice = () => {
       {/* Typing Area */}
       <View className="absolute bottom-0 left-0 right-0">
         <View className="gap-[20px]">
-          <Pressable disabled={!offeredPrice && !warranty} onPress={handleNext}>
-            <View className="h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
+          <TouchableOpacity disabled={!offeredPrice && !warranty} onPress={handleNext}>
+            <View className="w-full h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
               <Text className="font-bold text-[16px] text-white">Next</Text>
             </View>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>

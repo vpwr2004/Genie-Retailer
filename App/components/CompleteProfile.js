@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Location from "../assets/location.svg"
 import Store from "../assets/store.svg"
@@ -11,34 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const CompleteProfile = ({completeProfile,location,verified,store}) => {
     const navigation=useNavigation();
-//     const isFocused = useIsFocused();
-//     // const [store,setStore]=useState(false)
-    
-//     const [location, setLocation] = useState()
-//     const [store,setStore]=useState("");
 
-//     const fetchUserData = async () => {
-//       try {
-//           const userData = JSON.parse(await AsyncStorage.getItem('userData'));
-//           console.log(userData);
-//           if (userData) {
-//               setLocation(userData.location);
-//               setStore(userData.storeImages);
-//               if (userData.location && userData.storeImages?.length > 0) {
-//                   setCompleteProfile(true);
-//               }
-              
-//           }
-//       } catch (error) {
-//           console.error('Error fetching user data:', error);
-//       }
-//   };
-
-//   useEffect(() => {
-//       if (isFocused) {
-//           fetchUserData();
-//       }
-//   }, [isFocused]);
 
 
     const handleLocation=() => {
@@ -69,7 +42,7 @@ const CompleteProfile = ({completeProfile,location,verified,store}) => {
         }
       
       <View className="flex items-center gap-[10px]">
-        <Pressable onPress={(handleLocation)}>
+        <TouchableOpacity onPress={(handleLocation)}>
                 <View  className="w-[90%] flex-row items-center bg-white gap-[15px] h-[127px] rounded-3xl shadow-3xl px-[18px]">
                         
 
@@ -92,8 +65,8 @@ const CompleteProfile = ({completeProfile,location,verified,store}) => {
 
                         </View>
                     </View>
-        </Pressable>
-        <Pressable onPress={(handleStore)}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={(handleStore)}>
                 <View  className="w-[90%] flex-row items-center bg-white gap-[15px] h-[127px] rounded-3xl shadow-3xl px-[18px]">
                         
 
@@ -117,7 +90,7 @@ const CompleteProfile = ({completeProfile,location,verified,store}) => {
 
                         </View>
                     </View>
-        </Pressable>
+        </TouchableOpacity>
 
       </View>
       {

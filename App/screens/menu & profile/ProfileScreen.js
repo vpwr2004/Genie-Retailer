@@ -237,10 +237,10 @@ const ProfileScreen = () => {
                 </TouchableOpacity>
             </View>
           </View>
-          <View className="flex-row justify-between px-[32px] my-[10px]">
+          <View className="flex-row items-center justify-between px-[32px] my-[10px]">
             <Text>Store Images</Text>
             <TouchableOpacity onPress={()=>{handleEditIconPress("other")}}>
-              <EditIcon className="px-[10px]" />
+              <EditIcon className="p-[10px]" />
               </TouchableOpacity>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -360,9 +360,9 @@ const EditableField = ({
           placeholderTextColor={"#dbcdbb"}
           className="w-[250px] text-[14px] font-semibold text-black capitalize"
         />
-        <Pressable onPress={editable ? onSavePress : onEditPress}>
+        <TouchableOpacity onPress={editable ? onSavePress : onEditPress}>
           {editable ? <Text className="text-[14px] text-semibold bg-[#FB8C00] text-white p-2 rounded-xl">Save</Text> : <EditIcon className="px-[10px]" />}
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   </View>

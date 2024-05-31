@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity} from 'react-native';
 import ModalImg from "../assets/Cancel.svg"
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { setRequestInfo } from '../redux/reducers/requestDataSlice';
 
 const RequestCancelModal= ({modalVisible,setModalVisible}) => {
   // const [modalVisible, setModalVisible] = useState(true);
@@ -14,7 +15,7 @@ const RequestCancelModal= ({modalVisible,setModalVisible}) => {
     
   
       try {
-        console.log("RequestType canecl response", requestInfo);
+        // console.log("RequestType canecl response", requestInfo);
         const res = await axios.patch(
           "https://genie-backend-meg1.onrender.com/chat/modify-spade-retailer",
           {
@@ -25,7 +26,7 @@ const RequestCancelModal= ({modalVisible,setModalVisible}) => {
         if(res.status===200){
           let tmp={...requestInfo,requestType:"cancelled"};
           dispatch(setRequestInfo(tmp));
-          console.log("RequestType cancel response", res);
+          // console.log("RequestType cancel response", res);
           setModalVisible(false);
         }
       } catch (error) {
@@ -57,16 +58,16 @@ const RequestCancelModal= ({modalVisible,setModalVisible}) => {
                         
                             <View className="w-full flex flex-row  justify-center">
                               <View className="flex-1 mt-[5px]">
-                                  <Pressable onPress={()=>{setModalVisible(false)}} >
+                                  <TouchableOpacity onPress={()=>{setModalVisible(false)}} >
                                     <Text className="text-[14.5px] text-[#FB8C00] font-normal text-center">No</Text>
                           
-                                  </Pressable> 
+                                  </TouchableOpacity> 
                               </View>
                             <View className="flex-1 mt-[5px]">
-                                <Pressable  onPress={handleModal}>
+                                <TouchableOpacity onPress={handleModal}>
                                   <Text className="text-[14.5px] text-[#FB8C00] font-semibold text-center">Yes</Text>
                        
-                                </Pressable> 
+                                </TouchableOpacity> 
                             </View>
                         
                   

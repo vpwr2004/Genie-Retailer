@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Modal,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Camera } from "expo-camera";
@@ -87,7 +88,7 @@ const AddImageScreen = () => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        console.log('ImagePicker Error: ');
       } else {
         try {
           const newImageUri = response.assets[0].uri;
@@ -211,18 +212,18 @@ const AddImageScreen = () => {
 
             {imagesLocal.length === 0 ? (
               <View className="z-0">
-                <Pressable onPress={() => takePicture()}>
+                <TouchableOpacity onPress={() => takePicture()}>
                   <View className="flex-row justify-center">
                     <ClickImage />
                   </View>
-                </Pressable>
-                <Pressable onPress={pickImage}>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => pickImage()}>
                   <View className="mx-[28px] mt-[30px] h-[63px] flex-row items-center justify-center border-2 border-[#fb8c00] rounded-3xl">
                     <Text className="text-[16px] font-bold text-[#fb8c00] text-center">
                       Browse Image
                     </Text>
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             ) : (
               <View>
@@ -282,46 +283,48 @@ const AddImageScreen = () => {
                     </Modal>
                   </View>
                 </ScrollView>
-                <Pressable
+                <TouchableOpacity
                   onPress={() => setAddMore(!addMore)}
                   style={{ alignSelf: "flex-start" }}
                 >
                   <View style={{ marginLeft: 36, marginTop: 45 }}>
                     <AddMoreImage />
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             )}
 
             {!addMore ? (
               imagesLocal.length > 0 && (
                 <View className="w-full h-[68px] bg-[#fb8c00] justify-center absolute bottom-0 left-0 right-0">
-                  <Pressable
+                  <TouchableOpacity
                     onPress={() =>
                       navigation.navigate("imagePreview", { data: imagesLocal })
                     }
                   >
+                    <View className="w-full flex justify-center items-center">
                     <Text className="text-white font-bold text-center text-[16px]">
                       Continue
                     </Text>
-                  </Pressable>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               )
             ) : (
               <View className="w-full absolute bottom-0 items-center left-0 right-0 px-[10px]">
-                <Pressable onPress={pickImage}>
+                <TouchableOpacity onPress={()=>{ setAddMore(!addMore);pickImage(); }}>
                   <View className="w-full flex flex-row justify-between px-[40px] py-[20px]">
                     <Text className="text-[14px]">Upload Image</Text>
                     <FontAwesome name="arrow-right" size={15} color="black" />
                   </View>
-                </Pressable>
+                </TouchableOpacity>
                 <View className="h-[1px] w-full bg-gray-300"></View>
-                <Pressable onPress={() => takePicture()}>
+                <TouchableOpacity onPress={() =>{ setAddMore(!addMore);takePicture()}}>
                   <View className="w-full flex flex-row justify-between px-[40px] py-[20px]">
                     <Text className="text-[14px]">Click Image</Text>
                     <FontAwesome name="arrow-right" size={15} color="black" />
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             )}
           </View>

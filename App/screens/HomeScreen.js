@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView, BackHandler } from 'react-native'
+import { View, Text, Pressable, ScrollView, BackHandler, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Profile from "../assets/ProfileIcon.svg"
@@ -98,6 +98,9 @@ const navigationState = useNavigationState(state => state);
             if (userData.location && userData.storeImages?.length > 0) {
                 setCompleteProfile(true);
             }
+            else{
+                setCompleteProfile(false);
+            }
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
@@ -116,15 +119,15 @@ const navigationState = useNavigationState(state => state);
             <View className="flex flex-col  gap-[32px]">
                 <View className="flex flex-row justify-between items-center px-[32px]">
                     <View>
-                        <Pressable onPress={()=>navigation.navigate("menu")}>
+                        <TouchableOpacity onPress={()=>navigation.navigate("menu")}>
                             <Profile />
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                     <GinieIcon/>
                     <View>
-                        <Pressable onPress={()=>navigation.navigate("history")}>
+                        <TouchableOpacity onPress={()=>navigation.navigate("history")}>
                             <History />
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                     
                 </View>

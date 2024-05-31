@@ -89,13 +89,14 @@ const BidQueryPage = () => {
         //  dispatch(setMessages(mess));
         setMessages(mess);
         const notification = {
+          token:requestInfo?.customerId?.uniqueToken,
           title: user?.storeName,
           body: query,
           requestInfo: requestInfo,
           tag: user?._id,
           redirect_to: "bargain",
         };
-        console.log("notification", notification.requestInfo);
+        // console.log("notification", notification.requestInfo);
         navigation.navigate("requestPage");
         await sendCustomNotificationChat(notification);
         //  console.log("res after sending notification ",res);
@@ -130,7 +131,7 @@ const BidQueryPage = () => {
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="bg-[#F9F9F9] p-2 rounded-full">
+                <View className="bg-[#F9F9F9] rounded-full">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}
@@ -193,8 +194,8 @@ const BidQueryPage = () => {
       {/* Typing Area */}
       <View className="absolute bottom-0 left-0 right-0">
         <View className="gap-[20px]">
-          <TouchableOpacity onPress={sendQuery}>
-            <View className="h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
+          <TouchableOpacity disabled={!query} onPress={sendQuery}>
+            <View className="w-full h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
               <Text className="font-bold text-[16px] text-white">Next</Text>
             </View>
           </TouchableOpacity>

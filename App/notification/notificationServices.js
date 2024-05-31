@@ -1,12 +1,13 @@
 import messaging from '@react-native-firebase/messaging';
-import navigationService from './navigation/navigationService';
+
 import { Alert } from 'react-native';
+import navigationService from '../navigation/navigationService';
 
 
 export async function notificationListeners(){
     messaging().getInitialNotification().then(async(remoteMessage)=>{
         if(remoteMessage){
-          console.log("Notifications caused app to open from quit state",remoteMessage)
+          console.log("Notifications caused app to open from quit state")
           // handleNotification(remoteMessage);
         }
       });
@@ -24,7 +25,7 @@ export async function notificationListeners(){
   
   
       messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-        console.log('Message handled in the background!', remoteMessage);
+        console.log('Message handled in the background!');
        
         if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to) {
             setTimeout(() => {
