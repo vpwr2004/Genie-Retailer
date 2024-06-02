@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Genie-Retailer",
-    "slug": "Genie-Retailer",
+    "name": "Genie-App",
+    "slug": "Genie-App",
     "version": "1.0.0",
     "orientation": "portrait",
     "plugins": [
