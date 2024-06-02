@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, TextInput, Bu
 import { NavigationContainer } from "@react-navigation/native";
 import GlobalNavigation from './App/navigation/appNavigation';
 import './global.css';
-import 'tailwindcss/tailwind.css';
 import { Provider } from 'react-redux';
 import store from './App/redux/store';
 import { useEffect,useState } from 'react';
