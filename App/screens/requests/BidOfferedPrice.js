@@ -5,7 +5,7 @@ import {
   Pressable,
   TextInput,
   KeyboardAvoidingView,
-  Platform,
+ 
   Image
 } from "react-native";
 import React, { useState } from "react";
@@ -19,7 +19,7 @@ import {
   setBidOfferedPrice,
   setProductWarranty,
 } from "../../redux/reducers/bidSlice";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 
 const BidOfferedPrice = () => {
   const route = useRoute();
@@ -115,9 +115,13 @@ const BidOfferedPrice = () => {
               <Text className="text-[16px] font-bold">Request Id</Text>
               <Text>{requestInfo?.requestId?._id}</Text>
             </View>
-            <Text className="">
-              {requestInfo?.requestId?.requestDescription} ....
-            </Text>
+            <Text>
+            {requestInfo?.requestId?.requestDescription
+              ?.split(" ")
+              .slice(0, 12)
+              .join(" ")}
+            ....
+          </Text>
           </View>
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">

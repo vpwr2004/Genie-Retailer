@@ -3,7 +3,7 @@ import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity} from 
 import ModalImg from "../assets/Cancel.svg"
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import {  setRequestInfo } from '../redux/reducers/requestDataSlice';
+import {  setNewRequests, setOngoingRequests, setRequestInfo } from '../redux/reducers/requestDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { socket } from '../screens/utils/socket.io/socket';
 import { BidAcceptedOtherRetailer, NotificationBidAccepted, NotificationRequestAccepted } from '../notification/notificationMessages';
@@ -14,6 +14,10 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
   const dispatch=useDispatch();
   // const messages = useSelector(state => state.requestData.messages);
   const requestInfo= useSelector(state => state.requestData.requestInfo);
+  const newRequests = useSelector(state => state.requestData.newRequests || [] )
+  const ongoingRequests = useSelector(state => state.requestData.ongoingRequests || []);
+
+
 
   // console.log("messages of ",messages)
   const handleModal = async () => {
@@ -37,7 +41,12 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
           );
            console.log("RequestType new response", res.data);
           let tmp={...requestInfo,requestType:"ongoing"};
+          
           dispatch(setRequestInfo(tmp));
+          const filteredRequests = newRequests.filter(request=> request._id !== requestInfo?._id);
+          dispatch(setNewRequests(filteredRequests));
+          const updatedOngoing=[requestInfo,...ongoingRequests];
+          dispatch(setOngoingRequests(updatedOngoing));
 
           setAcceptLocal(true);
           setModalVisible(false);
@@ -50,7 +59,7 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
             redirect_to:"bargain",
          }
         //  console.log("new notification",notification);
-         await  NotificationRequestAccepted(notification);
+           NotificationRequestAccepted(notification);
         } catch (error) {
           console.error("Error updating requestType 'new':", error);
           return;
@@ -92,8 +101,8 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
              }
             //  console.log("new notification",notification);
              setModalVisible(false);
-             await  NotificationBidAccepted(notification);
-             await  BidAcceptedOtherRetailer(notification);
+               NotificationBidAccepted(notification);
+               BidAcceptedOtherRetailer(notification);
              
             } catch (error) {
               console.error("Error updating chat details:", error);
@@ -126,7 +135,7 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
                       <ModalImg classname="w-[117px] h-[75px]"/>
                         <View className="">
                              <Text className="text-[15px] font-extrabold text-center">Are you sure? </Text>
-                              <Text className="text-[14px] font-normal text-center  pt-[8px]">You are accepting the bid request </Text>
+                              <Text className="text-[14px] font-normal text-center  pt-[8px]">You are accepting  </Text>
                               
                         </View>
                         

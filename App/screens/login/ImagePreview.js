@@ -6,8 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Animated,
-  PanResponder,
+ 
 } from "react-native";
 import React, { useEffect, useState , useRef} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,13 +18,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setImages } from "../../redux/reducers/storeDataSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import DraggableFlatList from "react-native-draggable-flatlist";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Dimensions } from "react-native";
+
 
 const ImagePreview = () => {
   const route = useRoute();
-  const windowWidth = Dimensions.get('window').width;
   const navigation = useNavigation();
   const [imagesLocal, setImagesLocal] = useState(route.params.data);
   const dispatch = useDispatch();
@@ -34,31 +30,30 @@ const ImagePreview = () => {
   );
   const uniqueToken = useSelector((state) => state.storeData.uniqueToken);
   console.log("images", imagesLocal);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  // useEffect(() => {
-  //     if (route.params) {
-  //         setImagesLocal(route.params.data);
-  //
-  //         //         // console.log('route.params.data', route.params.data);
-  //     }
-  // }, [])
+
 
   const handleImage = async () => {
+    console.log("old images",imagesLocal);
+    const newImages = [...imagesLocal];
+    [newImages[0], newImages[selectedImageIndex]] = [newImages[selectedImageIndex], newImages[0]];
+     setImagesLocal(newImages);
+     console.log("new images",imagesLocal);
+     setSelectedImageIndex(0);
     const userData = JSON.parse(await AsyncStorage.getItem("userData"));
     const userId = userData._id;
 
+
     try {
-      imagesLocal?.forEach((image) => {
-        // console.log("otherimage",image);
-        // dispatch(setImages(image));
-      });
+       
 
       // Update location on server
       const response = await axios.patch(
         `https://genie-backend-meg1.onrender.com/retailer/editretailer`,
         {
           _id: userId,
-          storeImages: imagesLocal,
+          storeImages: newImages,
           storeDescription: storeDescription,
           uniqueToken: uniqueToken,
         }
@@ -76,18 +71,10 @@ const ImagePreview = () => {
       // Optionally handle error differently here
     }
   };
-  const renderItem = ({ item, index, drag, isActive }) => (
-    <TouchableOpacity
-      style={[styles.imageContainer, isActive && styles.activeImageContainer]}
-      onLongPress={drag}
-      delayLongPress={200}
-    >
-      <Image
-        source={{ uri: item }}
-        style={styles.image}
-      />
-    </TouchableOpacity>
-  );
+
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -115,7 +102,7 @@ const ImagePreview = () => {
               <View className="rounded-full">
                 {imagesLocal ? (
                   <Image
-                    source={{ uri: imagesLocal[0] }}
+                    source={{ uri: imagesLocal[selectedImageIndex] }}
                     width={271}
                     height={271}
                     className="rounded-full border-[1px] border-slate-400 object-contain"
@@ -128,22 +115,27 @@ const ImagePreview = () => {
           </View>
         </View>
 
-        {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
                     <View className="flex-row  gap-[10px] mt-[25px] px-[32px]">
-                     {imagesLocal?.map((image, index) => ( // Start from index 1 to exclude the first image
-                                     <View key={index} className="rounded-3xl">
-                                             <Image
-                                               source={{ uri: image }}
-                                                width={140}
-                                                height={200}
-                                               className="rounded-3xl border-[1px] border-slate-400 object-contain"
-                                        />
-                                    </View>
-                            ))}
-
+                    {imagesLocal.map((image, index) => (
+          <TouchableOpacity key={index} onPress={() => handleImageClick(index)}>
+            <View
+              className={`rounded-3xl ${
+                selectedImageIndex === index ? 'border-2 border-[#fb8c00]' : 'border-[1px] border-slate-400'
+              }`}
+            >
+              <Image
+                source={{ uri: image }}
+                width={140}
+                height={200}
+                className="rounded-3xl object-contain"
+              />
+            </View>
+          </TouchableOpacity>
+        ))}
                     </View>
-                </ScrollView> */}
-       <GestureHandlerRootView style={{ flex: 1 }}>
+                </ScrollView>
+       {/* <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.wrapper}>
         <DraggableFlatList showsHorizontalScrollIndicator={false}
           data={imagesLocal}
@@ -154,7 +146,7 @@ const ImagePreview = () => {
           contentContainerStyle={styles.contentContainer}
         />
       </View>
-    </GestureHandlerRootView>
+    </GestureHandlerRootView> */}
         <View className="w-full h-[68px]  bg-[#fb8c00] justify-center absolute bottom-0 left-0 right-0">
           <TouchableOpacity onPress={handleImage}>
             <View className="w-full flex items-center justify-center">

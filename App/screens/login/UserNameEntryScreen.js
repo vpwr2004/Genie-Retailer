@@ -10,7 +10,7 @@ import {
   BackHandler,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import StoreName from "../../assets/StoreName.svg";
 import { SafeAreaView } from "react-native-safe-area-context";

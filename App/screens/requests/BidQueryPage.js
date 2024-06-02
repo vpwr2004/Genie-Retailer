@@ -19,8 +19,7 @@ import Send from "../../assets/Send.svg";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Profile from "../../assets/ProfileIcon.svg";
-import ChatMessage from "../../components/ChatMessage";
-import ReplyMessage from "../../components/ReplyMessage";
+
 import axios from "axios";
 import { socket } from "../utils/socket.io/socket";
 import { useDispatch, useSelector } from "react-redux";
@@ -98,7 +97,7 @@ const BidQueryPage = () => {
         };
         // console.log("notification", notification.requestInfo);
         navigation.navigate("requestPage");
-        await sendCustomNotificationChat(notification);
+        sendCustomNotificationChat(notification);
         //  console.log("res after sending notification ",res);
         //   try{
         //  const res=await axios.get(`http://localhost:3000/send-notification-chat?name=Rohit&body=Hii how are you&redirect_to=requestPage&requestInfo={"__v": 1, "_id": "66532414ff164bf94697251d", "bidCompleted": true, "createdAt": "2024-05-26T11:59:16.279Z", "requestId": {"__v": 0, "_id": "66532414ff164bf94697251b", "createdAt": "2024-05-26T11:59:16.052Z", "customer": "664d6fb333bcb1bbd6cf9f66", "expectedPrice": 2500, "requestAcceptedChat": "66532414ff164bf94697251d", "requestActive": "completed", "requestCategory": "spare parts", "requestDescription": "bike tyre", "requestImages": ["https://res.cloudinary.com/kumarvivek/image/upload/v1716724746/zznnqcnga7ktx9v4vlto.jpg"], "updatedAt": "2024-05-26T12:00:58.405Z"}, "requestType": "completed", "updatedAt": "2024-05-26T12:00:58.844Z", "users": [{"_id": "66532414ff164bf94697251e", "refId": "664d74f100215ea2aea8a35d", "type": "Retailer"}, {"_id": "66532437ff164bf94697252e", "refId": "66532414ff164bf94697251b", "type": "UserRequest"}]}`)
@@ -162,9 +161,13 @@ const BidQueryPage = () => {
               <Text className="text-[16px] font-bold">Request Id</Text>
               <Text>{requestInfo?.requestId?._id}</Text>
             </View>
-            <Text className="">
-              {requestInfo?.requestId?.requestDescription} ...
-            </Text>
+            <Text>
+            {requestInfo?.requestId?.requestDescription
+              ?.split(" ")
+              .slice(0, 12)
+              .join(" ")}
+            ....
+          </Text>
           </View>
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">

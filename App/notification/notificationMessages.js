@@ -30,7 +30,6 @@ export const BidAcceptedOtherRetailer = async (mess) => {
       },
     }
 }
-
     for (const token of tokens) {
       const message = {
         message: {

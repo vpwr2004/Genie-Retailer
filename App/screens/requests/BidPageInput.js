@@ -19,8 +19,6 @@ import Send from "../../assets/Send.svg";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Profile from "../../assets/ProfileIcon.svg";
-import ChatMessage from "../../components/ChatMessage";
-import ReplyMessage from "../../components/ReplyMessage";
 import { setBidDetails } from "../../redux/reducers/bidSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -101,9 +99,13 @@ const BidPageInput = () => {
               <Text className="text-[16px] font-bold">Request Id</Text>
               <Text>{requestInfo?.requestId?._id}</Text>
             </View>
-            <Text className="">
-              {requestInfo?.requestId?.requestDescription} ....
-            </Text>
+            <Text>
+            {requestInfo?.requestId?.requestDescription
+              ?.split(" ")
+              .slice(0, 12)
+              .join(" ")}
+            ....
+          </Text>
           </View>
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">

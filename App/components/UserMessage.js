@@ -42,9 +42,9 @@ const UserMessage = ({ bidDetails }) => {
               {requestInfo?.customerId?.userName}
             </Text>
 
-            <Text className="text-[14px] text-[#2e2c43] ">{formattedTime}</Text>
+            <Text className="text-[12px] text-[#2e2c43] ">{formattedTime}</Text>
           </View>
-                    <Text className="text-[12px] text-[#2e2c43]">{bidDetails.message}</Text>
+                    <Text className="text-[14px] text-[#2e2c43]">{bidDetails.message}</Text>
                 </View>
             </View>
 

@@ -5,38 +5,40 @@ import { FontAwesome} from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Profile from "../../assets/ProfileIcon.svg"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import ModalLogout from '../../components/ModalLogout';
+import { setUserDetails } from '../../redux/reducers/storeDataSlice';
 
 
 
 
 const MenuScreen = () => {
     const navigation = useNavigation();
-    const user=useSelector(state=>state.storeData.userDetails);
+    const dispatch=useDispatch();
+    const user=useSelector(state=>state.storeData.userDetails || []);
     // const [user,setUser]=useState();
     const[modalVisible,setModalVisible]=useState(false);
 
-    // useEffect(() => {
-    //     const fetchUserData = async () => {
-    //         try {
-    //             // Fetch user location from AsyncStorage
-    //             const userData = JSON.parse(await AsyncStorage.getItem('userData'));
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                // Fetch user location from AsyncStorage
+                const userData = JSON.parse(await AsyncStorage.getItem('userData'));
 
-    //             console.log("profile",userData);
-    //             if (userData) {
-    //                     setUser(userData);
-    //                     console.log("userprofile",user);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching user location:', error)
-    //         }
-    //     }
+                console.log("profile",userData);
+                if (userData) {
+                        dispatch(setUserDetails(userData));
+                        console.log("userprofile",user);
+                }
+            } catch (error) {
+                console.error('Error fetching user location:', error)
+            }
+        }
 
-    //     fetchUserData()
-    // }, [])
+        fetchUserData()
+    }, [])
 
     const deleteUserData = async () => {
         setModalVisible(true);
@@ -61,10 +63,10 @@ const MenuScreen = () => {
             <TouchableOpacity onPress={()=>navigation.navigate("profile")}>
                 <View className="flex items-center">
                     <View className="flex flex-row gap-[32px] bg-white py-[48px] w-[90%] justify-center items-center rounded-md shadow-lg">
-                    <Image source={{ uri: user?.storeImages[0] }} className="w-[36px] h-[36px] rounded-full" />
+                    <Image source={{ uri:user? user?.storeImages[0]:"" }} width={70} height={70} className="rounded-full" />
                         <View className="flex-col">
-                            <Text className="text-[16px] font-bold text-center capitalize">{user?.storeOwnerName}</Text>
-                            <Text className="text-[14px]">{user?.storeMobileNo}</Text>
+                            <Text className="text-[16px] font-bold text-center capitalize">{user ?user?.storeOwnerName:""}</Text>
+                            <Text className="text-[14px]">{user ?user?.storeMobileNo :""}</Text>
                         </View>
                     </View>
 

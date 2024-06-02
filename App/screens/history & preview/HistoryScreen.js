@@ -1,6 +1,5 @@
 import { Pressable ,ScrollView,StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import OngoingRequests from '../../components/OngoingRequests'
 import { useNavigation } from '@react-navigation/native'
 import Profile from "../../assets/ProfileIcon.svg"
 import GinieIcon from "../../assets/GinieBusinessIcon.svg"

@@ -204,9 +204,8 @@ const AddImageScreen = () => {
               </Text>
             </View>
             <View className="mt-[26px] mb-[27px]">
-              <Text className="text-[14px] text-center text-[#2e2c43]">
-                Provide image references for sellers & service providers to
-                understand your need better
+              <Text className="text-[14px] text-center px-[32px] text-[#2e2c43]">
+              Provide image references for customers to reach up to you easily for purchase after bargaining.
               </Text>
             </View>
 

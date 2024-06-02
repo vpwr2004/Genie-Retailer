@@ -228,9 +228,13 @@ const BidPageImageUpload = () => {
                   <Text className="text-[16px] font-bold">Request Id</Text>
                   <Text>{requestInfo?.requestId?._id}</Text>
                 </View>
-                <Text className="">
-                  {requestInfo?.requestId?.requestDescription} ....
-                </Text>
+                <Text>
+            {requestInfo?.requestId?.requestDescription
+              ?.split(" ")
+              .slice(0, 12)
+              .join(" ")}
+            ....
+          </Text>
               </View>
 
               <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[10px]">

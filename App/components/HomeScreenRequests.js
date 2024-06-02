@@ -31,13 +31,14 @@ const HomeScreenRequests = () => {
                      online, You have to attract customer by pushing
                      perfect price of product or service you offered. 
                     </Text>
-                   
                  </View>
                  <View>
                     <Text className="text-[16px] font-extrabold text-[#2E2C43] px-[32px] text-center">
-                    You will receive notification first, like this
+                        You will receive notification first, like this
                     </Text>
-                    <Card width={350} height={250}/>
+                    <View className="flex  justify-center items-center">
+                     <Card width={300} height={250} className="object-cover"/>
+                    </View>
                  </View>
                  <View className="flex items-center">
                     <Text className="text-[14px] px-[32px]  text-[#2E2C43]  text-center">

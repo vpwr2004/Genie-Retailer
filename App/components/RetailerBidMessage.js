@@ -24,9 +24,9 @@ const RetailerBidMessage = ({ bidDetails, user }) => {
         <View className="w-[60%] ">
           <View className="flex flex-row justify-between">
             <Text className="text-[14px] text-[#2e2c43] font-bold">You</Text>
-            <Text className="text-[14px] text-[#2e2c43] ">{formattedTime}</Text>
+            <Text className="text-[12px] text-[#2e2c43] ">{formattedTime}</Text>
           </View>
-          <Text className="text-[12px] text-[#2e2c43]">
+          <Text className="text-[14px] text-[#2e2c43]">
             {bidDetails?.message}
           </Text>
         </View>

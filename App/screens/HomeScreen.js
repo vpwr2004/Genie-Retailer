@@ -5,7 +5,6 @@ import Profile from "../assets/ProfileIcon.svg"
 import GinieIcon from "../assets/GinieBusinessIcon.svg"
 import History from "../assets/HistoryIcon.svg"
 import { useIsFocused, useNavigation, useNavigationState } from '@react-navigation/native'
-import HomeScreenUnverified from '../components/HomeScreenUnverified'
 import HomeScreenVerified from '../components/HomeScreenVerified'
 import CompleteProfile from '../components/CompleteProfile'
 import axios from 'axios'
@@ -19,7 +18,7 @@ const HomeScreen = () => {
     const dispatch=useDispatch();
     const [verified,setVerified]=useState(true);
     const [completeProfile,setCompleteProfile]=useState(false);
-const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState();
 
 //   const user= useSelector(state => state.storeData.userDetails);
 //   console.log("user: " ,user);
@@ -98,9 +97,9 @@ const navigationState = useNavigationState(state => state);
             if (userData.location && userData.storeImages?.length > 0) {
                 setCompleteProfile(true);
             }
-            else{
-                setCompleteProfile(false);
-            }
+            // else{
+            //     setCompleteProfile(false);
+            // }
         } catch (error) {
             console.error('Error fetching user data:', error);
         }

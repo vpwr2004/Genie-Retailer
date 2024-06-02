@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import AccountVerify from "../assets/AccountVerifyImg.svg"
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
+
 
 
 const HomeScreenUnverified = () => {

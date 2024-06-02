@@ -23,7 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { socket } from "../utils/socket.io/socket";
 import {
   sendCustomNotificationBid,
-  sendCustomNotificationChat,
+  
 } from "../../notification/notificationMessages";
 
 const BidPreviewPage = () => {
@@ -112,7 +112,7 @@ const BidPreviewPage = () => {
           redirect_to: "bargain",
         };
         navigation.navigate("requestPage");
-        await sendCustomNotificationBid(notification);
+         sendCustomNotificationBid(notification);
       } else {
         console.error("Error updating message:");
       }
@@ -166,9 +166,13 @@ const BidPreviewPage = () => {
               <Text className="text-[16px] font-bold">Request Id</Text>
               <Text>{requestInfo?.requestId?._id}</Text>
             </View>
-            <Text className="">
-              {requestInfo?.requestId?.requestDescription} ....
-            </Text>
+            <Text>
+            {requestInfo?.requestId?.requestDescription
+              ?.split(" ")
+              .slice(0, 12)
+              .join(" ")}
+            ....
+          </Text>
           </View>
 
           <View className="flex gap-[21px]  pt-[10px] pb-[100px]">

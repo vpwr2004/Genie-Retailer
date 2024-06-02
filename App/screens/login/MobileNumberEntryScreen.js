@@ -23,7 +23,7 @@ import {
 } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setAuthData,
+ 
   setMobileNumber,
   setUserDetails,
 } from "../../redux/reducers/storeDataSlice.js";

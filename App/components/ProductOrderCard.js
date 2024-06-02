@@ -19,7 +19,7 @@ const ProductOrderCard = ({product}) => {
     // Call the function to format the date and time
     const { formattedTime, formattedDate } = formatDateTime(prod?.updatedAt);
   return (
-    <View className="max-w-[340px] flex-row items-center justify-between bg-white gap-[15px] h-[153px]  rounded-3xl shadow-2xl px-[20px] " >
+    <View className="max-w-[340px] flex-row items-center justify-between bg-white gap-[15px]  rounded-3xl shadow-2xl px-[20px] h-max py-[20px]" >
                        <View className="w-[95px] h-[95px]  rounded-[15px]">
                           
                        {prod && prod.requestId && prod.requestId.requestImages && prod.requestId.requestImages[0] && (
@@ -30,16 +30,16 @@ const ProductOrderCard = ({product}) => {
                        </View>
                         
 
-                        <View className="w-10/12"> 
-                            <View className="flex flex-wrap w-full ">
-                                <Text className="text-[14px] w-full">{prod?.requestId?.requestDescription}</Text>
+                        <View className="w-10/12 px-[10px]"> 
+                            <View className="flex flex-wrap w-10/12 pb-1 ">
+                                <Text className="text-[14px] w-full ">{prod?.requestId?.requestDescription}</Text>
                             </View>
 
-                            <View className="flex-row py-1">
+                            <View className="flex-row py-1 w-10/12 ">
                                 <Text className="text-[12px]">Expected Price: </Text>
                                 <Text className="text-[12px] text-[#70B241] font-bold">Rs. {prod?.requestId?.expectedPrice}</Text>
                             </View>
-                            <View className="flex-row gap-[8px]">
+                            <View className="flex-row gap-[8px] w-10/12">
                                 <View className="flex-row items-center  gap-[8px]">
                                     <Time size={13}/>
                                     <Text className="text-[12px]">{formattedTime}</Text>

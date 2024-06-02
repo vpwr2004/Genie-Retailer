@@ -65,7 +65,7 @@ const CameraScreen = () => {
                  }
                  console.log("notification send",notification)
                  navigation.navigate('requestPage',{data:requestInfo});
-                 await sendCustomNotificationAttachment(notification);
+                  sendCustomNotificationAttachment(notification);
                
             })
             .catch(err => {
