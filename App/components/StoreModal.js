@@ -3,12 +3,12 @@ import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity} from 
 import ModalImg from "../assets/ModalImg.svg"
 import { useNavigation } from '@react-navigation/native';
 
-const ModalScreenConfirm = ({modalConfirmVisible,setModalConfirmVisible}) => {
+const StoreModal = ({modalConfirmVisible,setModalConfirmVisible}) => {
   // const [modalVisible, setModalVisible] = useState(true);
   const navigation=useNavigation();
   const handleModal=()=>{
     setModalConfirmVisible(false);
-    navigation.navigate('home');
+    // navigation.navigate('home');
   }
   return (
     
@@ -23,16 +23,17 @@ const ModalScreenConfirm = ({modalConfirmVisible,setModalConfirmVisible}) => {
         className=" flex justify-center items-center  rounded-lg h-full ">
           <View className="flex-1  justify-center items-center">
                   <View className="bg-white w-[90%] p-[30px] justify-center items-center mt-[10px] gap-[24px] shadow-gray-600 shadow-2xl">
-                      <ModalImg classname="w-[117px] h-[75px]"/>
-                        <View className="">
-                            <Text className="text-[15px] font-extrabold text-center">Please reach your store first before creating your business profile.</Text>
-                            <Text className="text-[12px] font-normal text-center  pt-[8px]">We will collect your store images for better reference of our customers </Text>
+                      <ModalImg width={195} height={125}/>
+                        <Text className="text-[16px] font-bold text-center">Set your store name</Text>
+                        <View className="flex gap-[8px]">
+                            <Text className="text-[14px] font-normal text-center">If you have your own store , you have to set your store name and owner name separately. </Text>
+                            <Text className="text-[14px] font-normal text-center ">If you have not your own store ,You are an independent service provider,  you can set same name for store name and store owner name . </Text>
                         </View>
                         
                             <View className="w-full flex flex-row  justify-center">
                               <View className="flex-1 mt-[10px]">
                                   <TouchableOpacity onPress={handleModal} >
-                                    <Text className="text-[14.5px] font-bold text-center">OK</Text>
+                                    <Text className="text-[16px] font-extrabold text-center text-[#FB8C00]">OK</Text>
                           
                                   </TouchableOpacity> 
                               </View>
@@ -65,4 +66,4 @@ const styles = StyleSheet.create({
   
 });
 
-export default ModalScreenConfirm
+export default StoreModal

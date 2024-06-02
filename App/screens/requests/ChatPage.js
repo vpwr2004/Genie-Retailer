@@ -8,7 +8,7 @@ import Document from '../../assets/Document.svg';
 import Send from '../../assets/Send.svg';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Profile from "../../assets/ProfileIcon.svg";
+import Profile from "../../assets/ProfileIcon2.svg";
 import ChatMessage from '../../components/ChatMessage';
 import ReplyMessage from '../../components/ReplyMessage';
 

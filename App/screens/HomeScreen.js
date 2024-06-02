@@ -97,9 +97,9 @@ const navigationState = useNavigationState(state => state);
             if (userData.location && userData.storeImages?.length > 0) {
                 setCompleteProfile(true);
             }
-            // else{
-            //     setCompleteProfile(false);
-            // }
+            else{
+                setCompleteProfile(false);
+            }
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
@@ -117,13 +117,13 @@ const navigationState = useNavigationState(state => state);
 
             <View className="flex flex-col  gap-[32px]">
                 <View className="flex flex-row justify-between items-center px-[32px]">
-                    <View>
+                    <View className="bg-[#FB8C00] p-[4px] rounded-full">
                         <TouchableOpacity onPress={()=>navigation.navigate("menu")}>
                             <Profile />
                         </TouchableOpacity>
                     </View>
                     <GinieIcon/>
-                    <View>
+                    <View className="bg-[#FB8C00] p-[4px] rounded-full">
                         <TouchableOpacity onPress={()=>navigation.navigate("history")}>
                             <History />
                         </TouchableOpacity>

@@ -25,16 +25,20 @@ import { useDispatch, useSelector } from "react-redux";
 import {
  
   setMobileNumber,
+  setUniqueToken,
   setUserDetails,
 } from "../../redux/reducers/storeDataSlice.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import auth from "@react-native-firebase/auth";
 import axios from "axios";
+import messaging from '@react-native-firebase/messaging';
+
 
 const MobileNumberEntryScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  // const route=useRout()
   const inputRefs = useRef([]);
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState("");
@@ -42,12 +46,35 @@ const MobileNumberEntryScreen = () => {
   const [mobileNumber, setMobileNumberLocal] = useState("");
   const [confirm, setConfirm] = useState(null);
   const [code, setCode] = useState("");
+  const [token, setToken] = useState("");
   const [mobileScreen, setMobileScreen] = useState(true);
   const countryCode = "+91";
   const uniqueToken=useSelector(state=>state.storeData.uniqueToken)
 
+async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  }
 
- 
+ useEffect(()=>{
+    
+    if(requestUserPermission()){
+        messaging().getToken().then(token=>{
+          console.log("token",token);
+           setToken(token);
+          dispatch(setUniqueToken(token));
+        })
+    }
+    else{
+      console.log("permission not granted",authStatus);
+    }
+  },[route.params]);
 
   useEffect(() => {
     const backAction = () => {
@@ -89,9 +116,10 @@ const MobileNumberEntryScreen = () => {
       try {
         const phoneNumber = countryCode + mobileNumber;
         console.log(phoneNumber);
-        // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        // setConfirm(confirmation);
-        // console.log(confirmation);
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        setConfirm(confirmation);
+        console.log(confirmation);
+        dispatch(setUserDetails([]));
         dispatch(setMobileNumber(phoneNumber));
         setMobileScreen(false);
       } catch (error) {
@@ -116,11 +144,11 @@ const MobileNumberEntryScreen = () => {
     try {
       // Make a request to your backend API to check if the mobile number is registered
 
-      //  console.log(confirm)
-      //  const res=await confirm.confirm(otp);
-      //  console.log("res",res);
+       console.log(confirm)
+       const res=await confirm.confirm(otp);
+       console.log("res",res);
       console.log(otp);
-      // if(res){
+      if(res){
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
@@ -141,24 +169,27 @@ const MobileNumberEntryScreen = () => {
         setMobileNumberLocal("");
         const res = await axios.patch(`https://genie-backend-meg1.onrender.com/retailer/editretailer`, {
           _id: response?.data?._id,
-          uniqueToken:uniqueToken
+          uniqueToken:token
         });
         dispatch(setUserDetails(res.data));
         await AsyncStorage.setItem('userData', JSON.stringify(res.data));
+        setToken("");
         navigation.navigate("home");
       } else if (response.data.status === 404) {
         // If mobile number is not registered, continue with the registration process
         setMobileNumberLocal("");
         navigation.navigate("registerUsername");
       }
-      //   }
-      //   else{
-      //     setLoading(false);
-      //     console.log('Invalid otp:');
-      //     alert('Invalid otp');
-      //     return;
-      //   }
+        }
+        else{
+          setLoading(false);
+          console.log('Invalid otp:');
+          alert('Invalid otp');
+          return;
+        }
     } catch (error) {
+      console.log('Invalid otp:');
+      alert('Invalid otp');
       console.error("Error checking mobile number:", error);
     } finally {
       setLoading(false);

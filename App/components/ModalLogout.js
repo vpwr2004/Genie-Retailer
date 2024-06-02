@@ -6,26 +6,34 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setUniqueToken, setUserDetails } from '../redux/reducers/storeDataSlice';
 
 
 const ModalLogout= ({user,modalVisible,setModalVisible}) => {
+  console.log("user at menu",user)
+  const dispatch=useDispatch();
   // const [modalVisible, setModalVisible] = useState(true);
   const navigation=useNavigation();
   const handleModal=async()=>{
     try {
             // Remove the item with key 'userData' from local storage
             await AsyncStorage.removeItem('userData');
-            setModalVisible(false);
+           
+           
             // await auth().signOut();
-            // await messaging().deleteToken();
-            // console.log('FCM token deleted.');
+             await messaging().deleteToken();
+              console.log('FCM token deleted.');
             const res = await axios.patch(`https://genie-backend-meg1.onrender.com/retailer/editretailer`, {
              _id: user?._id,
              uniqueToken:""
              });
-           
-            console.log('User data deleted successfully');
-            navigation.navigate("mobileNumber")
+             dispatch(setUniqueToken(""));
+             console.log('User data deleted successfully',res.data);
+            //  setModalVisible(false);
+            setModalVisible(false);
+             navigation.navigate("mobileNumber",{data:""});
+             
         } catch (error) {
             console.error('Error deleting user data:', error);
         }

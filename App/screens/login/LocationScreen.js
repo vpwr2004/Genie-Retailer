@@ -245,6 +245,9 @@ const LocationScreen = () => {
           />
         </View>
       </ScrollView>
+      {(modalVisible || modalConfirmVisible) && (
+                    <View style={styles.overlay} />
+                )}
       {loading && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#fb8c00" />
@@ -276,7 +279,12 @@ const styles = StyleSheet.create({
     color: 'black',
     borderRadius: 16,
     height:"max-content", // Adj
-  }
+  },
+  overlay: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent greyish background
+  },
 });
 
 export default LocationScreen;

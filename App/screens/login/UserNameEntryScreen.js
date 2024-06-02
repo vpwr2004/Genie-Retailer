@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   BackHandler,
+  StyleSheet,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -19,6 +20,8 @@ import {
   setStoreName,
   setStoreOwnerName,
 } from "../../redux/reducers/storeDataSlice";
+import StoreModal from "../../components/StoreModal";
+import QuestionIcon from "../../assets/QuestionIcon.svg"
 
 const UserNameEntryScreen = () => {
   const navigation = useNavigation();
@@ -27,6 +30,7 @@ const UserNameEntryScreen = () => {
   const dispatch = useDispatch();
   // const navigationState = useNavigationState(state => state);
   const isUserNameScreen= true;
+  const [modalVisible,setModalVisible]=useState(false);
 
   useEffect(() => {
     const backAction = () => {
@@ -75,7 +79,7 @@ const UserNameEntryScreen = () => {
     <SafeAreaView style={{flex:1}}>
       <ScrollView style={{flexGrow:1}}>
         <View className="bg-white flex-col justify-center " >
-          <View className="w-full fixed z-40  top-16 flex flex-row justify-between items-center px-[32px]">
+          <View className="w-full fixed z-40  top-16 flex flex-row justify-end items-center px-[32px]">
             {/* <Pressable
               onPress={() => {
                 navigation.goBack();
@@ -84,6 +88,14 @@ const UserNameEntryScreen = () => {
             >
               <FontAwesome name="arrow-left" size={15} color="black" />
             </Pressable> */}
+            <Pressable
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+              className="flex flex-row p-2 items-center  gap-2"
+            >
+              <QuestionIcon/>
+            </Pressable>
           </View>
           <View className="flex flex-col justify-center items-center ">
             <StoreName height={330} width={256} />
@@ -130,8 +142,23 @@ const UserNameEntryScreen = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {
+        modalVisible && <StoreModal modalConfirmVisible={modalVisible} setModalConfirmVisible={setModalVisible}/>
+      }
+      {modalVisible && (
+                    <View style={styles.overlay} />
+                )}
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  overlay: {
+      flex:1,
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent greyish background
+  },
+
+})
 
 export default UserNameEntryScreen;

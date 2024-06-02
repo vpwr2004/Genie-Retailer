@@ -67,9 +67,7 @@ const HomeScreenVerified = () => {
   useEffect(() => {
     if (isFocused) {
       handleRefresh();
-      // if(newRequests?.length===0 && ongoingRequests?.length===0){
-      //   setRequest(false);
-      // }
+      // 
     }
   }, [isFocused]);
 
@@ -108,6 +106,9 @@ const HomeScreenVerified = () => {
       // Fetch new data from the server
       await fetchNewRequests();
       await fetchOngoingRequests();
+      if(!newRequests && !ongoingRequests){
+          setRequest(false);
+        }
     } catch (error) {
       console.error("Error fetching data:", error);
     }

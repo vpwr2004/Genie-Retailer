@@ -30,7 +30,7 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Profile from "../../assets/ProfileIcon.svg";
+import Profile from "../../assets/ProfileIcon2.svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";

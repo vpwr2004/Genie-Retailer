@@ -13,13 +13,13 @@ const HistoryScreen = () => {
         <ScrollView>
 
          <View className="flex flex-row justify-between items-center px-[32px] ">
-                    <View>
+                    <View className="bg-[#FB8C00] p-[4px] rounded-full">
                         <TouchableOpacity onPress={()=>navigation.navigate("menu")}>
                             <Profile />
                         </TouchableOpacity>
                     </View>
                     <GinieIcon/>
-                    <View>
+                    <View className="bg-[#FB8C00] p-[4px] rounded-full">
                         <TouchableOpacity onPress={()=>navigation.navigate("history")}>
                             <History />
                         </TouchableOpacity>

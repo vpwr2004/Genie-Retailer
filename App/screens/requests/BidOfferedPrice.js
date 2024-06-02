@@ -13,7 +13,7 @@ import ThreeDots from "../../assets/ThreeDotIcon.svg";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Profile from "../../assets/ProfileIcon.svg";
+import Profile from "../../assets/ProfileIcon2.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setBidOfferedPrice,

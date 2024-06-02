@@ -38,9 +38,9 @@ const ImagePreview = () => {
     console.log("old images",imagesLocal);
     const newImages = [...imagesLocal];
     [newImages[0], newImages[selectedImageIndex]] = [newImages[selectedImageIndex], newImages[0]];
-     setImagesLocal(newImages);
-     console.log("new images",imagesLocal);
-     setSelectedImageIndex(0);
+    //  setImagesLocal(newImages);
+    //  console.log("new images",imagesLocal);
+    //  setSelectedImageIndex(0);
     const userData = JSON.parse(await AsyncStorage.getItem("userData"));
     const userId = userData._id;
 

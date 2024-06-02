@@ -15,7 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Profile from "../../assets/ProfileIcon.svg";
+import Profile from "../../assets/ProfileIcon2.svg";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -180,7 +180,7 @@ const BidPreviewPage = () => {
               <Text className="font-bold">Preview your bid response</Text>
             </View>
             <View className="px-[50px]">
-              <Text>{user?.storeOwnerName}</Text>
+              {/* <Text>{user?.storeOwnerName}</Text> */}
               <Text>{bidDetails}</Text>
             </View>
             <View className="gap-[10px]">
