@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import ModalLogout from '../../components/ModalLogout';
-import { setUserDetails } from '../../redux/reducers/storeDataSlice';
+import { setServiceProvider, setUserDetails } from '../../redux/reducers/storeDataSlice';
 
 
 
@@ -26,7 +26,7 @@ const MenuScreen = () => {
             try {
                 // Fetch user location from AsyncStorage
                 const userData = JSON.parse(await AsyncStorage.getItem('userData'));
-
+                //  dispatch(setServiceProvider("unknown"))
                 console.log("profile",userData);
                 if (userData) {
                         dispatch(setUserDetails(userData));
@@ -36,7 +36,6 @@ const MenuScreen = () => {
                 console.error('Error fetching user location:', error)
             }
         }
-
         fetchUserData()
     }, [])
 
@@ -65,8 +64,8 @@ const MenuScreen = () => {
                     <View className="flex flex-row gap-[32px] bg-white py-[48px] w-[90%] justify-center items-center rounded-md shadow-lg">
                     <Image source={{ uri:user? user?.storeImages[0]:"" }} width={70} height={70} className="rounded-full" />
                         <View className="flex-col">
-                            <Text className="text-[16px] font-bold text-center capitalize">{user ?user?.storeOwnerName:""}</Text>
-                            <Text className="text-[14px]">{user ?user?.storeMobileNo :""}</Text>
+                            <Text className="text-[16px] font-bold text-center capitalize">{user?user?.storeOwnerName:""}</Text>
+                            <Text className="text-[14px]">{user?user?.storeMobileNo :""}</Text>
                         </View>
                     </View>
 

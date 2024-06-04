@@ -20,13 +20,14 @@ const HomeScreen = () => {
     const [completeProfile,setCompleteProfile]=useState(false);
   const [userData, setUserData] = useState();
 
-//   const user= useSelector(state => state.storeData.userDetails);
+//    const serviceProvider= useSelector(state => state.storeData.serviceProvider);
 //   console.log("user: " ,user);
   const isFocused = useIsFocused();
   // const [store,setStore]=useState(false)
   
   const [location, setLocation] = useState("");
   const [store,setStore]=useState("");
+  const [serviceProvider,setServiceProvider] = useState("");
 //   const userDetails=useSelector(state=>state.storData.userDetails);
 
 const navigationState = useNavigationState(state => state);
@@ -83,6 +84,7 @@ const navigationState = useNavigationState(state => state);
 
                 setLocation(response?.data.longitude);
                 setStore(response?.data.storeImages);
+                setServiceProvider(response?.data.serviceProvider);
                 setUserData(response.data);
                 await AsyncStorage.setItem('userData', JSON.stringify(response.data));
                 dispatch(setUserDetails(userData));
@@ -95,8 +97,10 @@ const navigationState = useNavigationState(state => state);
                 
             }
             
-            
-            if (response.data.location && response.data.storeImages?.length > 0) {
+            if(response.data.location && response.data.serviceProvider==="true"){
+                setCompleteProfile(true);
+            }
+           else if (response.data.location && response.data.storeImages?.length > 0) {
                 setCompleteProfile(true);
             }
             else{
@@ -136,7 +140,7 @@ const navigationState = useNavigationState(state => state);
                     verified && <HomeScreenVerified userData={userData}/>
                 }
                 {
-                    !verified && <CompleteProfile completeProfile={completeProfile}  verified={verified} location={location} store={store}/>
+                    !verified && <CompleteProfile completeProfile={completeProfile}  verified={verified} serviceProvider={serviceProvider} location={location} store={store}/>
                 }
                 
             

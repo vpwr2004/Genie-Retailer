@@ -15,6 +15,7 @@ const initialState = {
   uniqueToken:"",
   userDetails: [],
   authData:"",
+  serviceProvider:"unknown"
 };
 
 const storeDataSlice = createSlice({
@@ -57,9 +58,12 @@ const storeDataSlice = createSlice({
     setUniqueToken: (state, action) => {
       state.uniqueToken = action.payload;
     },
+    setServiceProvider: (state, action) => {
+      state.serviceProvider = action.payload;
+    },
   
   },
 });
 
-export const { setMobileNumber ,setStoreName,setStoreOwnerName,setPanCard,setStoreService,setStoreLocation,setStoreCategory,setStoreDescription,setImages,setUserDetails,setAuthData,setUniqueToken} = storeDataSlice.actions;
+export const { setMobileNumber ,setStoreName,setStoreOwnerName,setPanCard,setStoreService,setStoreLocation,setStoreCategory,setStoreDescription,setImages,setUserDetails,setAuthData,setUniqueToken,setServiceProvider} = storeDataSlice.actions;
 export default storeDataSlice.reducer;

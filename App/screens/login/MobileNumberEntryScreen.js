@@ -74,6 +74,7 @@ async function requestUserPermission() {
     else{
       console.log("permission not granted",authStatus);
     }
+    dispatch(setUserDetails([]));
   },[route.params]);
 
   useEffect(() => {
@@ -115,13 +116,14 @@ async function requestUserPermission() {
       setLoading(true);
       try {
         const phoneNumber = countryCode + mobileNumber;
-        console.log(phoneNumber);
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        setConfirm(confirmation);
-        console.log(confirmation);
-        dispatch(setUserDetails([]));
+        // console.log(phoneNumber);
+        // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        // setConfirm(confirmation);
+        // console.log(confirmation);
+       
         dispatch(setMobileNumber(phoneNumber));
         setMobileScreen(false);
+       
       } catch (error) {
         console.log("error", error);
       } finally {
@@ -144,11 +146,11 @@ async function requestUserPermission() {
     try {
       // Make a request to your backend API to check if the mobile number is registered
 
-       console.log(confirm)
-       const res=await confirm.confirm(otp);
-       console.log("res",res);
-      console.log(otp);
-      if(res){
+      //  console.log(confirm)
+      //  const res=await confirm.confirm(otp);
+      //  console.log("res",res);
+      // console.log(otp);
+      // if(res){
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
@@ -179,14 +181,14 @@ async function requestUserPermission() {
         // If mobile number is not registered, continue with the registration process
         setMobileNumberLocal("");
         navigation.navigate("registerUsername");
-      }
-        }
-        else{
-          setLoading(false);
-          console.log('Invalid otp:');
-          alert('Invalid otp');
-          return;
-        }
+       }
+      //   }
+      //   else{
+      //     setLoading(false);
+      //     console.log('Invalid otp:');
+      //     alert('Invalid otp');
+      //     return;
+      //   }
     } catch (error) {
       console.log('Invalid otp:');
       alert('Invalid otp');

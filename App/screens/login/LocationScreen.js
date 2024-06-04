@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import LocationImg from "../../assets/LocationImg";
 import {
@@ -21,7 +21,7 @@ import {
 import ModalScreen from "../../components/ModalScreen";
 import ModalScreenConfirm from "../../components/ModalScreenConfirm";
 import { useDispatch } from "react-redux";
-import { setStoreLocation } from "../../redux/reducers/storeDataSlice";
+import { setServiceProvider, setStoreLocation } from "../../redux/reducers/storeDataSlice";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -32,6 +32,8 @@ const LocationScreen = () => {
   const [storeLocation, setStoreLocationLocal] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const route=useRoute();
+  const {data}=route.params
 
   const [location, setLocation] = useState("");
   const [address, setAddress] = useState("");
@@ -138,6 +140,7 @@ const LocationScreen = () => {
           location: location,
           lattitude: latitude,
           longitude: longitude,
+          serviceProvider:data==="service"?"true":"false",
         }
       );
 
@@ -147,6 +150,13 @@ const LocationScreen = () => {
       await AsyncStorage.setItem("userData", JSON.stringify(response.data));
 
       // Navigate to home only after successfully updating the location
+      console.log("data",data);
+      if(data==="service"){
+        dispatch(setServiceProvider("true"));
+      }
+      else if(data==="notservice"){
+        dispatch(setServiceProvider("false"));
+      }
       navigation.navigate("home");
     } catch (error) {
       console.error("Failed to update location:", error);
