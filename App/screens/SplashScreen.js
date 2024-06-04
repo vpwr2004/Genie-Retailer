@@ -24,7 +24,7 @@ const SplashScreen = () => {
         const userData = JSON.parse(await AsyncStorage.getItem("userData"));
         if (userData) {
             // await AsyncStorage.removeItem('userData');
-         navigation.navigate("home");
+         navigation.navigate("home",{userData: userData});
          
         }
         else{
