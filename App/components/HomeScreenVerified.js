@@ -22,8 +22,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import messaging from "@react-native-firebase/messaging";
 import { notificationListeners } from "../notification/notificationServices";
 import RequestLoader from "../screens/utils/RequestLoader";
+import { socket } from "../screens/utils/socket.io/socket";
 
-const HomeScreenVerified = () => {
+const HomeScreenVerified = ({userData}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -115,6 +116,17 @@ const HomeScreenVerified = () => {
     setLoading(false);
     setRefreshing(false); // Hide the refresh indicator
   };
+
+
+
+  // Setting socket for requests
+
+  useEffect(()=> {
+    socket.emit("setup", userData?._id);
+
+  },[]);
+
+
 
   return (
     <View>

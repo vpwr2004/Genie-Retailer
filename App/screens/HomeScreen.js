@@ -87,6 +87,7 @@ const navigationState = useNavigationState(state => state);
 
                 setLocation(response?.data.longitude);
                 setStore(response?.data.storeImages);
+                setUserData(response.data);
                 await AsyncStorage.setItem('userData', JSON.stringify(response.data));
                 dispatch(setUserDetails(userData));
                 // Update state with user data
@@ -131,7 +132,7 @@ const navigationState = useNavigationState(state => state);
                     
                 </View>
                 {
-                    verified && <HomeScreenVerified/>
+                    verified && <HomeScreenVerified userData={userData}/>
                 }
                 {
                     !verified && <CompleteProfile completeProfile={completeProfile}  verified={verified} location={location} store={store}/>

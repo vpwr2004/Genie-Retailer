@@ -8,6 +8,7 @@
       "@react-native-firebase/app",
       "@react-native-firebase/auth"
     ],
+   
     "icon": "./App/assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -36,7 +37,8 @@
       "package": "com.culturtapgenieretailer.GenieApp"
     },
     "web": {
-      "favicon": "./App/assets/appIcon.png"
+      "favicon": "./App/assets/appIcon.png",
+      "bundler": "metro"
     },
     "extra": {
       "eas": {
