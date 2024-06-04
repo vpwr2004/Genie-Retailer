@@ -70,11 +70,7 @@ const navigationState = useNavigationState(state => state);
                 setVerified(false);
                 
             }
-            if (userData.storeApproved) {
-                console.log('Store  approved at Home Screen');
-                setVerified(true);
-                
-            }
+           
             
             const response = await axios.get('https://genie-backend-meg1.onrender.com/retailer/', {
                 params: {
@@ -93,9 +89,14 @@ const navigationState = useNavigationState(state => state);
                 // Update state with user data
             
             }
+            if (response.data.storeApproved) {
+                console.log('Store  approved at Home Screen');
+                setVerified(true);
+                
+            }
             
             
-            if (userData.location && userData.storeImages?.length > 0) {
+            if (response.data.location && response.data.storeImages?.length > 0) {
                 setCompleteProfile(true);
             }
             else{

@@ -107,9 +107,12 @@ const HomeScreenVerified = ({userData}) => {
       // Fetch new data from the server
       await fetchNewRequests();
       await fetchOngoingRequests();
-      if(!newRequests && !ongoingRequests){
+      if(newRequests?.length>0 || ongoingRequests?.length>0){
+            setRequest(true);
+      }
+       else{
           setRequest(false);
-        }
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
