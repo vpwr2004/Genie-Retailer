@@ -116,10 +116,10 @@ async function requestUserPermission() {
       setLoading(true);
       try {
         const phoneNumber = countryCode + mobileNumber;
-        // console.log(phoneNumber);
-        // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        // setConfirm(confirmation);
-        // console.log(confirmation);
+        console.log(phoneNumber);
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        setConfirm(confirmation);
+        console.log(confirmation);
        
         dispatch(setMobileNumber(phoneNumber));
         setMobileScreen(false);
@@ -146,11 +146,11 @@ async function requestUserPermission() {
     try {
       // Make a request to your backend API to check if the mobile number is registered
 
-      //  console.log(confirm)
-      //  const res=await confirm.confirm(otp);
-      //  console.log("res",res);
-      // console.log(otp);
-      // if(res){
+       console.log(confirm)
+       const res=await confirm.confirm(otp);
+       console.log("res",res);
+      console.log(otp);
+      if(res){
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
@@ -182,13 +182,13 @@ async function requestUserPermission() {
         setMobileNumberLocal("");
         navigation.navigate("registerUsername");
        }
-      //   }
-      //   else{
-      //     setLoading(false);
-      //     console.log('Invalid otp:');
-      //     alert('Invalid otp');
-      //     return;
-      //   }
+        }
+        else{
+          setLoading(false);
+          console.log('Invalid otp:');
+          alert('Invalid otp');
+          return;
+        }
     } catch (error) {
       console.log('Invalid otp:');
       alert('Invalid otp');
