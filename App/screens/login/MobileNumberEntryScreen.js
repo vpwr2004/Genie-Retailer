@@ -176,7 +176,7 @@ async function requestUserPermission() {
         dispatch(setUserDetails(res.data));
         await AsyncStorage.setItem('userData', JSON.stringify(res.data));
         setToken("");
-        navigation.navigate("home");
+        navigation.navigate("home",{userData:res.data});
       } else if (response.data.status === 404) {
         // If mobile number is not registered, continue with the registration process
         setMobileNumberLocal("");

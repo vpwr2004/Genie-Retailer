@@ -81,7 +81,7 @@ const PanCardScreen = () => {
         await AsyncStorage.setItem("userData", JSON.stringify(response.data));
 
         // Navigate to the next screen
-        navigation.navigate("home");
+        navigation.navigate("home",{userData:response.data});
       } else {
         // Handle error if user creation failed
         console.error("Error creating user:");

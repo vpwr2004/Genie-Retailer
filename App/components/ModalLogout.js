@@ -18,8 +18,6 @@ const ModalLogout= ({user,modalVisible,setModalVisible}) => {
   const handleModal=async()=>{
     try {
             // Remove the item with key 'userData' from local storage
-            await AsyncStorage.removeItem('userData');
-           
            
             // await auth().signOut();
              await messaging().deleteToken();
@@ -28,11 +26,14 @@ const ModalLogout= ({user,modalVisible,setModalVisible}) => {
              _id: user?._id,
              uniqueToken:""
              });
+             navigation.navigate("mobileNumber",{data:""});
              dispatch(setUniqueToken(""));
              console.log('User data deleted successfully',res.data);
             //  setModalVisible(false);
+          
+            await AsyncStorage.removeItem('userData');
             setModalVisible(false);
-             navigation.navigate("mobileNumber",{data:""});
+            
              
         } catch (error) {
             console.error('Error deleting user data:', error);

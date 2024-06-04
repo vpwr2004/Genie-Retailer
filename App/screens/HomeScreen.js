@@ -66,12 +66,7 @@ const navigationState = useNavigationState(state => state);
             const userData = JSON.parse(userDataString);
             console.log('Fetched user data successfully at HomeScreen', );
                   
-            if (!userData.storeApproved) {
-                console.log('Store not approved');
-                setVerified(false);
-                
-            }
-           
+          
             
             const response = await axios.get('https://genie-backend-meg1.onrender.com/retailer/', {
                 params: {
@@ -80,22 +75,30 @@ const navigationState = useNavigationState(state => state);
             });
             
             if (response.status === 200) {
-                console.log('User data fetched successfully from backend',response.data);
-
+                
+                dispatch(setUserDetails(response.data));
                 setLocation(response?.data.longitude);
                 setStore(response?.data.storeImages);
                 setServiceProvider(response?.data.serviceProvider);
                 setUserData(response.data);
+                
                 await AsyncStorage.setItem('userData', JSON.stringify(response.data));
-                dispatch(setUserDetails(userData));
+                console.log('User data fetched successfully from backend',response.data);
                 // Update state with user data
             
             }
+
             if (response.data.storeApproved) {
                 console.log('Store  approved at Home Screen');
                 setVerified(true);
                 
             }
+            if (!response.data.storeApproved) {
+                console.log('Store not approved');
+                setVerified(false);
+                
+            }
+           
             
             if(response.data.location && response.data.serviceProvider==="true"){
                 setCompleteProfile(true);
@@ -120,7 +123,6 @@ const navigationState = useNavigationState(state => state);
     return (
         <SafeAreaView className="flex-1">
             <ScrollView>
-
             <View className="flex flex-col  gap-[32px]">
                 <View className="flex flex-row justify-between items-center px-[32px]">
                     <View className="bg-[#FB8C00] p-[4px] rounded-full">
