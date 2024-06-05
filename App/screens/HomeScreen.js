@@ -110,7 +110,7 @@ const navigationState = useNavigationState(state => state);
                 setCompleteProfile(false);
             }
         } catch (error) {
-            console.error('Error fetching user data:', error);
+            console.error('Error fetching user data on home screen:', error);
         }
     };
     

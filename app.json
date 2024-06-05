@@ -9,7 +9,7 @@
       "@react-native-firebase/auth"
     ],
    
-    "icon": "./App/assets/GenieAppIcon.svg",
+    "icon": "./App/assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./App/assets/ginie.png",
