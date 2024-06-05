@@ -7,6 +7,7 @@ const initialState = {
   ongoingRequests:[],
   messages:[],
   requestInfo:[],
+  retailerHistory:[],
 };
 
 const requestDataSlice = createSlice({
@@ -27,10 +28,13 @@ const requestDataSlice = createSlice({
       setRequestInfo: (state, action) => {
         state.requestInfo = action.payload;
       },
+      setRetailerHistory: (state, action) => {
+        state.retailerHistory = action.payload;
+      },
 
   
   },
 });
 
-export const { setNewRequests,setOngoingRequests,setMessages,setRequestInfo} = requestDataSlice.actions;
+export const { setNewRequests,setOngoingRequests,setMessages,setRequestInfo,setRetailerHistory} = requestDataSlice.actions;
 export default requestDataSlice.reducer;

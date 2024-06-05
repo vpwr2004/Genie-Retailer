@@ -131,7 +131,6 @@ const LocationScreen = () => {
 
       // Update location in Redux store
       dispatch(setStoreLocation(location));
-
       // Update location on server
       const response = await axios.patch(
         `https://genie-backend-meg1.onrender.com/retailer/editretailer`,

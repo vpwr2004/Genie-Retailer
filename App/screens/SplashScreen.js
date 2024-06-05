@@ -1,42 +1,74 @@
 // SplashScreen.js
-import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setUniqueToken } from '../redux/reducers/storeDataSlice';
+import Splash from "../assets/SplashImg.svg"
 
 
 const SplashScreen = () => {
   const navigation = useNavigation();
  
- 
-  
- 
-  
-  
-     
+  const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    const animateSplash = () => {
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 3000, // Animation duration of 3 seconds
+        useNativeDriver: true,
+      }).start();
+    };
+
     const checkStoredUser = async () => {
       try {
+        // Animate the splash screen
+        animateSplash();
+
         // Check if user data exists in local storage
         const userData = JSON.parse(await AsyncStorage.getItem("userData"));
-        if (userData) {
+        setTimeout(() => {
+          if (userData) {
             // await AsyncStorage.removeItem('userData');
-         navigation.navigate("home",{userData: userData});
-         
-        }
-        else{
+            navigation.navigate("home", { userData: userData });
+          } else {
             navigation.navigate('mobileNumber');
-        }
+          }
+        }, 3000); // Delay for 3 seconds
       } catch (error) {
         console.error("Error checking stored user:", error);
       }
     };
 
     checkStoredUser();
-  }, []);
+  }, [opacity]);
+ 
+  
+  
+     
+
+  // useEffect(() => {
+  //   const checkStoredUser = async () => {
+  //     try {
+  //       // Check if user data exists in local storage
+  //       const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+  //       if (userData) {
+  //           // await AsyncStorage.removeItem('userData');
+  //        navigation.navigate("home",{userData: userData});
+         
+  //       }
+  //       else{
+  //           navigation.navigate('mobileNumber');
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking stored user:", error);
+  //     }
+  //   };
+
+  //   checkStoredUser();
+  // }, []);
 
 //   useEffect(() => {
 //     const timeout = setTimeout(() => {
@@ -50,7 +82,9 @@ const SplashScreen = () => {
 
   return (
     <View className="flex justify-center items-center">
-      <Text>Loading...</Text>
+      <Animated.View style={{ opacity }}>
+        <Splash />
+      </Animated.View>
     </View>
   );
 };

@@ -30,7 +30,9 @@ export const BidAcceptedOtherRetailer = async (mess) => {
       },
     }
 }
+
     for (const token of tokens) {
+      if(token.length > 0) {
       const message = {
         message: {
           token: token,
@@ -57,6 +59,7 @@ export const BidAcceptedOtherRetailer = async (mess) => {
          
         );
       }
+    }
     }
   } catch (e) {
     console.error("Failed to send notification:", e);
@@ -142,6 +145,7 @@ export const sendCustomNotificationChat = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
+    if(mess?.token.length > 0) {
 
     const notificationResponse = await fetch(
       `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
@@ -165,6 +169,7 @@ export const sendCustomNotificationChat = async (mess) => {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
     }
+  }
   } catch (e) {
     console.error("Failed to send notification:", e);
   }
@@ -196,6 +201,7 @@ export const sendCustomNotificationBid = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
+    if(mess?.token.length>0){
 
     const notificationResponse = await fetch(
       `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
@@ -218,7 +224,7 @@ export const sendCustomNotificationBid = async (mess) => {
     } else {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
-    }
+    }}
   } catch (e) {
     console.error("Failed to send notification:", e);
   }
@@ -250,7 +256,7 @@ export const sendCustomNotificationAttachment = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
-
+   if(mess?.token.length>0){
     const notificationResponse = await fetch(
       `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
       {
@@ -273,6 +279,7 @@ export const sendCustomNotificationAttachment = async (mess) => {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
     }
+  }
   } catch (e) {
     console.error("Failed to send notification:", e);
   }
@@ -305,6 +312,7 @@ export const NotificationRequestAccepted = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
+    if(mess?.token.length>0){
 
     const notificationResponse = await fetch(
       `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
@@ -328,6 +336,7 @@ export const NotificationRequestAccepted = async (mess) => {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
     }
+  }
   } catch (e) {
     console.error("Failed to send notification:", e);
   }
@@ -347,7 +356,7 @@ export const NotificationBidAccepted = async (mess) => {
           notification: {
             sound: "default",
             //   icon: "fcm_push_icon",
-            color: "#fcb800",
+            // color: "#fcb800",
             // tag: "request_accept",
           },
         },
@@ -359,6 +368,7 @@ export const NotificationBidAccepted = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
+    if(mess.token[0].length>0){
 
     const notificationResponse = await fetch(
       `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
@@ -382,6 +392,7 @@ export const NotificationBidAccepted = async (mess) => {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
     }
+  }
   } catch (e) {
     console.error("Failed to send notification:", e);
   }

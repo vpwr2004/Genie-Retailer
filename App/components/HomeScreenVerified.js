@@ -13,6 +13,7 @@ import {
   setNewRequests,
   setOngoingRequests,
   setRequestInfo,
+  setRetailerHistory,
 } from "../redux/reducers/requestDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
@@ -24,7 +25,7 @@ import { notificationListeners } from "../notification/notificationServices";
 import RequestLoader from "../screens/utils/RequestLoader";
 import { socket } from "../screens/utils/socket.io/socket";
 
-const HomeScreenVerified = ({userData}) => {
+const HomeScreenVerified = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -37,7 +38,10 @@ const HomeScreenVerified = ({userData}) => {
   const ongoingRequests = useSelector(
     (state) => state.requestData.ongoingRequests || []
   );
+  const retailerHistory= useSelector(state => state.requestData.retailerHistory|| [])
   const [loading, setLoading] = useState(false);
+  const userData= useSelector(state => state.storeData.userDetails|| [])
+
 
   // async function requestUserPermission() {
   //   const authStatus = await messaging().requestPermission();
@@ -74,7 +78,7 @@ const HomeScreenVerified = ({userData}) => {
 
   const fetchNewRequests = async () => {
     try {
-      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+      // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const response = await axios.get(
         `https://genie-backend-meg1.onrender.com/chat/retailer-new-spades?id=${userData?._id}`
       );
@@ -88,7 +92,7 @@ const HomeScreenVerified = ({userData}) => {
 
   const fetchOngoingRequests = async () => {
     try {
-      const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+      // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const ongoingresponse = await axios.get(
         `https://genie-backend-meg1.onrender.com/chat/retailer-ongoing-spades?id=${userData?._id}`
       );
@@ -98,16 +102,36 @@ const HomeScreenVerified = ({userData}) => {
       dispatch(setOngoingRequests([]));
       //console.error('Error fetching ongoing requests:', error);
     }
+
+
   };
 
-  const handleRefresh = async () => {
+  const fetchRetailerHistory = async () => {
+    try {
+      // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+      const history = await axios.get(
+        `https://genie-backend-meg1.onrender.com/retailer/history?id=${userData?._id}`
+      );
+      setRequest(true);
+      dispatch(setRetailerHistory(history.data));
+      console.log("history",history.data);
+    } catch (error) {
+      dispatch(setRetailerHistory([]));
+      //console.error('Error fetching ongoing requests:', error);
+    }
+
+    
+  };
+
+  const handleRefresh = () => {
     setRefreshing(true); // Show the refresh indicator
     setLoading(true);
     try {
       // Fetch new data from the server
-      await fetchNewRequests();
-      await fetchOngoingRequests();
-      if(newRequests?.length>0 || ongoingRequests?.length>0){
+      fetchNewRequests();
+      fetchOngoingRequests();
+      fetchRetailerHistory();
+      if(newRequests?.length>0 || ongoingRequests?.length>0 || retailerHistory?.length>0){
             setRequest(true);
       }
        else{
