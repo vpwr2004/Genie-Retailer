@@ -75,7 +75,6 @@ const navigationState = useNavigationState(state => state);
             });
             
             if (response.status === 200) {
-                
                 dispatch(setUserDetails(response.data));
                 setLocation(response?.data.longitude);
                 setStore(response?.data.storeImages);
@@ -88,16 +87,18 @@ const navigationState = useNavigationState(state => state);
             
             }
 
-            if (response.data.storeApproved) {
-                console.log('Store  approved at Home Screen');
-                setVerified(true);
-                
-            }
             if (!response.data.storeApproved) {
                 console.log('Store not approved');
                 setVerified(false);
                 
             }
+
+            if (response.data.storeApproved) {
+                console.log('Store  approved at Home Screen');
+                setVerified(true);
+                
+            }
+           
            
             
             if(response.data.location && response.data.serviceProvider==="true"){
@@ -115,7 +116,7 @@ const navigationState = useNavigationState(state => state);
     };
     
     fetchUserData();
-}, [isFocused]); // Only re-run effect when screen is focused
+}, []); // Only re-run effect when screen is focused
 
 
 

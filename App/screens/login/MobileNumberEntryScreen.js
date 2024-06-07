@@ -84,6 +84,9 @@ async function requestUserPermission() {
         setMobileScreen(true);
         return true; // Prevent default back action
       }
+      else{
+        BackHandler.exitApp();
+      }
 
       return false;
     };
@@ -115,11 +118,11 @@ async function requestUserPermission() {
       // Navigate to OTP screen if the phone number is valid
       setLoading(true);
       try {
-        const phoneNumber = countryCode + mobileNumber;
-        console.log(phoneNumber);
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        setConfirm(confirmation);
-        console.log(confirmation);
+        // const phoneNumber = countryCode + mobileNumber;
+        // console.log(phoneNumber);
+        // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        // setConfirm(confirmation);
+        // console.log(confirmation);
        
         dispatch(setMobileNumber(phoneNumber));
         setMobileScreen(false);
@@ -146,10 +149,10 @@ async function requestUserPermission() {
     try {
       // Make a request to your backend API to check if the mobile number is registered
 
-       console.log(confirm)
-       const res=await confirm.confirm(otp);
-       console.log("res",res);
-      console.log(otp);
+      //  console.log(confirm)
+      //  const res=await confirm.confirm(otp);
+      //  console.log("res",res);
+      // console.log(otp);
       // if(res){
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
@@ -166,7 +169,6 @@ async function requestUserPermission() {
       if (response.data.storeMobileNo) {
         // If mobile number is registered, navigate to home screen
         
-      
         setOtp("");
         setMobileNumberLocal("");
         const res = await axios.patch(`https://genie-backend-meg1.onrender.com/retailer/editretailer`, {

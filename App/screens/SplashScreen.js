@@ -4,12 +4,13 @@ import { View, Text, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import { setUniqueToken } from '../redux/reducers/storeDataSlice';
+import { setUniqueToken, setUserDetails } from '../redux/reducers/storeDataSlice';
 import Splash from "../assets/SplashImg.svg"
 
 
 const SplashScreen = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
  
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -33,6 +34,7 @@ const SplashScreen = () => {
           if (userData) {
             // await AsyncStorage.removeItem('userData');
             navigation.navigate("home", { userData: userData });
+            dispatch(setUserDetails(userData));
           } else {
             navigation.navigate('mobileNumber');
           }
