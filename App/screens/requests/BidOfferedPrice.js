@@ -84,7 +84,7 @@ const BidOfferedPrice = () => {
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="bg-[#F9F9F9]  rounded-full">
+                <View className="flex items-center justify-center rounded-full">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}

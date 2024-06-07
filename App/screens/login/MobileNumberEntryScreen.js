@@ -13,7 +13,7 @@ import {
   BackHandler,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import MobileNumberImg from "../../assets/mobile.svg";
@@ -49,7 +49,11 @@ const MobileNumberEntryScreen = () => {
   const [token, setToken] = useState("");
   const [mobileScreen, setMobileScreen] = useState(true);
   const countryCode = "+91";
+  const loginScreen=true;
   const uniqueToken=useSelector(state=>state.storeData.uniqueToken)
+  const navigationState = useNavigationState(state => state);
+  const isLoginScreen = navigationState.routes[navigationState.index].name === 'mobileNumber';
+  console.log("mobil",isLoginScreen);
 
 async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
@@ -74,7 +78,7 @@ async function requestUserPermission() {
     else{
       console.log("permission not granted",authStatus);
     }
-    dispatch(setUserDetails([]));
+  
   },[route.params]);
 
   useEffect(() => {
@@ -84,8 +88,9 @@ async function requestUserPermission() {
         setMobileScreen(true);
         return true; // Prevent default back action
       }
-      else{
+      if(isLoginScreen && mobileScreen) {
         BackHandler.exitApp();
+        return true;
       }
 
       return false;
@@ -118,7 +123,7 @@ async function requestUserPermission() {
       // Navigate to OTP screen if the phone number is valid
       setLoading(true);
       try {
-        // const phoneNumber = countryCode + mobileNumber;
+        const phoneNumber = countryCode + mobileNumber;
         // console.log(phoneNumber);
         // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
         // setConfirm(confirmation);
@@ -177,8 +182,9 @@ async function requestUserPermission() {
         });
         dispatch(setUserDetails(res.data));
         await AsyncStorage.setItem('userData', JSON.stringify(res.data));
+
         setToken("");
-        navigation.navigate("home",{userData:res.data});
+        navigation.navigate("home");
       } else if (response.data.status === 404) {
         // If mobile number is not registered, continue with the registration process
         setMobileNumberLocal("");

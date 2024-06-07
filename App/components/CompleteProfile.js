@@ -16,26 +16,28 @@ import { useSelector } from "react-redux";
 import HomeScreenUnverified from "./HomeScreenUnverified";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CompleteProfile = ({ completeProfile, location, verified, store,serviceProvider }) => {
+const CompleteProfile = ({ completeProfile }) => {
   const navigation = useNavigation();
   // const serviceProvider = useSelector(
   //   (state) => state.storeData.serviceProvider
   // );
-  console.log("services", serviceProvider);
+const user= useSelector(state => state.storeData.userDetails)
+
+  console.log("services", user.serviceProvider);
 
 
   const handleLocation = () => {
-    if (!location) {
+    if (!user.lattitude) {
       navigation.navigate("locationScreen", { data: "notservice" });
     }
   };
   const handleServiceLocation = () => {
-    if (!location) {
+    if (!user.lattitude) {
       navigation.navigate("locationScreen", { data: "service" });
     }
   };
   const handleStore = () => {
-    if (store?.length === 0 && serviceProvider !== "true") {
+    if (user.storeImages?.length === 0 && user.serviceProvider !== "true") {
       navigation.navigate("writeAboutStore");
     }
   };
@@ -55,10 +57,10 @@ const CompleteProfile = ({ completeProfile, location, verified, store,servicePro
         </View>
       )}
 
-      {serviceProvider !== "true" && (
+      {user.serviceProvider !== "true" && (
         <View className="flex items-center gap-[10px]">
           <TouchableOpacity
-            disabled={serviceProvider === "true"}
+            disabled={user.serviceProvider === "true"}
             onPress={handleLocation}
           >
             <View className="w-[90%] flex-row items-center bg-white gap-[15px] h-[127px] rounded-3xl shadow-3xl px-[18px]">
@@ -78,7 +80,7 @@ const CompleteProfile = ({ completeProfile, location, verified, store,servicePro
                   </Text>
                 </View>
                 <View className="flex-row gap-[8px]">
-                  {location && serviceProvider === "false" ? (
+                  {user.lattitude && user.serviceProvider === "false" ? (
                     <Tick />
                   ) : (
                     <Arrow />
@@ -88,7 +90,7 @@ const CompleteProfile = ({ completeProfile, location, verified, store,servicePro
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            disabled={serviceProvider === "true"}
+            disabled={user.serviceProvider === "true"}
             onPress={handleStore}
           >
             <View className="w-[90%] flex-row items-center bg-white gap-[15px] h-[127px] rounded-3xl shadow-3xl px-[18px]">
@@ -108,7 +110,7 @@ const CompleteProfile = ({ completeProfile, location, verified, store,servicePro
                   </Text>
                 </View>
                 <View className="flex-row gap-[8px]">
-                  {store.length === 0 ? <Arrow /> : <Tick />}
+                  {user.storeImages.length === 0 ? <Arrow /> : <Tick />}
                 </View>
               </View>
             </View>
@@ -116,7 +118,7 @@ const CompleteProfile = ({ completeProfile, location, verified, store,servicePro
         </View>
       )}
       <View className="mt-[10px]flex items-center justify-center gap-[20px]">
-      {(serviceProvider !== "true" && serviceProvider!=="false") && ( 
+      {(user.serviceProvider !== "true" && user.serviceProvider!=="false") && ( 
       <View className="gap-[30px]">
          
             <View className="flex-row items-center justify-between gap-[20px]">
@@ -137,7 +139,7 @@ const CompleteProfile = ({ completeProfile, location, verified, store,servicePro
         </View>
       )}
       {
-        serviceProvider !== "false" && 
+        user.serviceProvider  !== "false" && 
         <TouchableOpacity
           
           onPress={handleServiceLocation}
@@ -159,7 +161,7 @@ const CompleteProfile = ({ completeProfile, location, verified, store,servicePro
                 </Text>
               </View>
               <View className="flex-row gap-[8px]">
-                {location && serviceProvider === "true" ? <Tick /> : <Arrow />}
+                {user.lattitude  && user.serviceProvider  === "true" ? <Tick /> : <Arrow />}
               </View>
             </View>
           </View>

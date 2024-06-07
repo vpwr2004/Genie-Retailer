@@ -11,7 +11,7 @@ import {
   StyleSheet,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import StoreName from "../../assets/StoreName.svg";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,6 +22,7 @@ import {
 } from "../../redux/reducers/storeDataSlice";
 import StoreModal from "../../components/StoreModal";
 import QuestionIcon from "../../assets/QuestionIcon.svg"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserNameEntryScreen = () => {
   const navigation = useNavigation();
@@ -29,8 +30,11 @@ const UserNameEntryScreen = () => {
   const [storeOwnerName, setStoreOwnerNameLocal] = useState("");
   const dispatch = useDispatch();
   // const navigationState = useNavigationState(state => state);
-  const isUserNameScreen= true;
+  // const isUserNameScreen= true;
   const [modalVisible,setModalVisible]=useState(false);
+  const navigationState = useNavigationState(state => state);
+  const isUserNameScreen = navigationState.routes[navigationState.index].name === 'registerUsername';
+  console.log("isUserNameScreen",isUserNameScreen)
 
   useEffect(() => {
     const backAction = () => {
@@ -67,9 +71,12 @@ const UserNameEntryScreen = () => {
 
   const storeDetails = () => {
     try {
+      // const authData = JSON.parse(await AsyncStorage.getItem("authData"));
+      // console.log(authData);
+      
       dispatch(setStoreName(storeName));
       dispatch(setStoreOwnerName(storeOwnerName));
-      navigation.navigate("searchCategory");
+       navigation.navigate("searchCategory");
     } catch (error) {
       console.log("error", error);
     }

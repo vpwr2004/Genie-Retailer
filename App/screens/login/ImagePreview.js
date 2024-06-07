@@ -15,7 +15,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 // import { setMainImage,addOtherImage } from '../../redux/reducers/storeDataSlice';
 import { useDispatch, useSelector } from "react-redux";
-import { setImages } from "../../redux/reducers/storeDataSlice";
+import { setImages, setUserDetails } from "../../redux/reducers/storeDataSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -35,6 +35,7 @@ const ImagePreview = () => {
 
 
   const handleImage = async () => {
+    
     console.log("old images",imagesLocal);
     const newImages = [...imagesLocal];
     [newImages[0], newImages[selectedImageIndex]] = [newImages[selectedImageIndex], newImages[0]];
@@ -62,6 +63,7 @@ const ImagePreview = () => {
       // console.log('Image updated successfully:', response.data);
 
       // Update user data in AsyncStorage
+      dispatch(setUserDetails(response.data))
       await AsyncStorage.setItem("userData", JSON.stringify(response.data));
 
       // Navigate to home only after successfully updating the location

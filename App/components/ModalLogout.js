@@ -19,7 +19,7 @@ const ModalLogout= ({user,modalVisible,setModalVisible}) => {
     try {
             // Remove the item with key 'userData' from local storage
            
-             await auth().signOut();
+            //  await auth().signOut(); 
              await messaging().deleteToken();
               console.log('FCM token deleted.');
             const res = await axios.patch(`https://genie-backend-meg1.onrender.com/retailer/editretailer`, {
@@ -30,7 +30,6 @@ const ModalLogout= ({user,modalVisible,setModalVisible}) => {
              dispatch(setUniqueToken(""));
              console.log('User data deleted successfully',res.data);
             //  setModalVisible(false);
-          
             await AsyncStorage.removeItem('userData');
             setModalVisible(false);
             

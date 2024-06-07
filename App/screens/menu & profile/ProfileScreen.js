@@ -34,6 +34,7 @@ const ProfileScreen = () => {
   const [loading, setLoading] = useState(false);
   //   const [user,setUser]= useState(route.params.user);
   const user = useSelector((state) => state.storeData.userDetails);
+  console.log("user at profile", user);
 
   const [editableField, setEditableField] = useState(null);
   const [location, setLocation] = useState(user?.location || "");
@@ -45,6 +46,7 @@ const ProfileScreen = () => {
   const [storeCategory, setStoreCategory] = useState(user?.storeCategory || "");
   const [storeMobileNo, setStoreMobileNo] = useState(user?.storeMobileNo || "");
   const [panCard, setPanCard] = useState(user?.panCard || "");
+
 
   const handleEditPress = (field) => {
     setEditableField(field);
@@ -93,6 +95,7 @@ const ProfileScreen = () => {
       mediaType: "photo",
       saveToPhotos: true,
     };
+    console.log("type",type)
 
     launchCamera(options, async (response) => {
       if (response.didCancel) {

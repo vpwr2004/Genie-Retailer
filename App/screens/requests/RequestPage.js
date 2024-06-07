@@ -86,7 +86,7 @@ const RequestPage = () => {
       setUser(userData);
       console.log("User data found successfully");
 
-      console.log("requestInfo page", requestInfo?._id);
+      console.log("requestInfo page", requestInfo);
       let req;
       if (route?.params?.data) {
         req = JSON.parse(route?.params?.data?.requestInfo);
@@ -342,7 +342,7 @@ const RequestPage = () => {
 
           <View className="gap-[9px]">
             <View className="flex-row gap-[18px]">
-              <View className="bg-[#F9F9F9] flex items-center justify-center rounded-full">
+              <View className=" flex items-center justify-center rounded-full">
                 {requestInfo?.customerId?.pic ? (
                   <Image
                     source={{ uri: requestInfo?.customerId?.pic }}

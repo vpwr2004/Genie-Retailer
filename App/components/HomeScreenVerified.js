@@ -40,7 +40,8 @@ const HomeScreenVerified = () => {
   );
   const retailerHistory= useSelector(state => state.requestData.retailerHistory|| [])
   const [loading, setLoading] = useState(false);
-  const userData= useSelector(state => state.storeData.userDetails|| [])
+  const userData= useSelector(state => state.storeData.userDetails)
+  //  console.log("user at verified",userData)
 
 
   // async function requestUserPermission() {
@@ -114,7 +115,7 @@ const HomeScreenVerified = () => {
       );
       setRequest(true);
       dispatch(setRetailerHistory(history.data));
-      console.log("history",history.data);
+      // console.log("history",history.data);
     } catch (error) {
       dispatch(setRetailerHistory([]));
       //console.error('Error fetching ongoing requests:', error);

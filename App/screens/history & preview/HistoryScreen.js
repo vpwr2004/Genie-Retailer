@@ -47,7 +47,7 @@ const HistoryScreen = () => {
                   key={product._id}
                   onPress={() => {
                     dispatch(setRequestInfo(product));
-                    console.log("requestInfo at history", product);
+                    // console.log("requestInfo at history", product);
                     navigation.navigate("requestPage");
                   }}
                 >

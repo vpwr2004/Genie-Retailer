@@ -21,7 +21,7 @@ import {
 import ModalScreen from "../../components/ModalScreen";
 import ModalScreenConfirm from "../../components/ModalScreenConfirm";
 import { useDispatch } from "react-redux";
-import { setServiceProvider, setStoreLocation } from "../../redux/reducers/storeDataSlice";
+import { setServiceProvider, setStoreLocation, setUserDetails } from "../../redux/reducers/storeDataSlice";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -121,7 +121,7 @@ const LocationScreen = () => {
     // Log the mobile number value
     console.log(location);
   };
-
+  
   const handleLocationFetching = async () => {
     const userData = JSON.parse(await AsyncStorage.getItem("userData"));
     const userId = userData._id;
@@ -144,7 +144,7 @@ const LocationScreen = () => {
       );
 
       console.log("Location updated successfully:", response.data);
-
+       dispatch(setUserDetails(response.data));
       // Update user data in AsyncStorage
       await AsyncStorage.setItem("userData", JSON.stringify(response.data));
 

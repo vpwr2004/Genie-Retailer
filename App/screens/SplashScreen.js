@@ -4,7 +4,7 @@ import { View, Text, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
-import { setUniqueToken, setUserDetails } from '../redux/reducers/storeDataSlice';
+import { setMobileNumber, setUniqueToken, setUserDetails } from '../redux/reducers/storeDataSlice';
 import Splash from "../assets/SplashImg.svg"
 
 
@@ -30,12 +30,15 @@ const SplashScreen = () => {
 
         // Check if user data exists in local storage
         const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+        // const authData = JSON.parse(await AsyncStorage.getItem("authData"));
         setTimeout(() => {
           if (userData) {
             // await AsyncStorage.removeItem('userData');
-            navigation.navigate("home", { userData: userData });
             dispatch(setUserDetails(userData));
-          } else {
+            navigation.navigate("home");
+           
+          }
+          else {
             navigation.navigate('mobileNumber');
           }
         }, 3000); // Delay for 3 seconds
@@ -45,7 +48,7 @@ const SplashScreen = () => {
     };
 
     checkStoredUser();
-  }, [opacity]);
+  }, []);
  
   
   

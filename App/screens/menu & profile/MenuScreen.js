@@ -17,7 +17,7 @@ import { setServiceProvider, setUserDetails } from '../../redux/reducers/storeDa
 const MenuScreen = () => {
     const navigation = useNavigation();
     const dispatch=useDispatch();
-    const user=useSelector(state=>state.storeData.userDetails || []);
+    const user=useSelector(state=>state.storeData.userDetails);
     // const [user,setUser]=useState();
     const[modalVisible,setModalVisible]=useState(false);
 
@@ -62,10 +62,10 @@ const MenuScreen = () => {
             <TouchableOpacity onPress={()=>navigation.navigate("profile")}>
                 <View className="flex items-center">
                     <View className="flex flex-row gap-[32px] bg-white py-[48px] w-[90%] justify-center items-center rounded-md shadow-lg">
-                    <Image source={{ uri:user? user?.storeImages[0]:"" }} width={70} height={70} className="rounded-full" />
+                    <Image source={{ uri:user?.storeImages[0] }} width={70} height={70} className="rounded-full" />
                         <View className="flex-col">
-                            <Text className="text-[16px] font-bold text-center capitalize">{user?user?.storeOwnerName:""}</Text>
-                            <Text className="text-[14px]">{user?user?.storeMobileNo :""}</Text>
+                            <Text className="text-[16px] font-bold text-center capitalize">{user?.storeOwnerName}</Text>
+                            <Text className="text-[14px]">{user?.storeMobileNo}</Text>
                         </View>
                     </View>
 
