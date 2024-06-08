@@ -32,7 +32,7 @@ const user= useSelector(state => state.storeData.userDetails)
     }
   };
   const handleServiceLocation = () => {
-    if (!user.lattitude) {
+    if (!user.lattitude && user.storeImages?.length === 0) {
       navigation.navigate("locationScreen", { data: "service" });
     }
   };
@@ -118,7 +118,7 @@ const user= useSelector(state => state.storeData.userDetails)
         </View>
       )}
       <View className="mt-[10px]flex items-center justify-center gap-[20px]">
-      {(user.serviceProvider !== "true" && user.serviceProvider!=="false") && ( 
+      {((user.serviceProvider !== "true" && user.serviceProvider!=="false" && user.storeImages?.length === 0)) && ( 
       <View className="gap-[30px]">
          
             <View className="flex-row items-center justify-between gap-[20px]">
@@ -139,7 +139,7 @@ const user= useSelector(state => state.storeData.userDetails)
         </View>
       )}
       {
-        user.serviceProvider  !== "false" && 
+        user.serviceProvider  !== "false" && user.storeImages?.length === 0 && 
         <TouchableOpacity
           
           onPress={handleServiceLocation}

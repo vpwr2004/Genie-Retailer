@@ -79,7 +79,7 @@ const ImagePreview = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <View className="w-full z-40 mt-[40px]  flex flex-row justify-between items-center  px-[32px]">
           <Pressable
@@ -90,15 +90,18 @@ const ImagePreview = () => {
           >
             <FontAwesome name="arrow-left" size={15} color="black" />
           </Pressable>
-          <Text className="flex flex-1 justify-center items-center text-center text-[16px]">
+          <Text className="flex flex-1 justify-center items-center font-bold text-center text-[16px]">
             Select Store Profile Pic
           </Text>
         </View>
 
-        <View className="w-full flex items-center justify-center mt-[36px]">
+        <View className="w-full flex items-center justify-center mt-[20px]">
+        <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[20px] ">
+                    Step 2/3
+                  </Text>
           <View
             style={{ overflowX: "scroll" }}
-            className="flex-row w-screen justify-center  gap-[10px] mt-[25px]"
+            className="flex-row w-screen justify-center  gap-[10px]"
           >
             {
               <View className="rounded-full">
@@ -159,7 +162,7 @@ const ImagePreview = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

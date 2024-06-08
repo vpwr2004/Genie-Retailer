@@ -23,6 +23,7 @@ import {
 import StoreModal from "../../components/StoreModal";
 import QuestionIcon from "../../assets/QuestionIcon.svg"
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from "react-native";
 
 const UserNameEntryScreen = () => {
   const navigation = useNavigation();
@@ -35,6 +36,7 @@ const UserNameEntryScreen = () => {
   const navigationState = useNavigationState(state => state);
   const isUserNameScreen = navigationState.routes[navigationState.index].name === 'registerUsername';
   console.log("isUserNameScreen",isUserNameScreen)
+  const [focusedInput, setFocusedInput] = useState(null);
 
   useEffect(() => {
     const backAction = () => {
@@ -83,79 +85,103 @@ const UserNameEntryScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{flex:1}}>
-      <ScrollView style={{flexGrow:1}}>
-        <View className="bg-white flex-col justify-center " >
-          <View className="w-full fixed z-40  top-16 flex flex-row justify-end items-center px-[32px]">
-            {/* <Pressable
-              onPress={() => {
-                navigation.goBack();
-              }}
-              className="flex flex-row p-2 items-center  gap-2"
-            >
-              <FontAwesome name="arrow-left" size={15} color="black" />
-            </Pressable> */}
-            <Pressable
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-              className="flex flex-row p-2 items-center  gap-2"
-            >
-              <QuestionIcon/>
-            </Pressable>
-          </View>
-          <View className="flex flex-col justify-center items-center ">
-            <StoreName height={330} width={256} />
-          </View>
-
-          <View className="mt-[48px] mb-[27px] flex flex-col gap-[33px] px-[32px]">
-            <View>
-              <Text className="text-[16px] text-[#2e2c43]  font-semibold">
-                Please enter your
-              </Text>
-              <Text className="text-[14px] text-[#2e2c43]">Store Name</Text>
-              <KeyboardAvoidingView > 
-                <View className="flex  items-center">
-                  <TextInput
-                    onChangeText={handleStoreName}
-                    placeholder="Ex: Kishor Kumar"
-                    className="w-[310px] h-[54px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[15px] "
-                  />
-                </View>
-              </KeyboardAvoidingView>
-            </View>
-            <View>
-              <Text className="text-[14px] text-[#2e2c43]">
-                Store Owner Name
-              </Text>
-              <KeyboardAvoidingView>
-                <View className="flex r items-center">
-                  <TextInput
-                    onChangeText={handleStoreOwnerName}
-                    placeholder="Ex: Kishor Kumar"
-                    className="w-[310px] h-[54px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[15px] "
-                  />
-                </View>
-              </KeyboardAvoidingView>
-            </View>
-          </View>
-          <TouchableOpacity disabled={!storeName || !storeOwnerName}
-              onPress={storeDetails}>
-            
-              <View className=" w-full h-[63px] bg-[#fb8c00]  flex items-center justify-center  ">
-                <Text className="text-white text-[18px] font-bold">NEXT</Text>
+    
+      <View style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <KeyboardAvoidingView
+              behavior="position"
+        >
+       
+          
+            <View className="flex-col justify-center">
+              <View className="w-full absolute z-40 top-[45px] flex flex-row justify-end items-center px-[32px]">
+                <Pressable
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                  className="flex flex-row p-2 items-center gap-2"
+                >
+                  <QuestionIcon />
+                </Pressable>
               </View>
+              <View className="flex flex-col justify-center items-center gap-[10px]">
+                <StoreName height={400} width={389} className="object-cover" />
+                <Text className="text-[14.5px] font-bold text-[#FB8C00]">Step 3/9</Text>
+              </View>
+              
+              <View className="mt-[20px] flex flex-col gap-[15px] px-[32px]">
+                <View>
+                  <Text className="text-[16px] text-[#2e2c43] font-extrabold">Please enter your</Text>
+                  <Text className="text-[14px] text-[#2e2c43]">Store Name</Text>
+                  <View className="flex items-center">
+                    <TextInput
+                      onChangeText={handleStoreName}
+                      placeholder="Ex: Kishor Kumar"
+                      className="w-[310px] h-[50px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[5px]"
+                      
+                    />
+                  </View>
+                </View>
+              
+                <View>
+                  <Text className="text-[14px] text-[#2e2c43]">Store Owner Name</Text>
+                  <View className="flex items-center">
+                    <TextInput
+                      onChangeText={handleStoreOwnerName}
+                      placeholder="Ex: Kishor Kumar"
+                      className="w-[310px] h-[50px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[5px]"
+                     
+                    />
+                  </View>
+                </View>
+               
+              </View>
+            
+             
+            </View>
+          
            
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-      {
-        modalVisible && <StoreModal modalConfirmVisible={modalVisible} setModalConfirmVisible={setModalVisible}/>
-      }
-      {modalVisible && (
-                    <View style={styles.overlay} />
-                )}
-    </SafeAreaView>
+            </KeyboardAvoidingView>
+        
+        
+        <TouchableOpacity
+          disabled={!storeName || !storeOwnerName}
+          onPress={storeDetails}
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 68,
+            width: "100%",
+            backgroundColor: (!storeName || !storeOwnerName) ? "#e6e6e6" : "#FB8C00",
+            justifyContent: "center", // Center content vertically
+            alignItems: "center", // Center content horizontally
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              color: (!storeName || !storeOwnerName)  ? "#888888" : "white",
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+        </ScrollView>
+        
+  
+        {modalVisible && (
+          <>
+            <StoreModal
+              modalConfirmVisible={modalVisible}
+              setModalConfirmVisible={setModalVisible}
+            />
+            <View style={styles.overlay} />
+          </>
+        )}
+      </View>
   );
 };
 

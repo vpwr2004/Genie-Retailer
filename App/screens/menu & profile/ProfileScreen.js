@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserDetails } from "../../redux/reducers/storeDataSlice";
 import { launchCamera } from "react-native-image-picker";
 import { manipulateAsync } from "expo-image-manipulator";
+import DelImg from "../../assets/delImg.svg"
 import {
         FontAwesome,
         Entypo,
@@ -260,11 +261,7 @@ const ProfileScreen = () => {
                               onPress={() => deleteImage(index)}
                               style={styles.deleteIcon}
                             >
-                              <Entypo
-                                name="circle-with-cross"
-                                size={20}
-                                color="gray"
-                              />
+                             <DelImg/>
                             </Pressable>
                 </View>
               ))}

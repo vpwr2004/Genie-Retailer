@@ -20,6 +20,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import ClickImage from "../../assets/ClickImg.svg";
 import AddMoreImage from "../../assets/AddMoreImg.svg";
+import DelImg from "../../assets/delImg.svg"
 import {
   FontAwesome,
   Entypo,
@@ -190,7 +191,7 @@ const AddImageScreen = () => {
   return (
     <>
       {!cameraScreen && (
-        <SafeAreaView style={{ flex: 1 }}> 
+        <View style={{ flex: 1 }}> 
           <View style={{ flex: 1 }}>
             <View className="w-full z-40 pt-16 flex flex-row justify-between items-center px-[32px]">
               <Pressable
@@ -199,13 +200,16 @@ const AddImageScreen = () => {
               >
                 <FontAwesome name="arrow-left" size={15} color="black" />
               </Pressable>
-              <Text className="flex flex-1 justify-center items-center text-center text-[16px]">
-                Add Image
+              <Text className="flex flex-1 justify-center font-bold  items-center text-center text-[16px]">
+                Add Store Image
               </Text>
             </View>
             <View className="mt-[26px] mb-[27px]">
+            <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
+                    Step 2/3
+                  </Text>
               <Text className="text-[14px] text-center px-[32px] text-[#2e2c43]">
-              Provide image references for customers to reach up to you easily for purchase after bargaining.
+              Please remember to provide easy-to-understand image references that people can use to find you for purchasing.
               </Text>
             </View>
 
@@ -243,11 +247,7 @@ const AddImageScreen = () => {
                               onPress={() => deleteImage(index)}
                               style={styles.deleteIcon}
                             >
-                              <Entypo
-                                name="circle-with-cross"
-                                size={24}
-                                color="gray"
-                              />
+                              <DelImg/>
                             </Pressable>
                           </View>
                         </Pressable>
@@ -335,7 +335,7 @@ const AddImageScreen = () => {
             index={imgIndex}
           />
           {modalVisible && <View style={styles.overlay} />}
-        </SafeAreaView>
+        </View>
       )}
 
       

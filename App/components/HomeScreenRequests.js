@@ -25,7 +25,7 @@ const HomeScreenRequests = () => {
                  </Text>
                  <BucketImg/>
 
-                 <View className="flex flex-col gap-[32px] px-[32px]">
+                 <View className="flex flex-col  px-[32px]">
                     <Text className="text-[14px] text-center">
                     Cultutrtap Genie is the bargaining platform, Genie will connect you with the customers 
                      online, You have to attract customer by pushing
@@ -44,7 +44,7 @@ const HomeScreenRequests = () => {
                     <Text className="text-[14px] px-[32px]  text-[#2E2C43]  text-center">
                     If you get agree with price , which is offered by customer , select yes, if no , select no. 
                     </Text>
-                    <Home2 width={320} />
+                    <Home2 width={320} height={230} />
                  </View>
                  <View className="gap-[20px] -mt-[10px] items-center">
                     <Text className="text-[14px] px-[32px]  text-[#2E2C43]  text-center">

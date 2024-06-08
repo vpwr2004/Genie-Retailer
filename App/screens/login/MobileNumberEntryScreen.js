@@ -11,9 +11,14 @@ import {
   ActivityIndicator,
   StyleSheet,
   BackHandler,
+  Platform,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigation, useNavigationState, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  useNavigationState,
+  useRoute,
+} from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import MobileNumberImg from "../../assets/mobile.svg";
@@ -23,7 +28,6 @@ import {
 } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import {
- 
   setMobileNumber,
   setUniqueToken,
   setUserDetails,
@@ -32,8 +36,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import auth from "@react-native-firebase/auth";
 import axios from "axios";
-import messaging from '@react-native-firebase/messaging';
-
+import messaging from "@react-native-firebase/messaging";
 
 const MobileNumberEntryScreen = () => {
   const navigation = useNavigation();
@@ -49,37 +52,37 @@ const MobileNumberEntryScreen = () => {
   const [token, setToken] = useState("");
   const [mobileScreen, setMobileScreen] = useState(true);
   const countryCode = "+91";
-  const loginScreen=true;
-  const uniqueToken=useSelector(state=>state.storeData.uniqueToken)
-  const navigationState = useNavigationState(state => state);
-  const isLoginScreen = navigationState.routes[navigationState.index].name === 'mobileNumber';
-  console.log("mobil",isLoginScreen);
+  const loginScreen = true;
+  const uniqueToken = useSelector((state) => state.storeData.uniqueToken);
+  const navigationState = useNavigationState((state) => state);
+  const isLoginScreen =
+    navigationState.routes[navigationState.index].name === "mobileNumber";
+  console.log("mobil", isLoginScreen);
 
-async function requestUserPermission() {
+  async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
+
     if (enabled) {
-      console.log('Authorization status:', authStatus);
+      console.log("Authorization status:", authStatus);
     }
   }
 
- useEffect(()=>{
-    
-    if(requestUserPermission()){
-        messaging().getToken().then(token=>{
-          console.log("token",token);
-           setToken(token);
+  useEffect(() => {
+    if (requestUserPermission()) {
+      messaging()
+        .getToken()
+        .then((token) => {
+          console.log("token", token);
+          setToken(token);
           dispatch(setUniqueToken(token));
-        })
+        });
+    } else {
+      console.log("permission not granted", authStatus);
     }
-    else{
-      console.log("permission not granted",authStatus);
-    }
-  
-  },[route.params]);
+  }, [route.params]);
 
   useEffect(() => {
     const backAction = () => {
@@ -88,10 +91,10 @@ async function requestUserPermission() {
         setMobileScreen(true);
         return true; // Prevent default back action
       }
-      if(isLoginScreen && mobileScreen) {
-        BackHandler.exitApp();
-        return true;
-      }
+      // if(isLoginScreen && mobileScreen) {
+      //   BackHandler.exitApp();
+      //   return true;
+      // }
 
       return false;
     };
@@ -128,10 +131,9 @@ async function requestUserPermission() {
         // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
         // setConfirm(confirmation);
         // console.log(confirmation);
-       
+
         dispatch(setMobileNumber(phoneNumber));
         setMobileScreen(false);
-       
       } catch (error) {
         console.log("error", error);
       } finally {
@@ -173,15 +175,18 @@ async function requestUserPermission() {
       setMobileScreen(true);
       if (response.data.storeMobileNo) {
         // If mobile number is registered, navigate to home screen
-        
+
         setOtp("");
         setMobileNumberLocal("");
-        const res = await axios.patch(`https://genie-backend-meg1.onrender.com/retailer/editretailer`, {
-          _id: response?.data?._id,
-          uniqueToken:token
-        });
+        const res = await axios.patch(
+          `https://genie-backend-meg1.onrender.com/retailer/editretailer`,
+          {
+            _id: response?.data?._id,
+            uniqueToken: token,
+          }
+        );
         dispatch(setUserDetails(res.data));
-        await AsyncStorage.setItem('userData', JSON.stringify(res.data));
+        await AsyncStorage.setItem("userData", JSON.stringify(res.data));
 
         setToken("");
         navigation.navigate("home");
@@ -189,17 +194,17 @@ async function requestUserPermission() {
         // If mobile number is not registered, continue with the registration process
         setMobileNumberLocal("");
         navigation.navigate("registerUsername");
-       }
-        // }
-        // else{
-        //   setLoading(false);
-        //   console.log('Invalid otp:');
-        //   alert('Invalid otp');
-        //   return;
-        // }
+      }
+      // }
+      // else{
+      //   setLoading(false);
+      //   console.log('Invalid otp:');
+      //   alert('Invalid otp');
+      //   return;
+      // }
     } catch (error) {
-      console.log('Invalid otp:');
-      alert('Invalid otp');
+      console.log("Invalid otp:");
+      alert("Invalid otp");
       console.error("Error checking mobile number:", error);
     } finally {
       setLoading(false);
@@ -208,34 +213,30 @@ async function requestUserPermission() {
   return (
     <>
       {mobileScreen && (
-        <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAwareScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            enableOnAndroid={true}
-            enableAutomaticScroll={true}
-            extraScrollHeight={100}
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={{ flex: 1, backgroundColor: "white" }}>
-              <View style={{ flex: 1 }}>
-                {/* Your existing content */}
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+         
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <KeyboardAvoidingView behavior="position">
+              <View style={{ flex: 1, backgroundColor: "white" }}>
                 <View className="bg-white flex-col justify-center">
-                  {/* <View className="w-full  z-40  top-16 flex flex-row justify-between items-center  px-[32px]">
-                                <Pressable onPress={() => { navigation.goBack() }} className="flex flex-row items-center  gap-2">
-                                    <FontAwesome name="arrow-left" size={15} color="black" />
-                                </Pressable>
-                            </View> */}
-                  <View className="flex flex-col justify-center items-center  px-[32px]">
-                    <MobileNumberImg height={385} width={306} />
+                  <View className="flex flex-col justify-center items-center gap-[20px]">
+                    <MobileNumberImg
+                      height={400}
+                      width={389}
+                      className="object-cover"
+                    />
+                    <Text className="text-[14.5px] font-bold text-[#FB8C00]">
+                      Step 1/9
+                    </Text>
                   </View>
-                  <View className="mt-[84.4px] mb-[60px]  px-[32px]">
-                    <View className="flex flex-col gap-[24px]">
+                  <View className="mt-[44.4px] mb-[60px]  px-[32px]">
+                    <View className="flex flex-col gap-[5px]">
                       <View className="flex flex-col gap-[5px]">
-                        <Text className="text-[16px] font-semibold">
+                        <Text className="text-[18px] font-extrabold">
                           Please enter your store owner
                         </Text>
                       </View>
-                      <KeyboardAvoidingView className="flex flex-col gap-[15px]">
+                      <View className="flex flex-col gap-[15px]">
                         <Text className="  text-[14px] font-normal ">
                           Mobile Number
                         </Text>
@@ -252,7 +253,7 @@ async function requestUserPermission() {
                             />
                           </View>
                           <TextInput
-                           value={mobileNumber}
+                            value={mobileNumber}
                             placeholder="Ex : 9088-79-0488"
                             placeholderTextColor={"#dbcdbb"}
                             keyboardType="numeric"
@@ -261,70 +262,69 @@ async function requestUserPermission() {
                             className="w-full text-[16px] font-semibold text-black "
                           />
                         </View>
-                      </KeyboardAvoidingView>
+                      </View>
                     </View>
                   </View>
                 </View>
               </View>
-              <View style={{ marginTop: 20 }}>
-                <TouchableOpacity
-                  disabled={!mobileNumber}
-                  onPress={sendVerification}
-                  style={{
-                    position: "absolute",
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                    width: "100%",
-                    alignItems: "center",
-                  }}
-                >
-                  <View className="w-full flex justify-center items-center">
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "bold",
-                      color: "white",
-                      backgroundColor: "#fb8c00",
-                      paddingVertical: 18,
-                      width: "100%",
-                      textAlign: "center",
-                    }}
-                  >
-                    Next
-                  </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </KeyboardAwareScrollView>
+              </KeyboardAvoidingView>
+            </ScrollView>
+          
+
+          <TouchableOpacity
+            disabled={mobileNumber.length !== 10}
+            onPress={sendVerification}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 68,
+              width: "100%",
+              backgroundColor:
+                mobileNumber.length !== 10 ? "#e6e6e6" : "#FB8C00",
+              justifyContent: "center", // Center content vertically
+              alignItems: "center", // Center content horizontally
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                color: mobileNumber.length !== 10 ? "#888888" : "white",
+              }}
+            >
+              Next
+            </Text>
+          </TouchableOpacity>
+
           {loading && (
-            <View style={styles.loadingContainer}>
+            <View style={{ ...styles.loadingContainer }}>
               <ActivityIndicator size="large" color="#fb8c00" />
             </View>
           )}
-        </SafeAreaView>
+        </View>
       )}
       {!mobileScreen && (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
           <KeyboardAvoidingView behavior="padding">
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
               <View style={{ alignItems: "center" }}>
-                <View className="w-full z-40 top-[20px]  absolute flex flex-row justify-between items-center  px-[32px]">
-                  <Pressable
-                    onPress={() => {
-                      setMobileScreen(true);
-                    }}
-                    className="flex flex-row p-2 items-center  gap-2"
-                  >
-                    <FontAwesome name="arrow-left" size={15} color="black" />
-                  </Pressable>
-                </View>
-
                 <View
-                  style={{ justifyContent: "center", alignItems: "center" }}
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 20,
+                  }}
                 >
-                  <MobileNumberImg height={388} width={306} />
+                  <MobileNumberImg
+                    height={400}
+                    width={389}
+                    className="object-cover"
+                  />
+                  <Text className="text-[14.5px] font-bold text-[#FB8C00]">
+                    Step 2/9
+                  </Text>
                 </View>
 
                 <View style={{ paddingHorizontal: 32 }}>
@@ -333,13 +333,17 @@ async function requestUserPermission() {
                       fontSize: 18,
                       fontWeight: "bold",
                       color: "#001b33",
-                      marginTop: 35.54,
+                      marginTop: 16,
                     }}
                   >
                     ENTER OTP
                   </Text>
                   <Text style={{ fontSize: 14, color: "#2e2c43" }}>
-                    It should be autofilled or type manually
+                    OTP should be auto-filled otherwise type it manually.Sending
+                    OTP at{" "}
+                    <Text className="text-[#558B2F] font-bold">
+                      +91 {mobileNumber}
+                    </Text>
                   </Text>
 
                   <View
@@ -401,27 +405,23 @@ async function requestUserPermission() {
               bottom: 0,
               left: 0,
               right: 0,
-              backgroundColor: "#fb8c00",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingVertical: 18,
-              width:"100%"
+              height: 68,
+              width: "100%",
+              backgroundColor:
+                otp.length !== 6 ? "#e6e6e6" : "#FB8C00",
+              justifyContent: "center", // Center content vertically
+              alignItems: "center", // Center content horizontally
             }}
           >
-             <View className="w-full flex justify-center items-center">
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "bold",
-                      color: "white",
-                      backgroundColor: "#fb8c00",
-                      width: "100%",
-                      textAlign: "center",
-                    }}
-                  >
-                    Next
-                  </Text>
-                  </View>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                color: otp.length !== 6 ? "#888888" : "white",
+              }}
+            >
+              Next
+            </Text>
           </TouchableOpacity>
 
           {loading && (
@@ -429,7 +429,7 @@ async function requestUserPermission() {
               <ActivityIndicator size="large" color="#fb8c00" />
             </View>
           )}
-        </SafeAreaView>
+        </View>
       )}
     </>
   );

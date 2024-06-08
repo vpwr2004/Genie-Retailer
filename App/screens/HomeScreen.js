@@ -16,8 +16,8 @@ import { setUserDetails } from '../redux/reducers/storeDataSlice'
 const HomeScreen = () => {
     const navigation =useNavigation()
     const dispatch=useDispatch();
-    const [verified,setVerified]=useState(false);
-    const [completeProfile,setCompleteProfile]=useState(false);
+    const [verified,setVerified]=useState(true);
+    const [completeProfile,setCompleteProfile]=useState(true);
     const [refreshing,setRefreshing]=useState(false);
   const isFocused = useIsFocused();
 
@@ -141,7 +141,7 @@ const handleRefresh = () => {
 
 
     return (
-        <SafeAreaView className="flex-1">
+        <View className="flex-1">
             <ScrollView refreshControl={
           <RefreshControl
              refreshing={refreshing}
@@ -151,7 +151,7 @@ const handleRefresh = () => {
             }
           />}
           >
-            <View className="flex flex-col  gap-[32px]">
+            <View className="flex flex-col mt-[40px]  gap-[32px]">
                 <View className="flex flex-row justify-between items-center px-[32px]">
                     <View className="bg-[#FB8C00] p-[4px] rounded-full">
                         <TouchableOpacity onPress={()=>navigation.navigate("menu")}>
@@ -179,7 +179,7 @@ const handleRefresh = () => {
             </View>
             </ScrollView>
 
-        </SafeAreaView>
+        </View>
     )
 }
 

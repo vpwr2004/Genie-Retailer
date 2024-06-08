@@ -28,7 +28,7 @@ const WriteAboutStoreScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
         <View style={{ flex: 1 }}>
           <View
@@ -46,12 +46,16 @@ const WriteAboutStoreScreen = () => {
             >
               <FontAwesome name="arrow-left" size={15} color="black" />
             </Pressable>
-            <Text style={{ flex: 1, textAlign: "center", fontSize: 16 }}>
-              Tell us about your store{"\n"}category
+            <Text style={{ flex: 1, textAlign: "center", fontSize: 16,fontWeight:800 }}>
+            Tell us about your store {"\n"}
+            & services
             </Text>
           </View>
 
-          <View style={{ paddingHorizontal: 32, marginTop: 29 }}>
+          <View style={{ paddingHorizontal: 32, marginTop: 10 }}>
+          <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
+                    Step 1/3
+                  </Text>
             <Text
               style={{
                 fontSize: 14,
@@ -60,7 +64,7 @@ const WriteAboutStoreScreen = () => {
                 marginBottom: 29,
               }}
             >
-              We will consider and add your{"\n"}store category in our database
+              What do you sell or what services {"\n"}do you provide?
             </Text>
           </View>
 
@@ -98,13 +102,14 @@ const WriteAboutStoreScreen = () => {
             <View
               style={{
                 height: 63,
-                backgroundColor: "#fb8c00",
+                backgroundColor:
+                !query? "#e6e6e6" : "#FB8C00",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <Text
-                style={{ color: "white", fontSize: 18, fontWeight: "bold" }}
+                style={{  color: !query ? "#888888" : "white", fontSize: 18, fontWeight: "bold" }}
               >
                 NEXT
               </Text>
@@ -112,7 +117,7 @@ const WriteAboutStoreScreen = () => {
           
         </TouchableOpacity>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 

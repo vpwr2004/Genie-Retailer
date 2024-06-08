@@ -2,7 +2,9 @@ import { View, Text, Image, TextInput, KeyboardAvoidingView, TouchableOpacity, P
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import StoreName from "../../assets/StoreName.svg"
+import StoreName from "../../assets/delivery.svg"
+import BackArrow from "../../assets/BackArrow.svg"
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { setStoreService } from '../../redux/reducers/storeDataSlice';
@@ -29,47 +31,71 @@ const ServiceDeliveryScreen = () => {
 
 
     return (
-        <SafeAreaView>
-        <ScrollView>
-            <View className="w-full bg-white flex-col justify-center ">
-                <View className="w-full fixed z-40 top-16 flex flex-row justify-between items-center px-[32px]">
-                    <Pressable onPress={() => navigation.goBack()} className="flex flex-row items-center p-2 gap-2">
-                        <FontAwesome name="arrow-left" size={15} color="black" />
-                    </Pressable>
-                </View>
-                <View className="flex flex-col justify-center items-center px-[32px]">
-                <StoreName height={350}  width={256}/>
-                </View>
-                <View className="my-[82.5px]  flex flex-col gap-[33px] px-[32px]">
-                    <View className="flex flex-col gap-[17px]">
-                        <Text className="text-[16px] text-[#2e2c43] font-semibold">Do you provide home delivery or service at customer's doorstep?</Text>
-                        <KeyboardAvoidingView className="flex flex-col gap-[22px]">
-                            <Pressable className="flex flex-row items-center gap-[22px]" onPress={() => setChecked(true)}>
-                                <View className={`border-[#FB8C00] h-[20px] w-[20px] flex justify-center items-center border-[1px] rounded-full ${checked === true ? "bg-[#FB8C00]" : ""}`}>
-                                {checked===true && <Entypo name="circle" size={16} color="white" />}
-                                </View>
-                                <Text className="text-[#2E2C43] text-[16px] font-semibold">Yes</Text>
-                            </Pressable>
-                            <Pressable className="flex flex-row items-center gap-[22px]" onPress={() => setChecked(false)}>
-                                <View className={`border-[#FB8C00] h-[20px] w-[20px] flex justify-center items-center  border-[1px] rounded-full ${checked === false ? "bg-[#FB8C00]" : ""}`}>
-                                {checked===false && <Entypo name="circle" size={16} color="white" />}
-
-                                </View>
-                                <Text className="text-[#2E2C43] text-[16px] font-semibold">No</Text>
-                            </Pressable>
-                        </KeyboardAvoidingView>
+        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1,backgroundColor:"white" }}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+                <View className="w-full bg-white flex-col justify-center">
+                    <View className="w-full fixed z-40 top-16 flex flex-row justify-between items-center px-[32px]">
+                        <Pressable onPress={() => navigation.goBack()} className="flex flex-row items-center p-2 gap-2">
+                            <BackArrow width={14} height={10} />
+                        </Pressable>
+                    </View>
+                    <View className="flex flex-col justify-center items-center px-[32px] gap-[20px] ">
+                        <StoreName height={400} width={389} className="object-cover" />
+                        <Text className="text-[14.5px] font-bold text-[#FB8C00]">Step 5/9</Text>
+                    </View>
+                    <View className="my-[30px] flex flex-col gap-[33px] px-[32px]">
+                        <View className="flex flex-col gap-[17px]">
+                            <Text className="text-[16px] text-[#2e2c43]">
+                                Do you provide home delivery or service at customer's doorstep?
+                            </Text>
+                            <KeyboardAvoidingView className="flex flex-col gap-[22px]">
+                                <Pressable className="flex flex-row items-center gap-[22px]" onPress={() => setChecked(true)}>
+                                    <View className={`border-[#FB8C00] h-[20px] w-[20px] flex justify-center items-center border-[1px] rounded-full ${checked === true ? "bg-[#FB8C00]" : ""}`}>
+                                        {checked === true && <Entypo name="circle" size={16} color="white" />}
+                                    </View>
+                                    <Text className="text-[#2E2C43] text-[16px] font-semibold">Yes</Text>
+                                </Pressable>
+                                <Pressable className="flex flex-row items-center gap-[22px]" onPress={() => setChecked(false)}>
+                                    <View className={`border-[#FB8C00] h-[20px] w-[20px] flex justify-center items-center border-[1px] rounded-full ${checked === false ? "bg-[#FB8C00]" : ""}`}>
+                                        {checked === false && <Entypo name="circle" size={16} color="white" />}
+                                    </View>
+                                    <Text className="text-[#2E2C43] text-[16px] font-semibold">No</Text>
+                                </Pressable>
+                            </KeyboardAvoidingView>
+                        </View>
                     </View>
                 </View>
-                <TouchableOpacity onPress={handleService}>
-                    
-                        <View className="w-full h-[63px] bg-[#fb8c00]  flex items-center justify-center">
-                            <Text className="text-white text-[18px] font-bold">NEXT</Text>
-                        </View>
-                   
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
-        </SafeAreaView>
+            </ScrollView>
+            <TouchableOpacity
+                onPress={handleService}
+                style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: '#fb8c00',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingVertical: 18,
+                    width: '100%',
+                }}
+            >
+                <Text
+                    style={{
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        color: 'white',
+                        textAlign: 'center',
+                    }}
+                >
+                    Next
+                </Text>
+            </TouchableOpacity>
+          
+        </View>
+    </View>
+    
     );
 };
 

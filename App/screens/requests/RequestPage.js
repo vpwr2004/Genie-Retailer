@@ -315,8 +315,8 @@ const RequestPage = () => {
   // const messages = useSelector(state => state.requestData.messages);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View className="relative flex-grow">
+    <View style={{ flex: 1 }}>
+      <View className="relative  flex-grow">
         {attachmentScreen && (
           <View style={styles.overlay}>
             <Attachment
@@ -330,7 +330,7 @@ const RequestPage = () => {
           </View>
         )}
 
-        <View className=" relative bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
+        <View className=" relative bg-[#ffe7c8] pt-[40px] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
           <Pressable
             onPress={() => {
               navigation.goBack();
@@ -359,7 +359,7 @@ const RequestPage = () => {
                 )}
               </View>
               <View className="w-[60%]">
-                <Text className="text-[14px] text-[#2e2c43] capitalize">
+                <Text className="text-[14px]  text-[#2e2c43] capitalize">
                   {requestInfo?.customerId?.userName}
                 </Text>
                 <Text className="text-[12px] text-[#c4c4c4]">
@@ -714,7 +714,7 @@ const RequestPage = () => {
       {/* {closeRequestModal && <View style={styles.overlay} />} */}
       {acceptRequestModal && <View style={styles.overlay} />}
       {cancelRequestModal && <View style={styles.overlay} />}
-    </SafeAreaView>
+    </View>
   );
 };
 

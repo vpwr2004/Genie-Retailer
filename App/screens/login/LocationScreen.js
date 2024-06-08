@@ -25,6 +25,8 @@ import { setServiceProvider, setStoreLocation, setUserDetails } from "../../redu
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import BackArrow from "../../assets/BackArrow.svg";
+
 
 const LocationScreen = () => {
   const navigation = useNavigation();
@@ -164,20 +166,21 @@ const LocationScreen = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1">
-      <ScrollView>
+    <View className="flex-1">
+      <ScrollView style={{flex:1}}>
         <View className="bg-white flex-col justify-center">
-          <View className="w-full fixed z-40 px-[32px]  top-16 flex flex-row justify-between items-center">
+          <View className="w-full absolute z-40 px-[32px]  top-16 flex flex-row justify-between items-center">
             <Pressable
               onPress={() => {
                 navigation.goBack();
               }}
               className="flex flex-row p-2 items-center  gap-2"
             >
-              <FontAwesome name="arrow-left" size={15} color="black" />
+                           <BackArrow width={14} height={10} />
+
             </Pressable>
           </View>
-          <View className="flex flex-col justify-center items-center px-[32px] ">
+          <View className="flex flex-col justify-center items-center px-[32px] mt-[40px] ">
             <LocationImg height={322} width={291} />
           </View>
           {/* <View className="flex flex-row gap-[7px] mt-[46.5px]">
@@ -232,7 +235,7 @@ const LocationScreen = () => {
               </View>
             </View>
           </View>
-          <TouchableOpacity disabled={!location} onPress={handleLocationFetching}>
+          {/* <TouchableOpacity disabled={!location} onPress={handleLocationFetching}>
           
               <View className="w-full h-[63px] bg-[#fb8c00] absolute bottom-0 right-0 left-0  flex items-center justify-center ">
                 <Text className="text-white text-[18px] font-extrabold">
@@ -240,6 +243,32 @@ const LocationScreen = () => {
                 </Text>
               </View>
            
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            disabled={!location}
+            onPress={handleLocationFetching}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 68,
+              width: "100%",
+              backgroundColor:
+                !location ? "#e6e6e6" : "#FB8C00",
+              justifyContent: "center", // Center content vertically
+              alignItems: "center", // Center content horizontally
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                color: !location ? "#888888" : "white",
+              }}
+            >
+              Continue
+            </Text>
           </TouchableOpacity>
         </View>
         <View className="absolute flex justify-center items-center">
@@ -262,7 +291,7 @@ const LocationScreen = () => {
           <ActivityIndicator size="large" color="#fb8c00" />
         </View>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
