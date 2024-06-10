@@ -126,7 +126,7 @@ export const sendCustomNotificationChat = async (mess) => {
         notification: {
           title: mess.title,
           body: mess.body,
-          image: mess?.image,
+          // image: mess?.image,
         },
         android: {
           priority: "high",

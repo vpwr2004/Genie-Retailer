@@ -120,7 +120,7 @@ const UserNameEntryScreen = () => {
                     <TextInput
                       onChangeText={handleStoreName}
                       placeholder="Ex: Kishor Kumar"
-                      className="w-[310px] h-[50px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[5px]"
+                      className="w-[310px] h-[54px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[5px]"
                       
                     />
                   </View>
@@ -132,7 +132,7 @@ const UserNameEntryScreen = () => {
                     <TextInput
                       onChangeText={handleStoreOwnerName}
                       placeholder="Ex: Kishor Kumar"
-                      className="w-[310px] h-[50px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[5px]"
+                      className="w-[310px] h-[54px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[5px]"
                      
                     />
                   </View>

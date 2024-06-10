@@ -56,8 +56,7 @@ const MobileNumberEntryScreen = () => {
   const loginScreen = true;
   const uniqueToken = useSelector((state) => state.storeData.uniqueToken);
   const navigationState = useNavigationState((state) => state);
-  const isLoginScreen =
-    navigationState.routes[navigationState.index].name === "mobileNumber";
+  const isLoginScreen =navigationState.routes[navigationState.index].name === "mobileNumber";
   console.log("mobil", isLoginScreen);
   const { width } = Dimensions.get("window");
 
@@ -94,10 +93,10 @@ const MobileNumberEntryScreen = () => {
         setMobileScreen(true);
         return true; // Prevent default back action
       }
-      // if(isLoginScreen && mobileScreen) {
-      //   BackHandler.exitApp();
-      //   return true;
-      // }
+      else if(isLoginScreen) {
+        BackHandler.exitApp();
+        // return true;
+      }
 
       return false;
     };
