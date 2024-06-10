@@ -12,6 +12,7 @@ import {
   StyleSheet,
   BackHandler,
   Platform,
+  Dimensions
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -58,6 +59,8 @@ const MobileNumberEntryScreen = () => {
   const isLoginScreen =
     navigationState.routes[navigationState.index].name === "mobileNumber";
   console.log("mobil", isLoginScreen);
+  const { width } = Dimensions.get("window");
+
 
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
@@ -164,7 +167,7 @@ const MobileNumberEntryScreen = () => {
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
-        "https://genie-backend-meg1.onrender.com/retailer/",
+        "http://173.212.193.109:5000/retailer/",
         {
           params: {
             storeMobileNo: phoneNumber,
@@ -179,7 +182,7 @@ const MobileNumberEntryScreen = () => {
         setOtp("");
         setMobileNumberLocal("");
         const res = await axios.patch(
-          `https://genie-backend-meg1.onrender.com/retailer/editretailer`,
+          `http://173.212.193.109:5000/retailer/editretailer`,
           {
             _id: response?.data?._id,
             uniqueToken: token,
@@ -222,7 +225,7 @@ const MobileNumberEntryScreen = () => {
                   <View className="flex flex-col justify-center items-center gap-[20px]">
                     <MobileNumberImg
                       height={400}
-                      width={389}
+                      width={width}
                       className="object-cover"
                     />
                     <Text className="text-[14.5px] font-bold text-[#FB8C00]">
@@ -294,7 +297,7 @@ const MobileNumberEntryScreen = () => {
                 color: mobileNumber.length !== 10 ? "#888888" : "white",
               }}
             >
-              Next
+              NEXT
             </Text>
           </TouchableOpacity>
 
@@ -319,7 +322,7 @@ const MobileNumberEntryScreen = () => {
                 >
                   <MobileNumberImg
                     height={400}
-                    width={389}
+                    width={width}
                     className="object-cover"
                   />
                   <Text className="text-[14.5px] font-bold text-[#FB8C00]">
@@ -420,7 +423,7 @@ const MobileNumberEntryScreen = () => {
                 color: otp.length !== 6 ? "#888888" : "white",
               }}
             >
-              Next
+            NEXT
             </Text>
           </TouchableOpacity>
 

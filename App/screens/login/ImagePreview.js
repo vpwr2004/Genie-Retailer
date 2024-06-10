@@ -51,7 +51,7 @@ const ImagePreview = () => {
 
       // Update location on server
       const response = await axios.patch(
-        `https://genie-backend-meg1.onrender.com/retailer/editretailer`,
+        `http://173.212.193.109:5000/retailer/editretailer`,
         {
           _id: userId,
           storeImages: newImages,
@@ -97,7 +97,7 @@ const ImagePreview = () => {
 
         <View className="w-full flex items-center justify-center mt-[20px]">
         <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[20px] ">
-                    Step 2/3
+                    Step 4/4
                   </Text>
           <View
             style={{ overflowX: "scroll" }}
@@ -156,7 +156,7 @@ const ImagePreview = () => {
           <TouchableOpacity onPress={handleImage}>
             <View className="w-full flex items-center justify-center">
               <Text className="text-white font-bold text-center text-[16px]">
-                Continue
+                CONTINUE
               </Text>
             </View>
           </TouchableOpacity>

@@ -93,7 +93,7 @@ const RequestPage = () => {
       }
       // let response = 
       await axios.get(
-        "https://genie-backend-meg1.onrender.com/chat/get-spade-messages",
+        "http://173.212.193.109:5000/chat/get-spade-messages",
         {
           params: {
             id: requestInfo?._id ? requestInfo?._id : req?._id,
@@ -102,7 +102,8 @@ const RequestPage = () => {
       )
       .then(response => {
           setMessages(response?.data);
-          console.log("Messages found successfully");
+
+          console.log("Messages found successfully",response.data);
           // console.log("user joined chat with chatId", response.data[0].chat._id);
           socket.emit("join chat", response?.data[0].chat._id);
 
@@ -221,7 +222,7 @@ const RequestPage = () => {
       }
       try {
         const response = await axios.patch(
-          "https://genie-backend-meg1.onrender.com/chat/reject-bid",
+          "http://173.212.193.109:5000/chat/reject-bid",
           {
             messageId: lastMessage?._id,
           }
@@ -685,7 +686,7 @@ const RequestPage = () => {
               >
                 <View className="h-[63px] flex items-center justify-center bg-[#FB8C00]">
                   <Text className="font-bold text-[16px] text-white">
-                    Send a Bid
+                    Send a offer
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -718,14 +719,15 @@ const RequestPage = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   overlay: {
     zIndex: 100,
     flex: 1,
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    // position:"absolute",
-    // bottom:0// Semi-transparent greyish background
+    //  position:"absolute",
+    //  bottom:0// Semi-transparent greyish background
   },
   // menuContainer: {
   //     flex: 1,

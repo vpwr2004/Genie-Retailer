@@ -54,7 +54,7 @@ const WriteAboutStoreScreen = () => {
 
           <View style={{ paddingHorizontal: 32, marginTop: 10 }}>
           <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
-                    Step 1/3
+                    Step 1/4
                   </Text>
             <Text
               style={{

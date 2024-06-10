@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Image,
   Platform,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,6 +53,8 @@ const PanCardScreen = () => {
   const [camera, setCamera] = useState(null);
   const [panCard, setPanCardLocal] = useState("");
   const [loading, setLoading] = useState(false);
+  const { width } = Dimensions.get("window");
+
 
   console.log(
     mobileNumber,
@@ -76,7 +79,7 @@ const PanCardScreen = () => {
       // Send user data to the server
       console.log("User data sent to");
       const response = await axios.post(
-        "https://genie-backend-meg1.onrender.com/retailer/",
+        "http://173.212.193.109:5000/retailer/",
         {
           storeOwnerName: storeOwnerName,
           storeName: storeName,
@@ -265,7 +268,7 @@ const PanCardScreen = () => {
               </TouchableOpacity>
             </View>
             <View className="flex flex-col justify-center items-center px-[32px] gap-[20px]">
-              <StoreName height={400} width={389} className="object-cover" />
+              <StoreName height={400} width={width} className="object-cover" />
               <Text className="text-[14.5px] font-bold text-[#FB8C00]">
                 Step 6/9
               </Text>
@@ -295,8 +298,8 @@ const PanCardScreen = () => {
                     <View  className="rounded-[16px]">
                   <Image
                     source={{ uri: imagesLocal }}
-                    width={119}
-                    height={150}
+                    width={154}
+                    height={124}
                     className="rounded-[16px] border-[1px] border-[#cbcbce] object-cover"
                   />
                   <Pressable

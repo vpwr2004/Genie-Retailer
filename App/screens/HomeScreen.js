@@ -70,7 +70,7 @@ const navigationState = useNavigationState(state => state);
               
       
         
-        const response = await axios.get('https://genie-backend-meg1.onrender.com/retailer/', {
+        const response = await axios.get('http://173.212.193.109:5000/retailer/', {
             params: {
                 storeMobileNo: userData.storeMobileNo
             }
@@ -161,7 +161,7 @@ const handleRefresh = () => {
                     <GinieIcon/>
                     <View className="bg-[#FB8C00] p-[4px] rounded-full">
                         <TouchableOpacity onPress={()=>navigation.navigate("history")}>
-                            <History />
+                            <History height={28} width={28}/>
                         </TouchableOpacity>
                     </View>
                     

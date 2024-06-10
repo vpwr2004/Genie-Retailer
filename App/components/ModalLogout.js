@@ -22,7 +22,7 @@ const ModalLogout= ({user,modalVisible,setModalVisible}) => {
             //  await auth().signOut(); 
              await messaging().deleteToken();
               console.log('FCM token deleted.');
-            const res = await axios.patch(`https://genie-backend-meg1.onrender.com/retailer/editretailer`, {
+            const res = await axios.patch(`http://173.212.193.109:5000/retailer/editretailer`, {
              _id: user?._id,
              uniqueToken:""
              });

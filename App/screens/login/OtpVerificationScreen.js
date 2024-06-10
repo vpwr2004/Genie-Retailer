@@ -71,7 +71,7 @@ const OtpVerificationScreen = () => {
     //         // Make a request to your backend to fetch user data
     //       //    console.log('Fetching user data',user.storeMobileNo);
   
-    //         const response = await axios.get('https://genie-backend-meg1.onrender.com/retailer/',{
+    //         const response = await axios.get('http://173.212.193.109:5000/retailer/',{
     //           params: {
     //         storeMobileNo: "7070707060" // Pass storeMobileNo as a query parameter
     //       }
@@ -100,7 +100,7 @@ const OtpVerificationScreen = () => {
              console.log("res",res);
              console.log(otp);
           //   if(res){
-          //   const response = await axios.get('https://genie-backend-meg1.onrender.com/retailer/',{
+          //   const response = await axios.get('http://173.212.193.109:5000/retailer/',{
           //       params: {
           //                   storeMobileNo:mobileNumber 
           //               }

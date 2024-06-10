@@ -34,7 +34,7 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
       if (requestInfo?.requestType === "new") {
         try {
           const res = await axios.patch(
-            "https://genie-backend-meg1.onrender.com/chat/modify-spade-retailer",{
+            "http://173.212.193.109:5000/chat/modify-spade-retailer",{
               id:requestInfo?._id,
               type:"ongoing"
             }
@@ -67,7 +67,7 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
       } else {
         try {
           const accept = await axios.patch(
-            `https://genie-backend-meg1.onrender.com/chat/accept-bid`,
+            `http://173.212.193.109:5000/chat/accept-bid`,
             {
               messageId: lastMessage?._id,
               userRequestId: requestInfo?.requestId?._id,

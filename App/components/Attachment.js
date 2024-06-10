@@ -93,13 +93,12 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
     };
 
     return (
-        <View style={styles.attachments} className="absolute top-0 left-0 right-0 bottom-0 z-50 h-screen">
+        <View style={styles.attachments} className="absolute  left-0 right-0 bottom-0 z-50 h-screen">
             <TouchableOpacity onPress={() => { setAttachmentScreen(false) }}>
                 <View className="h-4/5 w-screen -200 bg-transparent" >
                 </View>
             </TouchableOpacity>
-            <View className="bg-white py-[20px] h-1/5 gap-5  ">
-              
+            <View className="bg-white py-[20px] h-1/5 gap-5">
                 <View className="flex-row justify-evenly">
                     <View className="items-center">
                         <Document />
@@ -112,7 +111,7 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {setAttachmentScreen(false); navigation.navigate('camera', { data: { openCamera: false }, user,messages,setMessages}) }}>
-                        <View className="items-center">
+                        <View className="items-center"> 
                             <Gallery />
                             <Text>Gallery</Text>
                         </View>

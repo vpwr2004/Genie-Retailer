@@ -9,6 +9,7 @@ import {
   ScrollView,
   BackHandler,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
@@ -37,6 +38,8 @@ const UserNameEntryScreen = () => {
   const isUserNameScreen = navigationState.routes[navigationState.index].name === 'registerUsername';
   console.log("isUserNameScreen",isUserNameScreen)
   const [focusedInput, setFocusedInput] = useState(null);
+  const { width } = Dimensions.get("window");
+
 
   useEffect(() => {
     const backAction = () => {
@@ -105,7 +108,7 @@ const UserNameEntryScreen = () => {
                 </Pressable>
               </View>
               <View className="flex flex-col justify-center items-center gap-[10px]">
-                <StoreName height={400} width={389} className="object-cover" />
+                <StoreName height={400} width={width} className="object-cover" />
                 <Text className="text-[14.5px] font-bold text-[#FB8C00]">Step 3/9</Text>
               </View>
               
@@ -166,7 +169,7 @@ const UserNameEntryScreen = () => {
               color: (!storeName || !storeOwnerName)  ? "#888888" : "white",
             }}
           >
-            Next
+            NEXT
           </Text>
         </TouchableOpacity>
         </ScrollView>

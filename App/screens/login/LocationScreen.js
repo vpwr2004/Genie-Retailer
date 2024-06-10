@@ -9,6 +9,7 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -43,6 +44,8 @@ const LocationScreen = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(true);
   const [modalConfirmVisible, setModalConfirmVisible] = useState(false);
+  const { width } = Dimensions.get("window");
+
 
   useEffect(() => {
     fetchLocation();
@@ -61,7 +64,7 @@ const LocationScreen = () => {
       // console.log("location", data);
       if (!data.error) {
         // return data.display_name;
-        setAddress(data?.display_name);
+        setAddress(data?.display_name.split(" ").slice(0,5).join(" "));
       } else {
         return null;
       }
@@ -135,7 +138,7 @@ const LocationScreen = () => {
       dispatch(setStoreLocation(location));
       // Update location on server
       const response = await axios.patch(
-        `https://genie-backend-meg1.onrender.com/retailer/editretailer`,
+        `http://173.212.193.109:5000/retailer/editretailer`,
         {
           _id: userId,
           location: location,
@@ -166,10 +169,12 @@ const LocationScreen = () => {
   };
 
   return (
-    <View className="flex-1">
-      <ScrollView style={{flex:1}}>
-        <View className="bg-white flex-col justify-center">
-          <View className="w-full absolute z-40 px-[32px]  top-16 flex flex-row justify-between items-center">
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+     
+      <KeyboardAvoidingView behavior="padding">
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "white",position:"relative" }} >
+          <View className="w-full absolute px-[32px]  mt-[40px] flex flex-row justify-between items-center">
             <Pressable
               onPress={() => {
                 navigation.goBack();
@@ -181,15 +186,10 @@ const LocationScreen = () => {
             </Pressable>
           </View>
           <View className="flex flex-col justify-center items-center px-[32px] mt-[40px] ">
-            <LocationImg height={322} width={291} />
+            <LocationImg height={322} width={width} />
           </View>
-          {/* <View className="flex flex-row gap-[7px] mt-[46.5px]">
-                    <View className="w-[24px] h-[7px] bg-[#fb8c00] rounded-lg"></View>
-                    <View className="w-[24px] h-[7px] bg-[#fb8c00] rounded-lg"></View>
-                    <View className="w-[24px] h-[7px] bg-[#fb8c00] rounded-lg"></View>
-                    <View className="w-[24px] h-[7px] bg-[#fb8c00] rounded-lg"></View>
-                </View> */}
-
+       
+         
           <View className="mt-[40px] mb-[45px] flex flex-col gap-[33px] px-[32px]">
             <View>
               <Text className="text-[18px] text-[#001B33]  font-extrabold">
@@ -198,7 +198,7 @@ const LocationScreen = () => {
               <Text className="text-[14px] text-[#2e2c43] mt-[36px]">
                 Fetched Location
               </Text>
-              <KeyboardAvoidingView>
+              
                 <View style={styles.container}>
                   <TextInput
                     placeholder="189/2, Out Side Datia Gate ,Jhansi, 28402"
@@ -211,11 +211,11 @@ const LocationScreen = () => {
                     style={styles.input}
                   />
                 </View>
-              </KeyboardAvoidingView>
+             
               <Text className="text-[14px] text-[#2e2c43] mt-[10px]">
                 Enter your Location
               </Text>
-              <KeyboardAvoidingView>
+             
                 <View className="flex  items-center">
                   <TextInput
                     placeholder="189/2,  Out Side Datia Gate ,Jhansi, 28402"
@@ -225,8 +225,8 @@ const LocationScreen = () => {
                     className="w-[330px] overflow-x-scroll  text-[14px]  px-[20px] py-[15px] bg-[#F9F9F9] font-semibold text-black rounded-[16px]"
                   />
                 </View>
-              </KeyboardAvoidingView>
-              <View className="flex items-start mt-[20px]">
+                
+              <View className="flex items-start mt-[20px] mb-[40px]">
                 <Pressable onPress={handleRefreshLocation} className="w-max">
                   <Text className="text-[#E76063] text-[14px] font-extrabold">
                     Refresh
@@ -235,6 +235,11 @@ const LocationScreen = () => {
               </View>
             </View>
           </View>
+          
+          </View>
+          </ScrollView>
+          </KeyboardAvoidingView>
+          
           {/* <TouchableOpacity disabled={!location} onPress={handleLocationFetching}>
           
               <View className="w-full h-[63px] bg-[#fb8c00] absolute bottom-0 right-0 left-0  flex items-center justify-center ">
@@ -267,10 +272,10 @@ const LocationScreen = () => {
                 color: !location ? "#888888" : "white",
               }}
             >
-              Continue
+              CONTINUE
             </Text>
           </TouchableOpacity>
-        </View>
+        
         <View className="absolute flex justify-center items-center">
           <ModalScreen
             modalVisible={modalVisible}
@@ -282,7 +287,7 @@ const LocationScreen = () => {
             setModalConfirmVisible={setModalConfirmVisible}
           />
         </View>
-      </ScrollView>
+     
       {(modalVisible || modalConfirmVisible) && (
                     <View style={styles.overlay} />
                 )}

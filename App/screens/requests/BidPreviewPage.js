@@ -77,7 +77,7 @@ const BidPreviewPage = () => {
       console.log("warranty", warranty);
 
       const response = await axios.post(
-        "https://genie-backend-meg1.onrender.com/chat/send-message",
+        "http://173.212.193.109:5000/chat/send-message",
         {
           sender: {
             type: "Retailer",

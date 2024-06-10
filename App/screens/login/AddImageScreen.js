@@ -20,6 +20,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import ClickImage from "../../assets/ClickImg.svg";
 import AddMoreImage from "../../assets/AddMoreImg.svg";
+import BackArrow from "../../assets/BackArrow.svg"
+
 import DelImg from "../../assets/delImg.svg"
 import {
   FontAwesome,
@@ -194,20 +196,24 @@ const AddImageScreen = () => {
         <View style={{ flex: 1 }}> 
           <View style={{ flex: 1 }}>
             <View className="w-full z-40 pt-16 flex flex-row justify-between items-center px-[32px]">
-              <Pressable
-                onPress={() => navigation.goBack()}
-                className="flex p-2 flex-row items-center gap-2"
-              >
-                <FontAwesome name="arrow-left" size={15} color="black" />
+            <Pressable onPress={() => navigation.goBack()} className="p-2">
+                <BackArrow width={14} height={10} />
               </Pressable>
-              <Text className="flex flex-1 justify-center font-bold  items-center text-center text-[16px]">
+              <Text className="text-[16px] flex flex-1 justify-center  items-center text-center font-extrabold">
                 Add Store Image
               </Text>
+              {/* {imagesLocal.length === 0 && <Pressable onPress={() => navigation.navigate("addexpectedprice")} className="">
+                <Text className="text-[16px] text-[#FB8C00]">Skip</Text>
+              </Pressable>} */}
             </View>
-            <View className="mt-[26px] mb-[27px]">
-            <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
-                    Step 2/3
-                  </Text>
+            <View className="mt-[10px] mb-[27px]">
+                  {
+                    imagesLocal.length === 0 ?(<Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
+                      Step 2/4
+                    </Text>):(<Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
+                    Step 3/4
+                  </Text>)
+                  }
               <Text className="text-[14px] text-center px-[32px] text-[#2e2c43]">
               Please remember to provide easy-to-understand image references that people can use to find you for purchasing.
               </Text>
@@ -303,14 +309,14 @@ const AddImageScreen = () => {
                   >
                     <View className="w-full flex justify-center items-center">
                     <Text className="text-white font-bold text-center text-[16px]">
-                      Continue
+                      CONTINUE
                     </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
               )
             ) : (
-              <View className="w-full absolute bottom-0 items-center left-0 right-0 px-[10px]">
+              <View className="w-full bg-white absolute bottom-0 items-center left-0 right-0 px-[10px]">
                 <TouchableOpacity onPress={()=>{ setAddMore(!addMore);pickImage(); }}>
                   <View className="w-full flex flex-row justify-between px-[40px] py-[20px]">
                     <Text className="text-[14px]">Upload Image</Text>

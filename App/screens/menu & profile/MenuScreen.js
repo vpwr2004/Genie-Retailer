@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome} from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import Profile from "../../assets/ProfileIcon.svg"
+import Profile from "../../assets/ProfileBlack.svg"
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
@@ -62,7 +62,13 @@ const MenuScreen = () => {
             <TouchableOpacity onPress={()=>navigation.navigate("profile")}>
                 <View className="flex items-center">
                     <View className="flex flex-row gap-[32px] bg-white py-[48px] w-[90%] justify-center items-center rounded-md shadow-lg">
-                    <Image source={{ uri:user?.storeImages[0] }} width={70} height={70} className="rounded-full" />
+                        {
+                             user?.storeImages.length>0 ?( <Image source={{ uri:user?.storeImages[0] }} width={70} height={70} className="rounded-full" />):
+                    (
+                        <Profile  width={40} height={40}/>
+                    )
+
+                        }
                         <View className="flex-col">
                             <Text className="text-[16px] font-bold text-center capitalize">{user?.storeOwnerName}</Text>
                             <Text className="text-[14px]">{user?.storeMobileNo}</Text>

@@ -118,7 +118,7 @@ export const sendCustomNotificationToSingleUser = async (mess) => {
 
 export const sendCustomNotificationChat = async (mess) => {
   // console.log("requestNotify",JSON.stringify(`${mess.requestInfo}`));
-
+  console.log("token notify",mess.token)
   try {
     const message = {
       message: {
@@ -145,10 +145,10 @@ export const sendCustomNotificationChat = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
-    if(mess?.token.length > 0) {
+    console.log("access token",accessToken);
+    // if(mess?.token.length > 0) {
 
-    const notificationResponse = await fetch(
-      `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
+    const notificationResponse = await fetch( `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
       {
         method: "POST",
         headers: {
@@ -169,7 +169,7 @@ export const sendCustomNotificationChat = async (mess) => {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
     }
-  }
+  // }
   } catch (e) {
     console.error("Failed to send notification:", e);
   }
@@ -312,7 +312,7 @@ export const NotificationRequestAccepted = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
-    if(mess?.token.length>0){
+    // if(mess?.token.length>0){
 
     const notificationResponse = await fetch(
       `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
@@ -336,7 +336,7 @@ export const NotificationRequestAccepted = async (mess) => {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
     }
-  }
+  
   } catch (e) {
     console.error("Failed to send notification:", e);
   }

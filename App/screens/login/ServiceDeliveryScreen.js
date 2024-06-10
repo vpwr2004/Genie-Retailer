@@ -1,4 +1,4 @@
-import { View, Text, Image, TextInput, KeyboardAvoidingView, TouchableOpacity, Pressable, ScrollView } from 'react-native';
+import { View, Text, Image, TextInput, KeyboardAvoidingView, TouchableOpacity, Pressable, ScrollView, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,8 @@ const ServiceDeliveryScreen = () => {
     const navigation = useNavigation();
     const [checked, setChecked] = useState(false);
     const dispatch=useDispatch();
+  const { width } = Dimensions.get("window");
+
 
     const handleService=()=>{
         try {
@@ -41,7 +43,7 @@ const ServiceDeliveryScreen = () => {
                         </Pressable>
                     </View>
                     <View className="flex flex-col justify-center items-center px-[32px] gap-[20px] ">
-                        <StoreName height={400} width={389} className="object-cover" />
+                        <StoreName height={400} width={width} className="object-cover" />
                         <Text className="text-[14.5px] font-bold text-[#FB8C00]">Step 5/9</Text>
                     </View>
                     <View className="my-[30px] flex flex-col gap-[33px] px-[32px]">
@@ -89,7 +91,7 @@ const ServiceDeliveryScreen = () => {
                         textAlign: 'center',
                     }}
                 >
-                    Next
+                    NEXT
                 </Text>
             </TouchableOpacity>
           
