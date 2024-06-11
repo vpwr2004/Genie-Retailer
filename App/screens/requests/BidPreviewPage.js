@@ -127,10 +127,10 @@ const BidPreviewPage = () => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="relative flex-grow bg-[#ffe7c8]">
-          <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
+          <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[40px]">
             <Pressable
               onPress={() => {
                 navigation.goBack();
@@ -227,7 +227,7 @@ const BidPreviewPage = () => {
             <View className="gap-[0px] px-[50px]">
               <Text className="font-semibold text-[14px]">Offered Price</Text>
               <Text className="font-bold text-[24px] text-[#558B2F]">
-                Rs {bidOfferedPrice}
+                Rs {bidOfferedPrice?bidOfferedPrice:"Na"}
               </Text>
             </View>
             <View className="gap-[0px] px-[50px]">
@@ -235,7 +235,7 @@ const BidPreviewPage = () => {
                 Product Warranty
               </Text>
               <Text className="font-bold text-[24px] text-[#558B2F]">
-                {warranty}
+                {warranty?warranty:"Na"}
               </Text>
             </View>
           </View>
@@ -255,7 +255,7 @@ const BidPreviewPage = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
