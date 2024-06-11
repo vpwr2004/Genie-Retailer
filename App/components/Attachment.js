@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native'
 import React, { useState } from 'react';
 // import StoreLocation from '../../assets/StoreLocation.svg';
 import Document from '../assets/Documents.svg';
@@ -15,6 +15,9 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
 
     const navigation = useNavigation();
     const [imageUri, setImageUri] = useState("");
+    const { height } = Dimensions.get("window");
+    // console.log("height: " + height);
+
     const sendAttachment = async () => {
         // console.log('res', query, imageUri);
         // await axios.post('https://genie-backend-meg1.onrender.com/chat/send-message', {
@@ -84,7 +87,7 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
         });
 
         console.log('pickImage', "result");
-        if (!result.canceled) {
+        if (!result.cancelled) {
             // setImage(result.assets[0].uri);
             // console.log(object)
             await getImageUrl(result.assets[0]);
@@ -93,13 +96,13 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
     };
 
     return (
-        <View style={styles.attachments} className="absolute  left-0 right-0 bottom-0 z-50 h-screen">
-            <TouchableOpacity onPress={() => { setAttachmentScreen(false) }}>
-                <View className="h-4/5 w-screen -200 bg-transparent" >
+        <View style={styles.attachments} className="flex flex-col absolute top-0 left-0 right-0  z-50 h-screen" >
+            <TouchableOpacity onPress={() => { setAttachmentScreen(false) }} >
+                <View className="h-4/5 w-screen  bg-transparent" >
                 </View>
             </TouchableOpacity>
-            <View className="bg-white py-[20px] h-1/5 gap-5">
-                <View className="flex-row justify-evenly">
+            <View className="bg-white py-[20px] h-1/5 gap-5" >
+                <View className="flex-row justify-evenly items-center ">
                     <View className="items-center">
                         <Document />
                         <Text>Document</Text>
@@ -125,7 +128,7 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
 
 const styles = {
     attachments: {
-
+        //  height:height,
         zIndex: 100, // Ensure the overlay is on top
     },
 };

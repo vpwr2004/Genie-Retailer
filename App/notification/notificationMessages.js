@@ -201,7 +201,7 @@ export const sendCustomNotificationBid = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
-    if(mess?.token.length>0){
+    
 
     const notificationResponse = await fetch(
       `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
@@ -224,7 +224,7 @@ export const sendCustomNotificationBid = async (mess) => {
     } else {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
-    }}
+    }
   } catch (e) {
     console.error("Failed to send notification:", e);
   }
@@ -256,7 +256,7 @@ export const sendCustomNotificationAttachment = async (mess) => {
     };
 
     const accessToken = await getAccessToken();
-   if(mess?.token.length>0){
+   
     const notificationResponse = await fetch(
       `https://fcm.googleapis.com/v1/projects/genie-user/messages:send`,
       {
@@ -279,7 +279,7 @@ export const sendCustomNotificationAttachment = async (mess) => {
       const successResponse = JSON.parse(textResponse);
       console.log("Notification sent successfully:");
     }
-  }
+  
   } catch (e) {
     console.error("Failed to send notification:", e);
   }

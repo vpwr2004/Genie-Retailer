@@ -87,17 +87,23 @@ const BidQueryPage = () => {
 
         //  dispatch(setMessages(mess));
         setMessages(mess);
+       
+        // console.log("notification", notification.requestInfo);
+        
+        navigation.navigate("requestPage");
+        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
+        console.log("token",token.data);
+        if(token.data.length > 0){
         const notification = {
-          token:requestInfo?.customerId?.uniqueToken,
+          token:token.data,
           title: user?.storeName,
           body: query,
           requestInfo: requestInfo,
           tag: user?._id,
           redirect_to: "bargain",
         };
-        // console.log("notification", notification.requestInfo);
-        navigation.navigate("requestPage");
         sendCustomNotificationChat(notification);
+         }
         //  console.log("res after sending notification ",res);
         //   try{
         //  const res=await axios.get(`http://localhost:3000/send-notification-chat?name=Rohit&body=Hii how are you&redirect_to=requestPage&requestInfo={"__v": 1, "_id": "66532414ff164bf94697251d", "bidCompleted": true, "createdAt": "2024-05-26T11:59:16.279Z", "requestId": {"__v": 0, "_id": "66532414ff164bf94697251b", "createdAt": "2024-05-26T11:59:16.052Z", "customer": "664d6fb333bcb1bbd6cf9f66", "expectedPrice": 2500, "requestAcceptedChat": "66532414ff164bf94697251d", "requestActive": "completed", "requestCategory": "spare parts", "requestDescription": "bike tyre", "requestImages": ["https://res.cloudinary.com/kumarvivek/image/upload/v1716724746/zznnqcnga7ktx9v4vlto.jpg"], "updatedAt": "2024-05-26T12:00:58.405Z"}, "requestType": "completed", "updatedAt": "2024-05-26T12:00:58.844Z", "users": [{"_id": "66532414ff164bf94697251e", "refId": "664d74f100215ea2aea8a35d", "type": "Retailer"}, {"_id": "66532437ff164bf94697252e", "refId": "66532414ff164bf94697251b", "type": "UserRequest"}]}`)

@@ -101,18 +101,24 @@ const BidPreviewPage = () => {
         console.log("query update", mess);
 
         setMessages(mess);
-        const notification = {
-         token:requestInfo?.customerId?.uniqueToken,
-          title: user?.storeName,
-          body: bidDetails,
-          requestInfo: requestInfo,
-          tag: user?._id,
-          price: bidOfferedPrice,
-          image: bidImages[0],
-          redirect_to: "bargain",
-        };
+        
         navigation.navigate("requestPage");
+        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
+        if(token.data.length>0){
+        const notification = {
+          token:token.data,
+           title: user?.storeName,
+           body: bidDetails,
+           requestInfo: requestInfo,
+           tag: user?._id,
+           price: bidOfferedPrice,
+           image: bidImages[0],
+           redirect_to: "bargain",
+         };
          sendCustomNotificationBid(notification);
+        }
+
+         
       } else {
         console.error("Error updating message:");
       }

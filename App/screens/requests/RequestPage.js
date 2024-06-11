@@ -239,8 +239,10 @@ const RequestPage = () => {
         });
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
+        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
+       if(token.data.length>0){
         const notification = {
-          token: requestInfo?.customerId?.uniqueToken,
+          token: token.data,
           title: user?.storeName,
           body: lastMessage.message,
           requestInfo: requestInfo,
@@ -249,6 +251,7 @@ const RequestPage = () => {
           redirect_to: "bargain",
         };
          NotificationBidRejected(notification);
+        }
       } catch (error) {
         console.log("Error updating chat:", error);
       }
@@ -317,7 +320,7 @@ const RequestPage = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View className="relative  flex-grow">
+      <View className="relative" >
         {attachmentScreen && (
           <View style={styles.overlay}>
             <Attachment
@@ -381,7 +384,7 @@ const RequestPage = () => {
           </TouchableOpacity>
         </View>
         {modal && (
-          <View className="absolute top-[20px] right-[80px]  bg-white rounded-md">
+          <View className="absolute top-[40px] right-[80px]  bg-white rounded-md">
             <TouchableOpacity
               onPress={() => {
                 setModal(!modal);
@@ -734,7 +737,7 @@ const styles = StyleSheet.create({
   //     // Add other styles for menu container
   // },
   attachments: {
-    zIndex: 20, // Ensure the overlay is on top
+    zIndex: 100, // Ensure the overlay is on top
   },
 });
 

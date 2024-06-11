@@ -82,6 +82,34 @@ const navigationState = useNavigationState(state => state);
             // setLocation(response?.data.longitude);
             // setStore(response?.data.storeImages);
             // setServiceProvider(response?.data.serviceProvider);
+            if (response.data.storeApproved) {
+              console.log('Store  approved at Home Screen');
+              setVerified(true);
+              return;
+              
+           }
+    
+            if (!response.data.storeApproved) {
+                console.log('Store not approved');
+                setVerified(false);
+                
+            }
+    
+           
+           
+           
+            
+            if(response.data.location && response.data.serviceProvider==="true"){
+                setCompleteProfile(true);
+                return;
+            }
+           else if (response.data.location && response.data.storeImages?.length > 0) {
+                setCompleteProfile(true);
+                return;
+            }
+            else{
+                setCompleteProfile(false);
+            }
            
             
             await AsyncStorage.setItem('userData', JSON.stringify(response.data));
@@ -89,30 +117,7 @@ const navigationState = useNavigationState(state => state);
             // Update state with user data
         
         }
-
-        if (!response.data.storeApproved) {
-            console.log('Store not approved');
-            setVerified(false);
-            
-        }
-
-        if (response.data.storeApproved) {
-            console.log('Store  approved at Home Screen');
-            setVerified(true);
-            
-        }
-       
-       
-        
-        if(response.data.location && response.data.serviceProvider==="true"){
-            setCompleteProfile(true);
-        }
-       else if (response.data.location && response.data.storeImages?.length > 0) {
-            setCompleteProfile(true);
-        }
-        else{
-            setCompleteProfile(false);
-        }
+      
     } catch (error) {
         console.error('Error fetching user data on home screen:', error);
     }

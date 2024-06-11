@@ -50,16 +50,19 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
 
           setAcceptLocal(true);
           setModalVisible(false);
+        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
+          if(token.data.length > 0) {
           const notification={
-            token:requestInfo?.customerId?.uniqueToken,
+            token:token.data,
             title:user?.storeName,
             requestInfo:requestInfo,
             tag:user?._id,
             image:requestInfo?.requestId?.requestImages[0],
             redirect_to:"bargain",
-         }
+              }
         //  console.log("new notification",notification);
-           NotificationRequestAccepted(notification);
+            NotificationRequestAccepted(notification);
+           }
         } catch (error) {
           console.error("Error updating requestType 'new':", error);
           return;

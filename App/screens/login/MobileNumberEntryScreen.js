@@ -95,7 +95,7 @@ const MobileNumberEntryScreen = () => {
       }
       else if(isLoginScreen) {
         BackHandler.exitApp();
-        // return true;
+        return true;
       }
 
       return false;
