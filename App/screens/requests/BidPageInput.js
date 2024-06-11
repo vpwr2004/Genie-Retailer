@@ -54,10 +54,10 @@ const BidPageInput = () => {
     navigation.navigate("bidPageImageUpload", { user, messages, setMessages });
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="relative flex-grow bg-[#ffe7c8]">
-          <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
+          <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[40px]">
             <Pressable
               onPress={() => {
                 navigation.goBack();
@@ -110,8 +110,8 @@ const BidPageInput = () => {
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">
               <View className="flex-row justify-between">
-                <Text className="font-bold">Send a Bid</Text>
-                <Text>Step 1/3</Text>
+                <Text className="font-bold">Send a offer</Text>
+                <Text className="text-[#FB8C00] text-[14px] font-bold">Step 1/3</Text>
               </View>
               <Text>Type your response here to the customer</Text>
               <View className="bg-white p-4 rounded-lg">
@@ -120,7 +120,7 @@ const BidPageInput = () => {
                   numberOfLines={5}
                   placeholder="Start typing here"
                   placeholderTextColor="#dbcdbb"
-                  classname=" "
+                  classname=""
                   onChangeText={handleBidDetails}
                 />
               </View>
@@ -132,17 +132,35 @@ const BidPageInput = () => {
         </View>
       </ScrollView>
 
-      {/* Typing Area */}
-      <View className="absolute bottom-0 left-0 right-0">
-        <View className="gap-[20px]">
-          <TouchableOpacity disabled={!bidDetails} onPress={handleNext}>
-            <View className="w-full h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
-              <Text className="font-bold text-[16px] text-white">Next</Text>
-            </View>
+    
+        <TouchableOpacity
+           disabled={!bidDetails} 
+           onPress={handleNext}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 63,
+              width: "100%",
+              backgroundColor:
+              !bidDetails? "#e6e6e6" : "#FB8C00",
+              justifyContent: "center", // Center content vertically
+              alignItems: "center", // Center content horizontally
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                color: !bidDetails ? "#888888" : "white",
+              }}
+            >
+              Next
+            </Text>
           </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+
+    </View>
   );
 };
 

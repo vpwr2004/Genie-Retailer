@@ -126,8 +126,10 @@ const BidOfferedPrice = () => {
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">
               <View className="flex-row justify-between">
-                <Text className="font-bold">Send a Bid</Text>
-                <Text>Step 3/3</Text>
+                <Text className="text-[14px] font-bold">Send a offer</Text>
+                <Text className="text-[#FB8C00] text-[14px] font-bold">
+                    Step 3/3
+                  </Text>
               </View>
               <Text>Tell the offered price to the customer</Text>
               <View className="bg-white p-4 rounded-lg text-center">

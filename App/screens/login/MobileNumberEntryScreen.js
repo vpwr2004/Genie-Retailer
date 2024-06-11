@@ -39,6 +39,7 @@ import auth from "@react-native-firebase/auth";
 import axios from "axios";
 import messaging from "@react-native-firebase/messaging";
 
+
 const MobileNumberEntryScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -110,6 +111,9 @@ const MobileNumberEntryScreen = () => {
     // Clean up event listener
     return () => backHandler.remove();
   }, [mobileScreen]);
+
+
+
 
   const handleMobileNo = (mobileNumber) => {
     // Update the mobile number state
@@ -363,6 +367,7 @@ const MobileNumberEntryScreen = () => {
                       placeholderTextColor={"#dbcdbb"}
                       keyboardType="numeric"
                       onChangeText={handleOtp}
+                      value={otp}
                       style={{
                         letterSpacing: 8,
                         textAlignVertical: "center",

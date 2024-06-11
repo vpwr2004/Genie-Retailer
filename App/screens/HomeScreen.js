@@ -172,12 +172,9 @@ const handleRefresh = () => {
                     
                 </View>
                 {
-                    verified && <HomeScreenVerified />
+                    verified ?( <HomeScreenVerified />):<CompleteProfile completeProfile={completeProfile}  verified={verified} />
                 }
-                {
-                    !verified && <CompleteProfile completeProfile={completeProfile}  verified={verified} />
-                }
-                
+               
             
 
 

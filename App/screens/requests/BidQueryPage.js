@@ -122,10 +122,10 @@ const BidQueryPage = () => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View className="relative flex-grow bg-[#ffe7c8]">
-          <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
+        <View className="relative  flex-grow bg-[#ffe7c8]">
+          <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[40px]">
             <Pressable
               onPress={() => {
                 navigation.goBack();
@@ -200,17 +200,35 @@ const BidQueryPage = () => {
         </View>
       </ScrollView>
 
-      {/* Typing Area */}
-      <View className="absolute bottom-0 left-0 right-0">
-        <View className="gap-[20px]">
-          <TouchableOpacity disabled={!query} onPress={sendQuery}>
-            <View className="w-full h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
-              <Text className="font-bold text-[16px] text-white">Next</Text>
-            </View>
+      
+        <TouchableOpacity
+           disabled={!query} 
+           onPress={sendQuery}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 63,
+              width: "100%",
+              backgroundColor:
+              !query? "#e6e6e6" : "#FB8C00",
+              justifyContent: "center", // Center content vertically
+              alignItems: "center", // Center content horizontally
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                color: !query ? "#888888" : "white",
+              }}
+            >
+              Next
+            </Text>
           </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+
+    </View>
   );
 };
 

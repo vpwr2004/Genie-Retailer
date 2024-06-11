@@ -31,6 +31,7 @@ import ModalCancel from "../../components/ModalCancel";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { manipulateAsync } from "expo-image-manipulator";
 import { launchCamera } from "react-native-image-picker";
+import Close from "../../assets/RedClose.svg"
 
 const BidPageImageUpload = () => {
   const [images, setImages] = useState([]);
@@ -182,21 +183,22 @@ const BidPageImageUpload = () => {
   return (
     <>
       {!cameraScreen && (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View className="relative flex-grow bg-[#ffe7c8]">
-              <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center pt-[30px] pb-[20px]">
+              <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-evenly gap-[5px] items-center pt-[40px] pb-[20px]">
                 <Pressable
                   onPress={() => {
                     navigation.goBack();
                   }}
+                  style={{ padding: 4 }}
                 >
                   <FontAwesome name="arrow-left" size={15} color="black" />
                 </Pressable>
 
                 <View className="gap-[9px]">
-                  <View className="flex-row gap-[18px]">
-                    <View className="bg-[#F9F9F9] p-2 rounded-full">
+                  <View className="flex-row gap-[18px] items-center">
+                    <View className="p-2 rounded-full">
                       {requestInfo?.customerId?.pic ? (
                         <Image
                           source={{ uri: requestInfo?.customerId?.pic }}
@@ -218,6 +220,20 @@ const BidPageImageUpload = () => {
                     </View>
                   </View>
                 </View>
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("bidOfferedPrice", {
+                      user,
+                      messages,
+                      setMessages,
+                    })
+                  }
+                  className=""
+                >
+                  <Text className="text-[14px] text-[#FB8C00] font-bold ">
+                    Skip
+                  </Text>
+                </Pressable>
 
                 {/* <Pressable onPress={() => { console.log("hii") }}>
                                 <ThreeDots />
@@ -229,18 +245,20 @@ const BidPageImageUpload = () => {
                   <Text>{requestInfo?.requestId?._id}</Text>
                 </View>
                 <Text>
-            {requestInfo?.requestId?.requestDescription
-              ?.split(" ")
-              .slice(0, 12)
-              .join(" ")}
-            ....
-          </Text>
+                  {requestInfo?.requestId?.requestDescription
+                    ?.split(" ")
+                    .slice(0, 12)
+                    .join(" ")}
+                  ....
+                </Text>
               </View>
 
-              <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[10px]">
+              <View className="flex gap-[16px] px-[50px] pt-[10px] pb-[10px]">
                 <View className="flex-row justify-between">
-                  <Text className="font-bold">Send a Bid</Text>
-                  <Text>Step 2/3</Text>
+                  <Text className="font-bold">Send a offer</Text>
+                  <Text className="text-[#FB8C00] text-[14px] font-bold">
+                    Step 2/3
+                  </Text>
                 </View>
                 <Text>
                   Provide product images for better reference to customers for
@@ -298,11 +316,8 @@ const BidPageImageUpload = () => {
                                   onPress={() => deleteImage(index)}
                                   style={styles.deleteIcon}
                                 >
-                                  <Entypo
-                                    name="circle-with-cross"
-                                    size={24}
-                                    color="gray"
-                                  />
+                                  
+                                  <Close/>
                                 </Pressable>
                               </View>
                             </Pressable>
@@ -352,9 +367,9 @@ const BidPageImageUpload = () => {
                     <View className="w-full h-[68px]  bg-[#fb8c00] justify-center absolute bottom-0 left-0 right-0">
                       <TouchableOpacity onPress={handleNext}>
                         <View className="w-full flex justify-center items-center">
-                        <Text className=" text-white font-bold text-center text-[16px]">
-                          Next
-                        </Text>
+                          <Text className=" text-white font-bold text-center text-[16px]">
+                            Next
+                          </Text>
                         </View>
                       </TouchableOpacity>
                     </View>
@@ -405,7 +420,7 @@ const BidPageImageUpload = () => {
             index={imgIndex}
           />
           {modalVisible && <View style={styles.overlay} />}
-        </SafeAreaView>
+        </View>
       )}
 
       {loading && (
