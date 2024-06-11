@@ -13,6 +13,7 @@ import {
   Image,
   Platform,
   Dimensions,
+  
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,6 +54,8 @@ const PanCardScreen = () => {
   const [camera, setCamera] = useState(null);
   const [panCard, setPanCardLocal] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const { width } = Dimensions.get("window");
 
 
@@ -332,9 +335,13 @@ const PanCardScreen = () => {
               alignItems: "center",
             }}
           >
+             {loading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
             <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
               NEXT
             </Text>
+            )}
           </TouchableOpacity>
         )}
         {addMore && (

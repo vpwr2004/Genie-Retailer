@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
  
 } from "react-native";
 import React, { useEffect, useState , useRef} from "react";
@@ -31,11 +32,11 @@ const ImagePreview = () => {
   const uniqueToken = useSelector((state) => state.storeData.uniqueToken);
   console.log("images", imagesLocal);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
+const [loading,setLoading] = useState(false);
 
 
   const handleImage = async () => {
-    
+    setLoading(true);
     console.log("old images",imagesLocal);
     const newImages = [...imagesLocal];
     [newImages[0], newImages[selectedImageIndex]] = [newImages[selectedImageIndex], newImages[0]];
@@ -67,8 +68,10 @@ const ImagePreview = () => {
       await AsyncStorage.setItem("userData", JSON.stringify(response.data));
 
       // Navigate to home only after successfully updating the location
+      setLoading(false);
       navigation.navigate("home");
     } catch (error) {
+      setLoading(false);
       console.error("Failed to update images:", error);
       // Optionally handle error differently here
     }
@@ -155,9 +158,13 @@ const ImagePreview = () => {
         <View className="w-full h-[68px]  bg-[#fb8c00] justify-center absolute bottom-0 left-0 right-0">
           <TouchableOpacity onPress={handleImage}>
             <View className="w-full flex items-center justify-center">
+            {loading ? (
+                  <ActivityIndicator size="small" color="#FB8C00" />
+                ) : (
               <Text className="text-white font-bold text-center text-[16px]">
                 CONTINUE
               </Text>
+                )}
             </View>
           </TouchableOpacity>
         </View>

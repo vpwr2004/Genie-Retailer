@@ -46,6 +46,8 @@ const MobileNumberEntryScreen = () => {
   // const route=useRout()
   const inputRefs = useRef([]);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [otp, setOtp] = useState("");
   const route = useRoute();
   const [mobileNumber, setMobileNumberLocal] = useState("");
@@ -132,7 +134,7 @@ const MobileNumberEntryScreen = () => {
       // Navigate to OTP screen if the phone number is valid
       setLoading(true);
       try {
-        const phoneNumber = countryCode + mobileNumber;
+         const phoneNumber = countryCode + mobileNumber;
         // console.log(phoneNumber);
         // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
         // setConfirm(confirmation);
@@ -158,7 +160,7 @@ const MobileNumberEntryScreen = () => {
   //   }
 
   const checkMobileNumber = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       // Make a request to your backend API to check if the mobile number is registered
 
@@ -213,7 +215,7 @@ const MobileNumberEntryScreen = () => {
       alert("Invalid otp");
       console.error("Error checking mobile number:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
   return (
@@ -278,7 +280,7 @@ const MobileNumberEntryScreen = () => {
           
 
           <TouchableOpacity
-            disabled={mobileNumber.length !== 10}
+            disabled={mobileNumber.length !== 10 }
             onPress={sendVerification}
             style={{
               position: "absolute",
@@ -293,6 +295,9 @@ const MobileNumberEntryScreen = () => {
               alignItems: "center", // Center content horizontally
             }}
           >
+            {loading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
             <Text
               style={{
                 fontSize: 18,
@@ -301,7 +306,7 @@ const MobileNumberEntryScreen = () => {
               }}
             >
               NEXT
-            </Text>
+            </Text>)}
           </TouchableOpacity>
 
           {loading && (
@@ -388,6 +393,9 @@ const MobileNumberEntryScreen = () => {
                       Didn't receive it?
                     </Text>
                     <TouchableOpacity onPress={sendVerification}>
+                    {loading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
                       <Text
                         style={{
                           fontSize: 14,
@@ -397,6 +405,7 @@ const MobileNumberEntryScreen = () => {
                       >
                         RESEND
                       </Text>
+              )}
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -420,6 +429,9 @@ const MobileNumberEntryScreen = () => {
               alignItems: "center", // Center content horizontally
             }}
           >
+            {isLoading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
             <Text
               style={{
                 fontSize: 18,
@@ -429,13 +441,14 @@ const MobileNumberEntryScreen = () => {
             >
             NEXT
             </Text>
+              )}
           </TouchableOpacity>
 
-          {loading && (
+          {/* {loading && (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#fb8c00" />
             </View>
-          )}
+          )} */}
         </View>
       )}
     </>

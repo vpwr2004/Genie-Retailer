@@ -1,26 +1,54 @@
-import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity} from 'react-native';
-import ModalImg from "../assets/Cancel.svg"
-import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-import {  setNewRequests, setOngoingRequests, setRequestInfo } from '../redux/reducers/requestDataSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { socket } from '../screens/utils/socket.io/socket';
-import { BidAcceptedOtherRetailer, NotificationBidAccepted, NotificationRequestAccepted } from '../notification/notificationMessages';
+import React, { useState } from "react";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import ModalImg from "../assets/Cancel.svg";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import {
+  setNewRequests,
+  setOngoingRequests,
+  setRequestInfo,
+} from "../redux/reducers/requestDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { socket } from "../screens/utils/socket.io/socket";
+import {
+  BidAcceptedOtherRetailer,
+  NotificationBidAccepted,
+  NotificationRequestAccepted,
+} from "../notification/notificationMessages";
 
-const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,messages,setMessages}) => {
+const RequestAcceptModal = ({
+  user,
+  modalVisible,
+  setModalVisible,
+  setAcceptLocal,
+  messages,
+  setMessages,
+}) => {
   // const [modalVisible, setModalVisible] = useState(true);
-  const navigation=useNavigation();
-  const dispatch=useDispatch();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   // const messages = useSelector(state => state.requestData.messages);
-  const requestInfo= useSelector(state => state.requestData.requestInfo);
-  const newRequests = useSelector(state => state.requestData.newRequests || [] )
-  const ongoingRequests = useSelector(state => state.requestData.ongoingRequests || []);
-
-
+  const requestInfo = useSelector((state) => state.requestData.requestInfo);
+  const newRequests = useSelector(
+    (state) => state.requestData.newRequests || []
+  );
+  const ongoingRequests = useSelector(
+    (state) => state.requestData.ongoingRequests || []
+  );
+  const [loading, setLoading] = useState(false);
 
   // console.log("messages of ",messages)
   const handleModal = async () => {
+    setLoading(true);
     try {
       const lastMessage = messages[messages.length - 1];
       // console.log("last message",lastMessage);
@@ -28,42 +56,49 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
         console.log("No messages available to update.");
         return;
       }
-      
+
       console.log("Updating card", requestInfo);
-  
+
       if (requestInfo?.requestType === "new") {
         try {
           const res = await axios.patch(
-            "http://173.212.193.109:5000/chat/modify-spade-retailer",{
-              id:requestInfo?._id,
-              type:"ongoing"
+            "http://173.212.193.109:5000/chat/modify-spade-retailer",
+            {
+              id: requestInfo?._id,
+              type: "ongoing",
             }
           );
-           console.log("RequestType new response", res.data);
-          let tmp={...requestInfo,requestType:"ongoing"};
-          
+          console.log("RequestType new response", res.data);
+          let tmp = { ...requestInfo, requestType: "ongoing" };
+
           dispatch(setRequestInfo(tmp));
-          const filteredRequests = newRequests.filter(request=> request._id !== requestInfo?._id);
+          const filteredRequests = newRequests.filter(
+            (request) => request._id !== requestInfo?._id
+          );
           dispatch(setNewRequests(filteredRequests));
-          const updatedOngoing=[requestInfo,...ongoingRequests];
+          const updatedOngoing = [requestInfo, ...ongoingRequests];
           dispatch(setOngoingRequests(updatedOngoing));
 
           setAcceptLocal(true);
           setModalVisible(false);
-        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
-          if(token.data.length > 0) {
-          const notification={
-            token:token.data,
-            title:user?.storeName,
-            requestInfo:requestInfo,
-            tag:user?._id,
-            image:requestInfo?.requestId?.requestImages[0],
-            redirect_to:"bargain",
-              }
-        //  console.log("new notification",notification);
+          setLoading(false);
+          const token = await axios.get(
+            `http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`
+          );
+          if (token.data.length > 0) {
+            const notification = {
+              token: token.data,
+              title: user?.storeName,
+              requestInfo: requestInfo,
+              tag: user?._id,
+              image: requestInfo?.requestId?.requestImages[0],
+              redirect_to: "bargain",
+            };
+            //  console.log("new notification",notification);
             NotificationRequestAccepted(notification);
-           }
+          }
         } catch (error) {
+          setLoading(false);
           console.error("Error updating requestType 'new':", error);
           return;
         }
@@ -76,14 +111,14 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
               userRequestId: requestInfo?.requestId?._id,
             }
           );
-           console.log("Accept response", accept.data?.message);
-  
+          console.log("Accept response", accept.data?.message);
+
           if (accept.status === 200) {
             try {
-              socket.emit("new message",accept.data?.message);
+              socket.emit("new message", accept.data?.message);
               let tmp = {
                 ...requestInfo?.requestId,
-                requestActive: "completed"
+                requestActive: "completed",
               };
               dispatch(setRequestInfo(tmp));
               const updatedMessages = messages.map((message) => {
@@ -94,19 +129,19 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
               });
               setAcceptLocal(true);
               setMessages(updatedMessages);
-              const notification={
-                token:accept?.data?.uniqueTokens,
-                title:user?.storeName,
-                requestInfo:requestInfo,
-                tag:user?._id,
-                price:lastMessage?.bidPrice,
-                image:requestInfo?.requestId?.requestImages[0],
-             }
-            //  console.log("new notification",notification);
-             setModalVisible(false);
-               NotificationBidAccepted(notification);
-               BidAcceptedOtherRetailer(notification);
-             
+              setLoading(false);
+              const notification = {
+                token: accept?.data?.uniqueTokens,
+                title: user?.storeName,
+                requestInfo: requestInfo,
+                tag: user?._id,
+                price: lastMessage?.bidPrice,
+                image: requestInfo?.requestId?.requestImages[0],
+              };
+              //  console.log("new notification",notification);
+              setModalVisible(false);
+              NotificationBidAccepted(notification);
+              BidAcceptedOtherRetailer(notification);
             } catch (error) {
               console.error("Error updating chat details:", error);
             }
@@ -114,6 +149,7 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
             console.error("Error updating message");
           }
         } catch (error) {
+          setLoading(false);
           console.error("Error accepting bid:", error);
         }
       }
@@ -121,53 +157,61 @@ const RequestAcceptModal= ({user,modalVisible,setModalVisible,setAcceptLocal,mes
       console.error("Error handling modal:", error);
     }
   };
-  
+
   return (
-    
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        // onRequestClose={() => {
-        //   Alert.alert('Modal has been closed.');
-        //   setModalVisible(!modalVisible);
-        // }}
-        className=" flex justify-center items-center  rounded-lg h-full ">
-          <View className="flex-1  justify-center items-center">
-                  <View className="bg-white w-[90%] p-[30px] justify-center items-center mt-[10px] gap-[24px] shadow-gray-600 shadow-2xl">
-                      <ModalImg classname="w-[117px] h-[75px]"/>
-                        <View className="">
-                             <Text className="text-[15px] font-extrabold text-center">Are you sure? </Text>
-                              <Text className="text-[14px] font-normal text-center  pt-[8px]">You are accepting  </Text>
-                              
-                        </View>
-                        
-                            <View className="w-full flex flex-row  justify-center">
-                              <View className="flex-1 mt-[5px]">
-                                  <TouchableOpacity onPress={()=>{setModalVisible(false)}} >
-                                    <Text className="text-[14.5px] text-[#FB8C00] font-normal text-center">Close</Text>
-                          
-                                  </TouchableOpacity> 
-                              </View>
-                            <View className="flex-1 mt-[5px]">
-                                <TouchableOpacity onPress={handleModal}>
-                                  <Text className="text-[14.5px] text-[#FB8C00] font-semibold text-center">Accept</Text>
-                       
-                                </TouchableOpacity> 
-                            </View>
-                        
-                  
-                </View>
-           </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      // onRequestClose={() => {
+      //   Alert.alert('Modal has been closed.');
+      //   setModalVisible(!modalVisible);
+      // }}
+      className=" flex justify-center items-center  rounded-lg h-full "
+    >
+      <View className="flex-1  justify-center items-center">
+        <View className="bg-white w-[90%] p-[30px] justify-center items-center mt-[10px] gap-[24px] shadow-gray-600 shadow-2xl">
+          <ModalImg classname="w-[117px] h-[75px]" />
+          <View className="">
+            <Text className="text-[15px] font-extrabold text-center">
+              Are you sure?{" "}
+            </Text>
+            <Text className="text-[14px] font-normal text-center  pt-[8px]">
+              You are accepting{" "}
+            </Text>
+          </View>
+
+          <View className="w-full flex flex-row  justify-center">
+            <View className="flex-1 mt-[5px]">
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(false);
+                }}
+              >
+                <Text className="text-[14.5px] text-[#FB8C00] font-normal text-center">
+                  Close
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View className="flex-1 mt-[5px]">
+              <TouchableOpacity onPress={handleModal}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#FB8C00" />
+                ) : (
+                  <Text className="text-[14.5px] text-[#FB8C00] font-semibold text-center">
+                    Accept
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </View>
-      </Modal>
-      
-      
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  
   // modalView: {
   //   margin: 20,
   //   backgroundColor: 'white',
@@ -183,7 +227,6 @@ const styles = StyleSheet.create({
   //   shadowRadius: 4,
   //   elevation: 5,
   // },
-  
 });
 
 export default RequestAcceptModal;

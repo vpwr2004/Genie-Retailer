@@ -7,7 +7,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
-  Image
+  Image,
+  ActivityIndicator
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ThreeDots from "../../assets/ThreeDotIcon.svg";
@@ -26,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMessages } from "../../redux/reducers/requestDataSlice";
 import { sendCustomNotificationChat } from "../../notification/notificationMessages";
 
+
 const BidQueryPage = () => {
   const route = useRoute();
   const dispatch = useDispatch();
@@ -34,6 +36,7 @@ const BidQueryPage = () => {
   const [query, setQuery] = useState("");
   const { user, messages, setMessages } = route.params;
   const requestInfo = useSelector((state) => state.requestData.requestInfo);
+  const [loading,setLoading]=useState(false)
   // const messages = useSelector(state => state.requestData.messages);
   // console.log("messages of ",messages);
 
@@ -47,18 +50,9 @@ const BidQueryPage = () => {
   // }, [route.params])
 
   const sendQuery = async () => {
+    setLoading(true)
     try {
-      // console.log("query",query,requestInfo._id);
-      // if(messages?.length===1){
-      //     console.log("firstmessage",messages[0]);
-      //     const res = await axios.patch(
-      //         `https://genie-backend-meg1.onrender.com/chat/modify-spade-retailer?id=${requestInfo?._id}`
-      //       );
-      //       // console.log("res after update", res);
-
-      //       console.log("resafterupdate", res);
-
-      // }
+     
 
       const response = await axios.post(
         "http://173.212.193.109:5000/chat/send-message",
@@ -89,7 +83,7 @@ const BidQueryPage = () => {
         setMessages(mess);
        
         // console.log("notification", notification.requestInfo);
-        
+        setLoading(false)
         navigation.navigate("requestPage");
         const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
         console.log("token",token.data);
@@ -118,6 +112,7 @@ const BidQueryPage = () => {
         console.error("Error updating message:");
       }
     } catch (error) {
+      setLoading(false)
       console.log("error sending message", error);
     }
   };
@@ -217,6 +212,9 @@ const BidQueryPage = () => {
               alignItems: "center", // Center content horizontally
             }}
           >
+            {loading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
             <Text
               style={{
                 fontSize: 18,
@@ -225,7 +223,7 @@ const BidQueryPage = () => {
               }}
             >
               Next
-            </Text>
+            </Text>)}
           </TouchableOpacity>
 
     </View>

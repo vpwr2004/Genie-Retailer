@@ -8,6 +8,7 @@ import {
   Platform,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ThreeDots from "../../assets/ThreeDotIcon.svg";
@@ -26,11 +27,13 @@ import {
   
 } from "../../notification/notificationMessages";
 
+
 const BidPreviewPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
   const [images, setImagesLocal] = useState();
+  const [loading,setLoading] =useState(false)
   // const [offeredPrice,setOfferedPrice]=useState("");
   // const [user,setUser]=useState();
   // const [requestInfo,setRequestInfo]=useState()
@@ -61,20 +64,12 @@ const BidPreviewPage = () => {
   // }, [route.params]);
 
   const sendBid = async () => {
+    setLoading(true)
     try {
-      // if(messages?.length===1){
-      //     console.log("firstmessage",messages[0]);
-      //     const res = await axios.patch(
-      //         `https://genie-backend-meg1.onrender.com/chat/modify-spade-retailer?id=${requestInfo?._id}`
-      //       );
-      //       // console.log("res after update", res);
+      
 
-      //       console.log("resafterupdate", res);
-
-      // }
-
-      console.log("requestinfo", requestInfo);
-      console.log("warranty", warranty);
+      // console.log("requestinfo", requestInfo);
+      // console.log("warranty", warranty);
 
       const response = await axios.post(
         "http://173.212.193.109:5000/chat/send-message",
@@ -101,7 +96,7 @@ const BidPreviewPage = () => {
         console.log("query update", mess);
 
         setMessages(mess);
-        
+        setLoading(false)
         navigation.navigate("requestPage");
         const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
         if(token.data.length>0){
@@ -123,6 +118,7 @@ const BidPreviewPage = () => {
         console.error("Error updating message:");
       }
     } catch (error) {
+      setLoading(false)
       console.log("error sending message", error);
     }
   };
@@ -250,7 +246,11 @@ const BidPreviewPage = () => {
         <View className="gap-[20px]">
           <TouchableOpacity onPress={sendBid}>
             <View className="w-full h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
+            {loading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
               <Text className="font-bold text-[16px] text-white">Next</Text>
+              )}
             </View>
           </TouchableOpacity>
         </View>
