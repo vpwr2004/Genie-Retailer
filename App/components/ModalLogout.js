@@ -20,6 +20,8 @@ import {
   setUniqueToken,
   setUserDetails,
 } from "../redux/reducers/storeDataSlice";
+import auth from "@react-native-firebase/auth";
+
 
 const ModalLogout = ({ user, modalVisible, setModalVisible }) => {
   console.log("user at menu", user);
@@ -32,7 +34,7 @@ const ModalLogout = ({ user, modalVisible, setModalVisible }) => {
     try {
       // Remove the item with key 'userData' from local storage
 
-      //  await auth().signOut();
+        // await auth().signOut();
       await messaging().deleteToken();
       console.log("FCM token deleted.");
       const res = await axios.patch(

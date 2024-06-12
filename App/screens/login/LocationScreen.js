@@ -21,7 +21,7 @@ import {
 } from "react-native-safe-area-context";
 import ModalScreen from "../../components/ModalScreen";
 import ModalScreenConfirm from "../../components/ModalScreenConfirm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setServiceProvider, setStoreLocation, setUserDetails } from "../../redux/reducers/storeDataSlice";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -45,6 +45,8 @@ const LocationScreen = () => {
   const [modalVisible, setModalVisible] = useState(true);
   const [modalConfirmVisible, setModalConfirmVisible] = useState(false);
   const { width } = Dimensions.get("window");
+  const uniqueToken = useSelector((state) => state.storeData.uniqueToken);
+
 
 
   useEffect(() => {
@@ -145,6 +147,7 @@ const LocationScreen = () => {
           lattitude: latitude,
           longitude: longitude,
           serviceProvider:data==="service"?"true":"false",
+          uniqueToken: uniqueToken,
         }
       );
 
