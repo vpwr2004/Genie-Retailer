@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import Profile from "../../assets/ProfileIcon.svg";
 import GinieIcon from "../../assets/GinieBusinessIcon.svg";
 import History from "../../assets/HistoryIcon.svg";
+import Close from "../../assets/delImg.svg";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { setRequestInfo } from "../../redux/reducers/requestDataSlice";
 import ProductOrderCard from "../../components/ProductOrderCard";
@@ -32,13 +33,13 @@ const HistoryScreen = () => {
           </View>
           <GinieIcon />
           <View className="bg-[#FB8C00] p-[4px] rounded-full">
-            <TouchableOpacity onPress={() => navigation.navigate("history")}>
-              <History />
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Close />
             </TouchableOpacity>
           </View>
         </View>
         <SafeAreaView className="flex-1">
-          <Text className="text-[14px] text-center mb-[20px] font-bold">Your History</Text>
+          <Text className="text-[14px] text-center mb-[20px] " style={{ fontFamily: "Poppins-Bold" }}>Your History</Text>
 
           <View className=" flex flex-col gap-[22px] mb-[20px] items-center justify-center">
             {retailerHistory && retailerHistory.length > 0 ? (
@@ -55,7 +56,7 @@ const HistoryScreen = () => {
                 </TouchableOpacity>
               ))
             ) : (
-              <Text className="text-[14px] text-center mb-[20px]">
+              <Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>
                 No History
               </Text>
             )}

@@ -24,16 +24,16 @@ const StoreModal = ({modalConfirmVisible,setModalConfirmVisible}) => {
           <View className="flex-1  justify-center items-center">
                   <View className="bg-white w-[90%] p-[30px] justify-center items-center mt-[10px] gap-[24px] shadow-gray-600 shadow-2xl">
                       <ModalImg width={195} height={125}/>
-                        <Text className="text-[16px] font-bold text-center">Set your store name</Text>
+                        <Text className="text-[16px]  text-center" style={{ fontFamily: "Poppins-Bold" }}>Set your store name</Text>
                         <View className="flex gap-[8px]">
-                            <Text className="text-[14px] font-normal text-center">If you have your own store , you have to set your store name and owner name separately. </Text>
-                            <Text className="text-[14px] font-normal text-center ">If you have not your own store ,You are an independent service provider,  you can set same name for store name and store owner name . </Text>
+                            <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Regular" }}>If you have your own store , you have to set your store name and owner name separately. </Text>
+                            <Text className="text-[14px] text-center " style={{ fontFamily: "Poppins-Regular" }}>If you have not your own store ,You are an independent service provider,  you can set same name for store name and store owner name . </Text>
                         </View>
                         
                             <View className="w-full flex flex-row  justify-center">
                               <View className="flex-1 mt-[10px]">
                                   <TouchableOpacity onPress={handleModal} >
-                                    <Text className="text-[16px] font-extrabold text-center text-[#FB8C00]">OK</Text>
+                                    <Text className="text-[16px]  text-center text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>OK</Text>
                           
                                   </TouchableOpacity> 
                               </View>

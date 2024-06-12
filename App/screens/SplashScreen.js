@@ -18,7 +18,7 @@ const SplashScreen = () => {
     const animateSplash = () => {
       Animated.timing(opacity, {
         toValue: 1,
-        duration: 3000, // Animation duration of 3 seconds
+        duration: 5000, // Animation duration of 3 seconds
         useNativeDriver: true,
       }).start();
     };
@@ -41,7 +41,7 @@ const SplashScreen = () => {
           else {
             navigation.navigate('mobileNumber');
           }
-        }, 3000); // Delay for 3 seconds
+        }, 5000); // Delay for 3 seconds
       } catch (error) {
         console.error("Error checking stored user:", error);
       }

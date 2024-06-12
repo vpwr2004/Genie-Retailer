@@ -27,10 +27,10 @@ const RetailerMessage = ({ bidDetails, user }) => {
         </View>
         <View className="w-[60%]">
           <View className="flex flex-row justify-between">
-            <Text className="text-[14px] text-[#2e2c43] font-bold">You</Text>
-            <Text className="text-[12px] text-[#2e2c43] ">{formattedTime}</Text>
+            <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-ExtraBold" }}>You</Text>
+            <Text className="text-[12px] text-[#2e2c43] " style={{ fontFamily: "Poppins-Regular" }}>{formattedTime}</Text>
           </View>
-          <Text className="text-[14px] text-[#2e2c43]">
+          <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>
             {bidDetails?.message}
           </Text>
         </View>
@@ -61,8 +61,8 @@ const RetailerMessage = ({ bidDetails, user }) => {
       )}
       {bidDetails?.bidPrice > 0 && (
         <View className="flex-row gap-[5px]">
-          <Text>Expected Price: </Text>
-          <Text className="font-bold text-[##79B649]">
+          <Text style={{ fontFamily: "Poppins-Medium" }}>Expected Price: </Text>
+          <Text className=" text-[##79B649]" style={{ fontFamily: "Poppins-SemiBold" }}>
             Rs. {bidDetails.bidPrice}
           </Text>
         </View>

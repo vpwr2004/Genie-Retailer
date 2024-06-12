@@ -23,18 +23,18 @@ const ViewRequestScreen = () => {
           >
             <FontAwesome name="arrow-left" size={15} color="black" />
           </Pressable>
-                <Text className="flex flex-1 justify-center items-center text-center text-[16px]">View Request</Text>
-                <Pressable onPress={() => { navigation.navigate('requestpreview'); }}>
-                    <Text className="text-[14px]"></Text>
-                </Pressable>
+                <Text className="flex flex-1 justify-center items-center text-center text-[16px]" style={{ fontFamily: "Poppins-Regular" }}>View Request</Text>
+                {/* <Pressable onPress={() => { navigation.navigate('requestpreview'); }}>
+                    <Text className="text-[14px]" ></Text>
+                </Pressable> */}
 
             </View>
 
             <View className="mx-[34px] mt-[10px]">
-                <Text className="font-bold text-[#2e2c43] text-[14px]">Spades of master</Text>
-                <Text className="font-light mt-2">{requestInfo?.requestId?.requestDescription}</Text>
+                <Text className=" text-[#2e2c43] text-[14px]" style={{ fontFamily: "Poppins-Bold" }}>Spades of master</Text>
+                <Text className=" mt-2" style={{ fontFamily: "Poppins-Regular" }}>{requestInfo?.requestId?.requestDescription}</Text>
 
-                <Text className="font-bold text-[#2e2c43] text-[14px] mt-[36px] mb-[15px]">Reference image for sellers</Text>
+                <Text className=" text-[#2e2c43] text-[14px] mt-[36px] mb-[15px]" style={{ fontFamily: "Poppins-Bold" }}>Reference image for sellers</Text>
 
                 <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: 'row', gap: 4, paddingHorizontal: 5, }}>
                     {
@@ -46,8 +46,8 @@ const ViewRequestScreen = () => {
                     }
                 </ScrollView>
 
-                <Text className="font-bold text-[#2e2c43] text-[14px] mt-[60px]">Your expected price</Text>
-                <Text className="text-[#558b2f] font-semibold">{requestInfo?.requestId?.expectedPrice} Rs</Text>
+                <Text className=" text-[#2e2c43] text-[14px] mt-[60px]" style={{ fontFamily: "Poppins-Bold" }}>Your expected price</Text>
+                <Text className="text-[#558b2f] " style={{ fontFamily: "Poppins-SemiBold" }}>{requestInfo?.requestId?.expectedPrice} Rs</Text>
             </View>
 
 

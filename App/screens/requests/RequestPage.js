@@ -363,10 +363,10 @@ const RequestPage = () => {
                 )}
               </View>
               <View className="w-[60%]">
-                <Text className="text-[14px]  text-[#2e2c43] capitalize">
+                <Text className="text-[14px]  text-[#2e2c43] capitalize" style={{ fontFamily: "Poppins-Regular" }}>
                   {requestInfo?.customerId?.userName}
                 </Text>
-                <Text className="text-[12px] text-[#c4c4c4]">
+                <Text className="text-[12px] text-[#c4c4c4]" style={{ fontFamily: "Poppins-Regular" }}>
                   Active 3 hr ago
                 </Text>
               </View>
@@ -391,7 +391,7 @@ const RequestPage = () => {
                 navigation.navigate("viewrequest");
               }}
             >
-              <Text className="mx-5  py-3">View Request</Text>
+              <Text className="mx-5  py-3" style={{ fontFamily: "Poppins-Regular" }}>View Request</Text>
             </TouchableOpacity>
             {/* <Pressable
               onPress={() => {
@@ -406,13 +406,13 @@ const RequestPage = () => {
 
         <View className="px-[50px] pb-[20px] flex bg-[#ffe7c8]">
           <View className="flex-row gap-[10px] items-center">
-            <Text className="text-[16px] font-bold">Request Id</Text>
-            <Text>{requestInfo?.requestId?._id}</Text>
+            <Text className="text-[16px] " style={{ fontFamily: "Poppins-Bold" }}>Request Id</Text>
+            <Text style={{ fontFamily: "Poppins-Regular" }}>{requestInfo?.requestId?._id}</Text>
             {/* {
               route.params?.data ? ( <Text>{req?.requestId._id}</Text>):( )
             } */}
           </View>
-          <Text>
+          <Text style={{ fontFamily: "Poppins-Regular" }}>
             {requestInfo?.requestId?.requestDescription
               ?.split(" ")
               .slice(0, 12)
@@ -541,10 +541,10 @@ const RequestPage = () => {
           available === false && (
             <View className="gap-[20px] items-center bg-white pt-[20px] shadow-2xl">
               <View>
-                <Text className="text-[14px] font-bold text-center">
+                <Text className="text-[14px] text-center"style={{ fontFamily: "Poppins-Bold" }}>
                   Are you accepting the customer bid?
                 </Text>
-                <Text className="text-[14px] text-center">
+                <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Regular" }}>
                   Please confirm the product availability by {"\n"} accepting
                   this request
                 </Text>
@@ -556,7 +556,7 @@ const RequestPage = () => {
                   style={{ flex: 1 }}
                 >
                   <View className="h-[63px] flex items-center justify-center border-[1px] bg-[#FB8C00] border-[#FB8C00]">
-                    <Text className="font-bold text-[16px] text-white">
+                    <Text className=" text-[16px] text-white "style={{ fontFamily: "Poppins-Black" }}>
                       Accept
                     </Text>
                   </View>
@@ -566,7 +566,7 @@ const RequestPage = () => {
                   style={{ flex: 1 }}
                 >
                   <View className="h-[63px] flex items-center justify-center border-2 border-[#FB8C00] bg-white">
-                    <Text className="font-bold text-[16px] text-[#FB8C00]">
+                    <Text className=" text-[16px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Black" }}>
                       Product Not Available
                     </Text>
                   </View>
@@ -602,7 +602,7 @@ const RequestPage = () => {
                 style={{ backgroundColor: "white", flex: 1 }}
               >
                 <View className="h-[63px] flex items-center justify-center bg-white border-[1px] border-[#FB8C00] rounded-3xl">
-                  <Text className="font-bold text-[16px] text-[#fb8c00] text-center">
+                  <Text className="text-[16px] text-[#fb8c00] text-center" style={{ fontFamily: "Poppins-Bold" }}>
                     Send Message to Customer
                   </Text>
                 </View>
@@ -619,7 +619,7 @@ const RequestPage = () => {
               >
                 <View className="h-[63px] flex-row items-center justify-center bg-white border-[1px] border-[#FB8C00] rounded-3xl px-[4px]">
                   <Document />
-                  <Text className="font-bold text-[16px] text-[#fb8c00] text-center">
+                  <Text className=" text-[16px] text-[#fb8c00] text-center" style={{ fontFamily: "Poppins-Bold" }}>
                     Send attachment
                   </Text>
                 </View>
@@ -636,10 +636,10 @@ const RequestPage = () => {
           messages[messages.length - 1]?.sender?.refId !== user?._id && (
             <View className="gap-[20px] items-center bg-white pt-[20px] shadow-2xl">
               <View>
-                <Text className="text-[14px] font-bold text-center">
+                <Text className="text-[14px]  text-center" style={{ fontFamily: "Poppins-Bold" }}>
                   Are you accepting the customer bid?
                 </Text>
-                <Text className="text-[14px] text-center">
+                <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Regular" }}>
                   If you don’t understand the customer’s need,
                   {"\n"}select no and send query for clarification.
                 </Text>
@@ -651,14 +651,14 @@ const RequestPage = () => {
                   style={{ flex: 1 }}
                 >
                   <View className="h-[63px] flex items-center justify-center border-[1px] bg-[#FB8C00] border-[#FB8C00]">
-                    <Text className="font-bold text-[16px] text-white">
+                    <Text className=" text-[16px] text-white" style={{ fontFamily: "Poppins-Black" }}>
                       Yes
                     </Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={RejectBid} style={{ flex: 1 }}>
                   <View className="h-[63px] flex items-center justify-center border-2 border-[#FB8C00] bg-white">
-                    <Text className="font-bold text-[16px] text-[#FB8C00]">
+                    <Text className=" text-[16px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Black" }}>
                       No
                     </Text>
                   </View>
@@ -688,7 +688,7 @@ const RequestPage = () => {
                 }
               >
                 <View className="h-[63px] flex items-center justify-center bg-[#FB8C00]">
-                  <Text className="font-bold text-[16px] text-white">
+                  <Text className=" text-[16px] text-white" style={{ fontFamily: "Poppins-Black" }}>
                     Send a offer
                   </Text>
                 </View>

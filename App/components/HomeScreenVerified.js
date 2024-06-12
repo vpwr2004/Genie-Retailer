@@ -175,7 +175,7 @@ const HomeScreenVerified = () => {
                   <View className="flex-row  gap-[5px]  items-center p-[4px]">
                     <Text
                       style={{
-                        fontWeight: tab === "New" ? "bold" : "normal",
+                        fontFamily:tab==="New"?"Poppins-Bold":"Poppins-Regular",
                         borderBottomWidth: tab === "New" ? 3 : 0,
                         borderBottomColor: "#FB8C00",
                       }}
@@ -183,7 +183,7 @@ const HomeScreenVerified = () => {
                       New Requests
                     </Text>
                     <View className="bg-[#E76063] h-[22px] flex justify-center items-center w-[22px]  rounded-full">
-                      <Text className="text-white  ">
+                      <Text className="text-white  " style={{ fontFamily: "Poppins-Regular" }}>
                         {newRequests ? newRequests.length : 0}
                       </Text>
                     </View>
@@ -193,7 +193,8 @@ const HomeScreenVerified = () => {
                   <View className="flex-row gap-[5px] items-center p-[4px]">
                     <Text
                       style={{
-                        fontWeight: tab === "Ongoing" ? "bold" : "normal",
+                        fontFamily:tab==="Ongoing"?"Poppins-Bold":"Poppins-Regular",
+
                         borderBottomWidth: tab === "Ongoing" ? 3 : 0,
                         borderBottomColor: "#FB8C00",
                       }}
@@ -201,7 +202,7 @@ const HomeScreenVerified = () => {
                       Ongoing Requests
                     </Text>
                     <View className="bg-[#E76063] h-[22px] flex justify-center items-center w-[22px]  rounded-full">
-                      <Text className="text-white  ">
+                      <Text className="text-white  " style={{ fontFamily: "Poppins-Regular" }}>
                         {ongoingRequests ? ongoingRequests.length : 0}
                       </Text>
                     </View>
@@ -229,7 +230,7 @@ const HomeScreenVerified = () => {
                           </TouchableOpacity>
                         ))
                       ) : (
-                        <Text className="text-[14px] text-center mb-[20px]">
+                        <Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>
                           No New Requests
                         </Text>
                       )}
@@ -260,7 +261,7 @@ const HomeScreenVerified = () => {
                           </TouchableOpacity>
                         ))
                       ) : (
-                        <Text className="text-[14px] text-center mb-[20px]">
+                        <Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>
                           No Ongoing Requests
                         </Text>
                       )}

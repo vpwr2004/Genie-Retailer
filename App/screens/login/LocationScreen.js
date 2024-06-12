@@ -195,10 +195,10 @@ const LocationScreen = () => {
          
           <View className="mt-[40px] mb-[45px] flex flex-col gap-[33px] px-[32px]">
             <View>
-              <Text className="text-[18px] text-[#001B33]  font-extrabold">
+              <Text className="text-[18px] text-[#001B33] " style={{ fontFamily: "Poppins-Black" }}>
                 Please confirm your {"\n"}store location
               </Text>
-              <Text className="text-[14px] text-[#2e2c43] mt-[36px]">
+              <Text className="text-[14px] text-[#2e2c43] mt-[36px]" style={{ fontFamily: "Poppins-Regular" }}>
                 Fetched Location
               </Text>
               
@@ -215,7 +215,7 @@ const LocationScreen = () => {
                   />
                 </View>
              
-              <Text className="text-[14px] text-[#2e2c43] mt-[10px]">
+              <Text className="text-[14px] text-[#2e2c43] mt-[10px]" style={{ fontFamily: "Poppins-Regular" }}>
                 Enter your Location
               </Text>
              
@@ -225,13 +225,14 @@ const LocationScreen = () => {
                     placeholderTextColor={"#dbcdbb"}
                     value={location}
                     onChangeText={handleLocationChange}
-                    className="w-[330px] overflow-x-scroll  text-[14px]  px-[20px] py-[15px] bg-[#F9F9F9] font-semibold text-black rounded-[16px]"
+                    className="w-[330px] overflow-x-scroll  text-[14px]  px-[20px] py-[15px] bg-[#F9F9F9]  text-black rounded-[16px]"
                   />
+                  style={{ fontFamily: "Poppins-Regular" }}
                 </View>
                 
               <View className="flex items-start mt-[20px] mb-[40px]">
                 <Pressable onPress={handleRefreshLocation} className="w-max">
-                  <Text className="text-[#E76063] text-[14px] font-extrabold">
+                  <Text className="text-[#E76063] text-[14px] " style={{ fontFamily: "Poppins-ExtraBold" }}>
                     Refresh
                   </Text>
                 </Pressable>
@@ -243,15 +244,7 @@ const LocationScreen = () => {
           </ScrollView>
           </KeyboardAvoidingView>
           
-          {/* <TouchableOpacity disabled={!location} onPress={handleLocationFetching}>
           
-              <View className="w-full h-[63px] bg-[#fb8c00] absolute bottom-0 right-0 left-0  flex items-center justify-center ">
-                <Text className="text-white text-[18px] font-extrabold">
-                  Continue
-                </Text>
-              </View>
-           
-          </TouchableOpacity> */}
           <TouchableOpacity
             disabled={!location}
             onPress={handleLocationFetching}
@@ -271,7 +264,7 @@ const LocationScreen = () => {
             <Text
               style={{
                 fontSize: 18,
-                fontWeight: "bold",
+                fontFamily:"Poppins-Black",
                 color: !location ? "#888888" : "white",
               }}
             >

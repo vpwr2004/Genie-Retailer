@@ -31,7 +31,7 @@ import ModalCancel from "../../components/ModalCancel";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { manipulateAsync } from "expo-image-manipulator";
 import { launchCamera } from "react-native-image-picker";
-import Close from "../../assets/RedClose.svg"
+import Close from "../../assets/RedClose.svg";
 
 const BidPageImageUpload = () => {
   const [images, setImages] = useState([]);
@@ -210,11 +210,17 @@ const BidPageImageUpload = () => {
                       )}
                     </View>
                     <View className="w-[70%]">
-                      <Text className="text-[14px] text-[#2e2c43] capitalize">
+                      <Text
+                        className="text-[14px] text-[#2e2c43] capitalize"
+                        style={{ fontFamily: "Poppins-Regular" }}
+                      >
                         {requestInfo?.customerId?.userName}
                       </Text>
 
-                      <Text className="text-[12px] text-[#c4c4c4]">
+                      <Text
+                        className="text-[12px] text-[#c4c4c4]"
+                        style={{ fontFamily: "Poppins-Regular" }}
+                      >
                         Active 3 hr ago
                       </Text>
                     </View>
@@ -230,7 +236,10 @@ const BidPageImageUpload = () => {
                   }
                   className=""
                 >
-                  <Text className="text-[14px] text-[#FB8C00] font-bold ">
+                  <Text
+                    className="text-[14px] text-[#FB8C00] "
+                    style={{ fontFamily: "Poppins-SemiBold" }}
+                  >
                     Skip
                   </Text>
                 </Pressable>
@@ -241,10 +250,17 @@ const BidPageImageUpload = () => {
               </View>
               <View className="px-[50px] pb-[20px] flex bg-[#ffe7c8]">
                 <View className="flex-row gap-[10px] items-center">
-                  <Text className="text-[16px] font-bold">Request Id</Text>
-                  <Text>{requestInfo?.requestId?._id}</Text>
+                  <Text
+                    className="text-[16px]"
+                    style={{ fontFamily: "Poppins-Bold" }}
+                  >
+                    Request Id
+                  </Text>
+                  <Text style={{ fontFamily: "Poppins-Regular" }}>
+                    {requestInfo?.requestId?._id}
+                  </Text>
                 </View>
-                <Text>
+                <Text style={{ fontFamily: "Poppins-Regular" }}>
                   {requestInfo?.requestId?.requestDescription
                     ?.split(" ")
                     .slice(0, 12)
@@ -255,12 +271,17 @@ const BidPageImageUpload = () => {
 
               <View className="flex gap-[16px] px-[50px] pt-[10px] pb-[10px]">
                 <View className="flex-row justify-between">
-                  <Text className="font-bold">Send a offer</Text>
-                  <Text className="text-[#FB8C00] text-[14px] font-bold">
+                  <Text className="" style={{ fontFamily: "Poppins-Bold" }}>
+                    Send a offer
+                  </Text>
+                  <Text
+                    className="text-[#FB8C00] text-[14px] "
+                    style={{ fontFamily: "Poppins-Medium" }}
+                  >
                     Step 2/3
                   </Text>
                 </View>
-                <Text>
+                <Text style={{ fontFamily: "Poppins-Regular" }}>
                   Provide product images for better reference to customers for
                   product quality and availability
                 </Text>
@@ -286,7 +307,10 @@ const BidPageImageUpload = () => {
                         }}
                       >
                         <View className="mx-[28px] mt-[30px] h-[63px] flex-row items-center justify-center border-2 border-[#fb8c00] rounded-3xl">
-                          <Text className="text-[16px] font-bold text-[#fb8c00] text-center">
+                          <Text
+                            className="text-[16px]  text-[#fb8c00] text-center"
+                            style={{ fontFamily: "Poppins-ExtraBold" }}
+                          >
                             Browse Image
                           </Text>
                         </View>
@@ -316,8 +340,7 @@ const BidPageImageUpload = () => {
                                   onPress={() => deleteImage(index)}
                                   style={styles.deleteIcon}
                                 >
-                                  
-                                  <Close/>
+                                  <Close />
                                 </Pressable>
                               </View>
                             </Pressable>
@@ -356,7 +379,7 @@ const BidPageImageUpload = () => {
                       onPress={() => setAddMore(!addMore)}
                       style={{ alignSelf: "flex-start" }}
                     >
-                      <View style={{ marginLeft: 36, marginTop: 30 }}>
+                      <View style={{ marginLeft: 36, marginTop: 30 ,position:"relative"}}>
                         <AddMoreImage />
                       </View>
                     </Pressable>
@@ -364,15 +387,30 @@ const BidPageImageUpload = () => {
                 )}
                 {!addMore ? (
                   images.length > 0 && (
-                    <View className="w-full h-[68px]  bg-[#fb8c00] justify-center absolute bottom-0 left-0 right-0">
-                      <TouchableOpacity onPress={handleNext}>
-                        <View className="w-full flex justify-center items-center">
-                          <Text className=" text-white font-bold text-center text-[16px]">
-                            Next
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity
+                      onPress={handleNext}
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: 63,
+                        width: "100%",
+                        backgroundColor: "#FB8C00",
+                        justifyContent: "center", // Center content vertically
+                        alignItems: "center", // Center content horizontally
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontFamily: "Poppins-Black",
+                          color: "white",
+                        }}
+                      >
+                        NEXT
+                      </Text>
+                    </TouchableOpacity>
                   )
                 ) : (
                   <View className="w-full absolute bottom-0 items-center left-0 right-0 px-[10px]">
@@ -383,7 +421,12 @@ const BidPageImageUpload = () => {
                       }}
                     >
                       <View className="w-full flex flex-row justify-between px-[40px] py-[15px]">
-                        <Text className="text-[14px]">Upload Image</Text>
+                        <Text
+                          className="text-[14px]"
+                          style={{ fontFamily: "Poppins-Regular" }}
+                        >
+                          Upload Image
+                        </Text>
                         <FontAwesome6
                           name="arrow-right"
                           size={15}
@@ -399,7 +442,12 @@ const BidPageImageUpload = () => {
                       }}
                     >
                       <View className="w-full flex flex-row justify-between px-[40px] py-[15px]">
-                        <Text className="text-[14px]">Click Image</Text>
+                        <Text
+                          className="text-[14px]"
+                          style={{ fontFamily: "Poppins-Regular" }}
+                        >
+                          Click Image
+                        </Text>
                         <FontAwesome6
                           name="arrow-right"
                           size={15}

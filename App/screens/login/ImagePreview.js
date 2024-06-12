@@ -93,13 +93,13 @@ const [loading,setLoading] = useState(false);
           >
             <FontAwesome name="arrow-left" size={15} color="black" />
           </Pressable>
-          <Text className="flex flex-1 justify-center items-center font-bold text-center text-[16px]">
+          <Text className="flex flex-1 justify-center items-center text-center text-[16px]" style={{ fontFamily: "Poppins-Bold" }}>
             Select Store Profile Pic
           </Text>
         </View>
 
         <View className="w-full flex items-center justify-center mt-[20px]">
-        <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[20px] ">
+        <Text className="text-[14.5px]  text-[#FB8C00] text-center mb-[20px] " style={{ fontFamily: "Poppins-SemiBold" }}>
                     Step 4/4
                   </Text>
           <View
@@ -161,7 +161,7 @@ const [loading,setLoading] = useState(false);
             {loading ? (
                   <ActivityIndicator size="small" color="#FB8C00" />
                 ) : (
-              <Text className="text-white font-bold text-center text-[16px]">
+              <Text className="text-white text-center text-[16px]" style={{ fontFamily: "Poppins-Black" }}>
                 CONTINUE
               </Text>
                 )}

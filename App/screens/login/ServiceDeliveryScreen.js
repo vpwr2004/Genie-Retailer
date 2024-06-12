@@ -44,11 +44,11 @@ const ServiceDeliveryScreen = () => {
                     </View>
                     <View className="flex flex-col justify-center items-center px-[32px] gap-[20px] ">
                         <StoreName height={400} width={width} className="object-cover" />
-                        <Text className="text-[14.5px] font-bold text-[#FB8C00]">Step 5/9</Text>
+                        <Text className="text-[14.5px]  text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>Step 5/9</Text>
                     </View>
                     <View className="my-[30px] flex flex-col gap-[33px] px-[32px]">
                         <View className="flex flex-col gap-[17px]">
-                            <Text className="text-[16px] text-[#2e2c43]">
+                            <Text className="text-[16px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>
                                 Do you provide home delivery or service at customer's doorstep?
                             </Text>
                             <KeyboardAvoidingView className="flex flex-col gap-[22px]">
@@ -56,13 +56,13 @@ const ServiceDeliveryScreen = () => {
                                     <View className={`border-[#FB8C00] h-[20px] w-[20px] flex justify-center items-center border-[1px] rounded-full ${checked === true ? "bg-[#FB8C00]" : ""}`}>
                                         {checked === true && <Entypo name="circle" size={16} color="white" />}
                                     </View>
-                                    <Text className="text-[#2E2C43] text-[16px] font-semibold">Yes</Text>
+                                    <Text className="text-[#2E2C43] text-[16px] " style={{ fontFamily: "Poppins-Regular" }}>Yes</Text>
                                 </Pressable>
                                 <Pressable className="flex flex-row items-center gap-[22px]" onPress={() => setChecked(false)}>
                                     <View className={`border-[#FB8C00] h-[20px] w-[20px] flex justify-center items-center border-[1px] rounded-full ${checked === false ? "bg-[#FB8C00]" : ""}`}>
                                         {checked === false && <Entypo name="circle" size={16} color="white" />}
                                     </View>
-                                    <Text className="text-[#2E2C43] text-[16px] font-semibold">No</Text>
+                                    <Text className="text-[#2E2C43] text-[16px] " style={{ fontFamily: "Poppins-Regular" }}>No</Text>
                                 </Pressable>
                             </KeyboardAvoidingView>
                         </View>
@@ -86,7 +86,7 @@ const ServiceDeliveryScreen = () => {
                 <Text
                     style={{
                         fontSize: 18,
-                        fontWeight: 'bold',
+                        fontFamily:"Poppins-Black",
                         color: 'white',
                         textAlign: 'center',
                     }}

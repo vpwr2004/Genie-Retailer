@@ -32,21 +32,21 @@ const ProductOrderCard = ({product}) => {
 
                         <View className="w-10/12 px-[10px]"> 
                             <View className="flex flex-wrap w-10/12 pb-1 ">
-                                <Text className="text-[14px] w-full ">{prod?.requestId?.requestDescription}</Text>
+                                <Text className="text-[14px] w-full " style={{ fontFamily: "Poppins-Regular" }}>{prod?.requestId?.requestDescription}</Text>
                             </View>
 
                             <View className="flex-row py-1 w-10/12 ">
-                                <Text className="text-[12px]">Expected Price: </Text>
-                                <Text className="text-[12px] text-[#70B241] font-bold">Rs. {prod?.requestId?.expectedPrice}</Text>
+                                <Text className="text-[12px]" style={{ fontFamily: "Poppins-Medium" }}>Expected Price: </Text>
+                                <Text className="text-[12px] text-[#70B241] " style={{ fontFamily: "Poppins-SemiBold" }}>Rs. {prod?.requestId?.expectedPrice}</Text>
                             </View>
                             <View className="flex-row gap-[8px] w-10/12">
                                 <View className="flex-row items-center  gap-[8px]">
                                     <Time size={13}/>
-                                    <Text className="text-[12px]">{formattedTime}</Text>
+                                    <Text className="text-[12px]" style={{ fontFamily: "Poppins-Regular" }}>{formattedTime}</Text>
                                 </View>
                                 <View className="flex-row items-center gap-[8px]">
                                     <Calendar size={11}/>
-                                    <Text className="text-[12px]">{formattedDate}</Text>
+                                    <Text className="text-[12px]" style={{ fontFamily: "Poppins-Regular" }}>{formattedDate}</Text>
                                 </View>
                             </View>
                         </View>

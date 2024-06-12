@@ -46,14 +46,14 @@ const WriteAboutStoreScreen = () => {
             >
               <FontAwesome name="arrow-left" size={15} color="black" />
             </Pressable>
-            <Text style={{ flex: 1, textAlign: "center", fontSize: 16,fontWeight:800 }}>
+            <Text style={{ flex: 1, textAlign: "center", fontSize: 16,fontFamily:"Poppins-Bold" }}>
             Tell us about your store {"\n"}
             & services
             </Text>
           </View>
 
           <View style={{ paddingHorizontal: 32, marginTop: 10 }}>
-          <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
+          <Text className="text-[14.5px]  text-[#FB8C00] text-center mb-[10px]" style={{ fontFamily: "Poppins-SemiBold" }}>
                     Step 1/4
                   </Text>
             <Text
@@ -62,6 +62,7 @@ const WriteAboutStoreScreen = () => {
                 color: "#2e2c43",
                 textAlign: "center",
                 marginBottom: 29,
+                fontFamily:"Poppins-Regular"
               }}
             >
               What do you sell or what services {"\n"}do you provide?
@@ -92,6 +93,7 @@ const WriteAboutStoreScreen = () => {
                 borderWidth: 0.3,
                 borderColor: "#2e2c43",
                 borderRadius: 20,
+                fontFamily:"Poppins-Regular",
               }}
             />
           </View>
@@ -109,7 +111,7 @@ const WriteAboutStoreScreen = () => {
               }}
             >
               <Text
-                style={{  color: !query ? "#888888" : "white", fontSize: 18, fontWeight: "bold" }}
+                style={{  color: !query ? "#888888" : "white", fontSize: 18, fontFamily:"Poppins-Black"}}
               >
                 NEXT
               </Text>

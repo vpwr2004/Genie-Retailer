@@ -109,30 +109,32 @@ const UserNameEntryScreen = () => {
               </View>
               <View className="flex flex-col justify-center items-center gap-[10px]">
                 <StoreName height={400} width={width} className="object-cover" />
-                <Text className="text-[14.5px] font-bold text-[#FB8C00]">Step 3/9</Text>
+                <Text className="text-[14.5px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>Step 3/9</Text>
               </View>
               
               <View className="mt-[20px] flex flex-col gap-[15px] px-[32px]">
                 <View>
-                  <Text className="text-[16px] text-[#2e2c43] font-extrabold">Please enter your</Text>
-                  <Text className="text-[14px] text-[#2e2c43]">Store Name</Text>
+                  <Text className="text-[16px] text-[#2e2c43] " style={{ fontFamily: "Poppins-ExtraBold" }}>Please enter your</Text>
+                  <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>Store Name</Text>
                   <View className="flex items-center">
                     <TextInput
                       onChangeText={handleStoreName}
                       placeholder="Ex: Kishor Kumar"
                       className="w-[310px] h-[54px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[5px]"
+                      style={{ fontFamily: "Poppins-Regular" }}
                       
                     />
                   </View>
                 </View>
               
                 <View>
-                  <Text className="text-[14px] text-[#2e2c43]">Store Owner Name</Text>
+                  <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>Store Owner Name</Text>
                   <View className="flex items-center">
                     <TextInput
                       onChangeText={handleStoreOwnerName}
                       placeholder="Ex: Kishor Kumar"
                       className="w-[310px] h-[54px] bg-gray-200 stroke-[#2e2c43] rounded-3xl px-10 mt-[5px]"
+                      style={{ fontFamily: "Poppins-Regular" }}
                      
                     />
                   </View>
@@ -165,7 +167,7 @@ const UserNameEntryScreen = () => {
           <Text
             style={{
               fontSize: 18,
-              fontWeight: "bold",
+              fontFamily:"Poppins-Black",
               color: (!storeName || !storeOwnerName)  ? "#888888" : "white",
             }}
           >

@@ -44,13 +44,13 @@ const user= useSelector(state => state.storeData.userDetails)
   return (
     <View className="gap-[17px] mb-[20px]">
       {!completeProfile ? (
-        <Text className="text-[14px] font-bold text-center">
+        <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Bold" }}>
           Please complete your store profile {"\n"} before starting
         </Text>
       ) : (
         <View className="flex-row gap-[5px] items-center justify-center">
           <View className="w-[16px] h-[16px] bg-[#E76063] rounded-full"></View>
-          <Text className="text-[14px] font-bold">
+          <Text className="text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>
             {" "}
             Wait for request approval
           </Text>
@@ -70,11 +70,11 @@ const user= useSelector(state => state.storeData.userDetails)
                 </View>
 
                 <View className="flex ">
-                  <Text className="text-[14px] font-bold">
+                  <Text className="text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>
                     {" "}
                     Set Store Location{" "}
                   </Text>
-                  <Text className="text-[12px]">
+                  <Text className="text-[12px]" style={{ fontFamily: "Poppins-Regular" }}>
                     We are fetching your location for the {"\n"}
                     purchase reference of our customers
                   </Text>
@@ -100,11 +100,11 @@ const user= useSelector(state => state.storeData.userDetails)
                 </View>
 
                 <View className="flex ">
-                  <Text className="text-[14px] font-bold">
+                  <Text className="text-[14px]" style={{ fontFamily: "Poppins-Bold" }}>
                     {" "}
                     Complete store profile{" "}
                   </Text>
-                  <Text className="text-[12px]">
+                  <Text className="text-[12px]" style={{ fontFamily: "Poppins-Regular" }}>
                     We are fetching your location for the {"\n"}
                     purchase reference of our customers
                   </Text>
@@ -123,16 +123,16 @@ const user= useSelector(state => state.storeData.userDetails)
          
             <View className="flex-row items-center justify-between gap-[20px]">
               <Line />
-              <Text>OR</Text>
+              <Text style={{ fontFamily: "Poppins-SemiBold" }}>OR</Text>
               <Line />
             </View>
           
 
           <View>
-            <Text className="text-[14px] font-bold text-center">
+            <Text className="text-[14px] font-bold text-center" style={{ fontFamily: "Poppins-Bold" }}>
               Are you a maintenance service providers ?{" "}
             </Text>
-            <Text className="text-[14px]  text-center">
+            <Text className="text-[14px]  text-center" style={{ fontFamily: "Poppins-Light" }}>
               (Don’t have store / shop)
             </Text>
           </View>
@@ -151,11 +151,11 @@ const user= useSelector(state => state.storeData.userDetails)
               </View>
 
               <View className="flex ">
-                <Text className="text-[14px] font-bold">
+                <Text className="text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>
                   {" "}
                   Set Store Location{" "}
                 </Text>
-                <Text className="text-[12px]">
+                <Text className="text-[12px]" style={{ fontFamily: "Poppins-Regular" }}>
                   We are fetching your location for the {"\n"}
                   purchase reference of our customers
                 </Text>

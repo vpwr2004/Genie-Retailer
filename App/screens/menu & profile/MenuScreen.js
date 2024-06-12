@@ -46,17 +46,17 @@ const MenuScreen = () => {
 
     
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
        
-         <View className="pt-[42px] flex  gap-[60px]" style={{ flex: 1 }} >
+         <View className="mt-[50px] flex  gap-[60px]" style={{ flex: 1 }} >
              <View className="flex flex-row px-[32px] items-center ">
-                 <View className="">
-                     <Pressable onPress={() => {navigation.goBack()}} className="flex flex-row p-2 items-center  gap-2">
+                 
+                     <Pressable onPress={() => {navigation.goBack()}} className="flex  absolute z-40 flex-row p-[10px] pl-[32px] items-center  gap-2">
                                 <FontAwesome name="arrow-left" size={15} color="black" />
                      </Pressable>
                     
-                 </View>
-                 <Text className="text-[16px] font-bold flex-1 flex text-center">Menu</Text>
+              
+                 <Text className="text-[16px] flex-1 flex text-center" style={{ fontFamily: "Poppins-Bold" }}>Menu</Text>
              </View>
 
             <TouchableOpacity onPress={()=>navigation.navigate("profile")}>
@@ -70,8 +70,8 @@ const MenuScreen = () => {
 
                         }
                         <View className="flex-col">
-                            <Text className="text-[16px] font-bold text-center capitalize">{user?.storeOwnerName}</Text>
-                            <Text className="text-[14px]">{user?.storeMobileNo}</Text>
+                            <Text className="text-[16px]  text-center capitalize" style={{ fontFamily: "Poppins-Black" }}>{user?.storeOwnerName}</Text>
+                            <Text className="text-[14px]" style={{ fontFamily: "Poppins-Regular" }}>{user?.storeMobileNo}</Text>
                         </View>
                     </View>
 
@@ -82,7 +82,7 @@ const MenuScreen = () => {
                
                     <TouchableOpacity onPress={()=>navigation.navigate("about")}>
                         <View className="flex flex-row justify-between items-center">
-                        <Text className="text-[15px]">
+                        <Text className="text-[15px]" style={{ fontFamily: "Poppins-Regular" }}>
                             About CulturTap Genie 
                         </Text>
                         <FontAwesome6 name="arrow-right" size={15} color="black" />
@@ -91,7 +91,7 @@ const MenuScreen = () => {
                     </TouchableOpacity>
                     <TouchableOpacity >
                         <View className="flex flex-row justify-between items-center">
-                        <Text className="text-[15px]">
+                        <Text className="text-[15px]" style={{ fontFamily: "Poppins-Regular" }}>
                         Terms & Conditions 
                         </Text>
                         <FontAwesome6 name="arrow-right" size={15} color="black" />
@@ -100,7 +100,7 @@ const MenuScreen = () => {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>navigation.navigate("help")}>
                         <View className="flex flex-row justify-between items-center">
-                        <Text className="text-[15px]">
+                        <Text className="text-[15px]" style={{ fontFamily: "Poppins-Regular" }}>
                         Need any Help ? 
                         </Text>
                         <FontAwesome6 name="arrow-right" size={15} color="black" />
@@ -110,7 +110,7 @@ const MenuScreen = () => {
 
                     <TouchableOpacity onPress={deleteUserData}>
                         <View className="flex flex-row justify-between items-center">
-                        <Text className="text-[15px]">
+                        <Text className="text-[15px]" style={{ fontFamily: "Poppins-Regular" }}>
                         Log Out
                         </Text>
                         <FontAwesome6 name="arrow-right" size={15} color="black" />
@@ -135,7 +135,7 @@ const MenuScreen = () => {
                 )}
          </View>
       
-    </SafeAreaView>
+    </View>
   )
 }
 

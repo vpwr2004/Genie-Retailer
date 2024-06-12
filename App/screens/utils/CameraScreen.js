@@ -264,7 +264,7 @@ const CameraScreen = () => {
             />
           </KeyboardAvoidingView>
           <View className=" flex-row justify-between items-center mx-[25px] pb-[10px]">
-            <Text className="text-white font-semibold pl-[40px] capitalize">
+            <Text className="text-white  pl-[40px] capitalize" style={{ fontFamily: "Poppins-SemiBold" }}>
               {requestInfo?.customerId?.userName}
             </Text>
             <TouchableOpacity

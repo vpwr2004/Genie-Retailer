@@ -25,14 +25,14 @@ const ModalScreenConfirm = ({modalConfirmVisible,setModalConfirmVisible}) => {
                   <View className="bg-white w-[90%] p-[30px] justify-center items-center mt-[10px] gap-[24px] shadow-gray-600 shadow-2xl">
                       <ModalImg classname="w-[117px] h-[75px]"/>
                         <View className="">
-                            <Text className="text-[15px] font-extrabold text-center">Please reach your store first before creating your business profile.</Text>
-                            <Text className="text-[12px] font-normal text-center  pt-[8px]">We will collect your store images for better reference of our customers </Text>
+                            <Text className="text-[15px] text-center" style={{ fontFamily: "Poppins-SemiBold" }}>Please reach your store first before creating your business profile.</Text>
+                            <Text className="text-[12px] font-normal text-center  pt-[8px]" style={{ fontFamily: "Poppins-Regular" }}>We will collect your store images for better reference of our customers </Text>
                         </View>
                         
                             <View className="w-full flex flex-row  justify-center">
                               <View className="flex-1 mt-[10px]">
                                   <TouchableOpacity onPress={handleModal} >
-                                    <Text className="text-[14.5px] font-bold text-center">OK</Text>
+                                    <Text className="text-[14.5px]  text-center" style={{ fontFamily: "Poppins-Bold" }}>OK</Text>
                           
                                   </TouchableOpacity> 
                               </View>

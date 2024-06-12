@@ -199,7 +199,7 @@ const AddImageScreen = () => {
             <Pressable onPress={() => navigation.goBack()} className="p-2">
                 <BackArrow width={14} height={10} />
               </Pressable>
-              <Text className="text-[16px] flex flex-1 justify-center  items-center text-center font-extrabold">
+              <Text className="text-[16px] flex flex-1 justify-center  items-center text-center" style={{ fontFamily: "Poppins-Bold" }}>
                 Add Store Image
               </Text>
               {/* {imagesLocal.length === 0 && <Pressable onPress={() => navigation.navigate("addexpectedprice")} className="">
@@ -208,13 +208,13 @@ const AddImageScreen = () => {
             </View>
             <View className="mt-[10px] mb-[27px]">
                   {
-                    imagesLocal.length === 0 ?(<Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
+                    imagesLocal.length === 0 ?(<Text className="text-[14.5px]  text-[#FB8C00] text-center mb-[10px]" style={{ fontFamily: "Poppins-SemiBold" }}>
                       Step 2/4
-                    </Text>):(<Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px]">
+                    </Text>):(<Text className="text-[14.5px]  text-[#FB8C00] text-center mb-[10px]" style={{ fontFamily: "Poppins-SemiBold" }}>
                     Step 3/4
                   </Text>)
                   }
-              <Text className="text-[14px] text-center px-[32px] text-[#2e2c43]">
+              <Text className="text-[14px] text-center px-[32px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>
               Please remember to provide easy-to-understand image references that people can use to find you for purchasing.
               </Text>
             </View>
@@ -228,7 +228,7 @@ const AddImageScreen = () => {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => pickImage()}>
                   <View className="mx-[28px] mt-[30px] h-[63px] flex-row items-center justify-center border-2 border-[#fb8c00] rounded-3xl">
-                    <Text className="text-[16px] font-bold text-[#fb8c00] text-center">
+                    <Text className="text-[16px]  text-[#fb8c00] text-center" style={{ fontFamily: "Poppins-ExtraBold" }}>
                       Browse Image
                     </Text>
                   </View>
@@ -308,7 +308,7 @@ const AddImageScreen = () => {
                     }
                   >
                     <View className="w-full flex justify-center items-center">
-                    <Text className="text-white font-bold text-center text-[16px]">
+                    <Text className="text-white  text-center text-[16px]" style={{ fontFamily: "Poppins-Black" }}>
                       CONTINUE
                     </Text>
                     </View>
@@ -319,14 +319,14 @@ const AddImageScreen = () => {
               <View className="w-full bg-white absolute bottom-0 items-center left-0 right-0 px-[10px]">
                 <TouchableOpacity onPress={()=>{ setAddMore(!addMore);pickImage(); }}>
                   <View className="w-full flex flex-row justify-between px-[40px] py-[20px]">
-                    <Text className="text-[14px]">Upload Image</Text>
+                    <Text className="text-[14px]" style={{ fontFamily: "Poppins-Regular" }}>Upload Image</Text>
                     <FontAwesome name="arrow-right" size={15} color="black" />
                   </View>
                 </TouchableOpacity>
                 <View className="h-[1px] w-full bg-gray-300"></View>
                 <TouchableOpacity onPress={() =>{ setAddMore(!addMore);takePicture()}}>
                   <View className="w-full flex flex-row justify-between px-[40px] py-[20px]">
-                    <Text className="text-[14px]">Click Image</Text>
+                    <Text className="text-[14px]" style={{ fontFamily: "Poppins-Regular" }}>Click Image</Text>
                     <FontAwesome name="arrow-right" size={15} color="black" />
                   </View>
                 </TouchableOpacity>

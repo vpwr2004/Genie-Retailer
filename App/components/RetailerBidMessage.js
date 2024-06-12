@@ -23,10 +23,10 @@ const RetailerBidMessage = ({ bidDetails, user }) => {
         </View>
         <View className="w-[60%] ">
           <View className="flex flex-row justify-between">
-            <Text className="text-[14px] text-[#2e2c43] font-bold">You</Text>
-            <Text className="text-[12px] text-[#2e2c43] ">{formattedTime}</Text>
+            <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-ExtraBold" }}>You</Text>
+            <Text className="text-[12px] text-[#2e2c43] " style={{ fontFamily: "Poppins-Regular" }}>{formattedTime}</Text>
           </View>
-          <Text className="text-[14px] text-[#2e2c43]">
+          <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>
             {bidDetails?.message}
           </Text>
         </View>
@@ -55,14 +55,14 @@ const RetailerBidMessage = ({ bidDetails, user }) => {
       </View>
       <View className="gap-[4px]">
         <View className="flex-row gap-[5px]">
-          <Text>Offered Price: </Text>
-          <Text className="font-bold text-[##79B649]">
+          <Text style={{ fontFamily: "Poppins-Medium" }}>Offered Price: </Text>
+          <Text className=" text-[##79B649]" style={{ fontFamily: "Poppins-SemiBold" }}>
             Rs. {bidDetails.bidPrice}
           </Text>
         </View>
         <View className="flex-row gap-[5px]">
-          <Text>Warranty: </Text>
-          <Text className="font-bold text-[#79B649]">
+          <Text style={{ fontFamily: "Poppins-Medium" }}>Warranty: </Text>
+          <Text className="text-[#79B649]" style={{ fontFamily: "Poppins-SemiBold" }}>
             {" "}
             {bidDetails.warranty} months
           </Text>
@@ -71,13 +71,13 @@ const RetailerBidMessage = ({ bidDetails, user }) => {
         {bidDetails?.bidAccepted === "rejected" && (
           <View className="flex-row items-center gap-1">
             <Entypo name="circle-with-cross" size={20} color="#E76063" />
-            <Text className="text-[14px] text-[#E76063]">Bid Rejected</Text>
+            <Text className="text-[14px] text-[#E76063]" style={{ fontFamily: "Poppins-Regular" }}>Bid Rejected</Text>
           </View>
         )}
         {bidDetails?.bidAccepted === "accepted" && (
           <View className="flex-row items-center gap-1">
             <Tick width={18} height={18} />
-            <Text className="text-[14px] text-[#79B649]">Bid Accepted</Text>
+            <Text className="text-[14px] text-[#79B649]" style={{ fontFamily: "Poppins-Regular" }}>Bid Accepted</Text>
           </View>
         )}
       </View>

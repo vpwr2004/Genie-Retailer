@@ -13,7 +13,7 @@ import HistoryScreen from '../screens/history & preview/HistoryScreen';
 import WriteAboutStoreScreen from '../screens/login/WriteAboutStoreScreen';
 import ProfileScreen from '../screens/menu & profile/ProfileScreen';
 import MenuScreen from '../screens/menu & profile/MenuScreen';
-import StoreProfilePreview from '../screens/history & preview/StoreProfilePreview';
+
 import ModalScreen from '../components/ModalScreen';
 import CameraScreen from '../screens/utils/CameraScreen';
 import AddImageScreen from '../screens/login/AddImageScreen';
@@ -55,7 +55,6 @@ const GlobalNavigation = () => {
         <Stack.Screen name="writeAboutStore" component={WriteAboutStoreScreen} />
         <Stack.Screen name="profile" component={ProfileScreen} />
         <Stack.Screen name="menu" component={MenuScreen} />
-        <Stack.Screen name="profilePreview" component={StoreProfilePreview} />
         <Stack.Screen name="modal" component={ModalScreen} />
         <Stack.Screen name="camera" component={CameraScreen} />
         <Stack.Screen name="addImg" component={AddImageScreen} />

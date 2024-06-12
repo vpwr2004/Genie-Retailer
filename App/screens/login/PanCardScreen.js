@@ -263,8 +263,8 @@ const PanCardScreen = () => {
               </Pressable>
               <TouchableOpacity onPress={handleNext}>
                 <Text
-                  style={{ fontSize: 14, padding: 2 }}
-                  className="text-white font-bold"
+                  style={{ fontSize: 14, padding: 2 ,fontFamily: 'Poppins-Bold'}}
+                  className="text-white " 
                 >
                   Skip
                 </Text>
@@ -272,7 +272,7 @@ const PanCardScreen = () => {
             </View>
             <View className="flex flex-col justify-center items-center px-[32px] gap-[20px]">
               <StoreName height={400} width={width} className="object-cover" />
-              <Text className="text-[14.5px] font-bold text-[#FB8C00]">
+              <Text className="text-[14.5px]  text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>
                 Step 6/9
               </Text>
             </View>
@@ -282,11 +282,11 @@ const PanCardScreen = () => {
               }}
             >
               <Text
-                style={{ fontSize: 16, color: "#2e2c43", fontWeight: "bold" }}
+                style={{ fontSize: 16, color: "#2e2c43", fontFamily: "Poppins-SemiBold" }}
               >
                 Please submit your documents
               </Text>
-              <Text style={{ fontSize: 14, color: "#2e2c43" }}>
+              <Text style={{ fontSize: 14, color: "#2e2c43" ,fontFamily:"Poppins-Regular"}}>
                 GST Certificate/Labor Certificate
               </Text>
               <View className="flex flex-row gap-[40px] mt-[10px]">
@@ -338,7 +338,7 @@ const PanCardScreen = () => {
              {loading ? (
                 <ActivityIndicator size="small" color="#ffffff" />
               ) : (
-            <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+            <Text style={{ color: "white", fontSize: 18, fontFamily:"Poppins-Black" }}>
               NEXT
             </Text>
             )}
@@ -353,7 +353,7 @@ const PanCardScreen = () => {
               }}
             >
               <View className="w-full flex flex-row justify-between px-[40px] py-[20px]">
-                <Text className="text-[14px]">Upload Image</Text>
+                <Text className="text-[14px]" style={{ fontFamily: "Poppins-Regular" }}>Upload Image</Text>
                 <FontAwesome name="arrow-right" size={15} color="black" />
               </View>
             </TouchableOpacity>
@@ -365,7 +365,7 @@ const PanCardScreen = () => {
               }}
             >
               <View className="w-full flex flex-row justify-between px-[40px] py-[20px]">
-                <Text className="text-[14px]">Click Image</Text>
+                <Text className="text-[14px]" style={{ fontFamily: "Poppins-Regular" }}>Click Image</Text>
                 <FontAwesome name="arrow-right" size={15} color="black" />
               </View>
             </TouchableOpacity>

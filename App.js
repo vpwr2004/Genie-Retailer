@@ -10,34 +10,30 @@ import navigationService from './App/navigation/navigationService';
 import {  notificationListeners } from './App/notification/notificationServices';
 import { firebase } from '@react-native-firebase/auth'
 import { ActivityIndicator } from 'react-native-paper';
-// import firebase from '@react-native-firebase/app';
-// import { navigationRef, navigate } from './App/navigationRef';
-// import * as Device from "expo-device";
-//  import * as Notifications from "expo-notifications";
-// import { Platform } from 'react-native'
+import { useFonts } from 'expo-font';
 
-// Notifications.setNotificationHandler({
-//   handleNotification: async () => ({
-//     shouldShowAlert: true,
-//     shouldPlaySound: true,
-//     shouldSetBadge: false,
-//   }),
-// });
 
 
 
 export default function App() {
 
-  // async function requestUserPermission() {
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
-  //   if (enabled) {
-  //     console.log('Authorization status:', authStatus);
-  //   }
-  // }
+  let [fontsLoaded]=useFonts(
+    {
+     'Poppins-Regular':require('./App/assets/fonts/Poppins-Regular.ttf'),
+     'Poppins-Medium':require('./App/assets/fonts/Poppins-Medium.ttf'),
+     'Poppins-SemiBold':require('./App/assets/fonts/Poppins-SemiBold.ttf'),
+     'Poppins-Bold':require('./App/assets/fonts/Poppins-Bold.ttf'),
+     'Poppins-ExtraBold':require('./App/assets/fonts/Poppins-ExtraBold.ttf'),
+     'Poppins-Light':require('./App/assets/fonts/Poppins-Light.ttf'),
+     'Poppins-ExtraLight':require('./App/assets/fonts/Poppins-ExtraLight.ttf'),
+     'Poppins-Thin':require('./App/assets/fonts/Poppins-Thin.ttf'),
+     'Poppins-Black':require('./App/assets/fonts/Poppins-Black.ttf'),
+     'Poppins-Italic':require('./App/assets/fonts/Poppins-Italic.ttf'),
+    
+    }
+ )
+
+
 
   useEffect(()=>{
   
@@ -81,23 +77,11 @@ export default function App() {
   
 
 
-  // const linking = {
-  //   prefixes: ['myapp://'],
-  //   config: {
-  //     screens: {
-  //       home: 'home',
-  //       requestPage: 'requestPage',
-  //       about: 'about',
-  //     },
-  //   },
-  // };
-  
   
 
   
   
   
-  // <NavigationContainer linking={linking} fallback={<ActivityIndicator animating />}>
 
   return (
     <Provider store={store}>

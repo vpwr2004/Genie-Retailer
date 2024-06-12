@@ -85,11 +85,11 @@ const SearchCategoryScreen = () => {
             >
               <BackArrow width={14} height={10} />
             </Pressable>
-            <Text className="flex flex-1 justify-center font-extrabold  items-center text-center text-[16px] ">
+            <Text className="flex flex-1 justify-center  items-center text-center text-[16px] " style={{ fontFamily: "Poppins-Bold" }}>
               Select Category
             </Text>
           </View>
-          <Text className="text-[14.5px] font-bold text-[#FB8C00] text-center mb-[10px] ">
+          <Text className="text-[14.5px] text-[#FB8C00] text-center mb-[10px] " style={{ fontFamily: "Poppins-SemiBold" }}>
             Step 4/9
           </Text>
 
@@ -100,7 +100,8 @@ const SearchCategoryScreen = () => {
               placeholderTextColor="#DBCDBB"
               value={searchQuery}
               onChangeText={handleTextChange}
-              className="flex  text-center text-[14px] italic flex-1"
+              className="flex  text-center text-[14px]  flex-1"
+              style={{ fontFamily: "Poppins-Italic" }}
             />
           </View>
           <View className="px-[10px]">
@@ -119,7 +120,7 @@ const SearchCategoryScreen = () => {
                       <Octicons name="check" size={12} color="white" />
                     )}
                   </View>
-                  <Text>{result.name}</Text>
+                  <Text style={{ fontFamily: "Poppins-Regular" }}>{result.name}</Text>
                 </View>
               </TouchableOpacity>
             ))}
@@ -145,7 +146,7 @@ const SearchCategoryScreen = () => {
               style={{
                 color: !selectedOption ? "#888888" : "white",
                 fontSize: 18,
-                fontWeight: "bold",
+                fontFamily:"Poppins-Black"
               }}
             >
               NEXT

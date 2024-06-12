@@ -202,23 +202,23 @@ const ProfileScreen = () => {
       
 
   return (
-    <SafeAreaView>
+    <View className="">
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="pt-[42px] flex">
-          <View className="flex flex-row px-[32px] items-center">
+        <View className="mt-[50px] flex">
+          <View className="flex  relative flex-row px-[32px] items-center">
             <Pressable
               onPress={() => {
                 navigation.goBack();
               }}
-              className="flex flex-row p-2 items-center gap-2"
+              className="flex z-40 absolute flex-row p-[10px] pl-[32px] left-0  items-center gap-2"
             >
               <FontAwesome name="arrow-left" size={15} color="black" />
             </Pressable>
-            <Text className="text-[16px] font-bold flex-1 text-center">
+            <Text className="text-[16px] flex-1 text-center" style={{ fontFamily: "Poppins-Bold" }}>
               Store Profile
             </Text>
           </View>
-          <Text className="text-center mb-[20px] capitalize">
+          <Text className="text-center mb-[20px] capitalize" style={{ fontFamily: "Poppins-Regular" }}>
             {user?.storeName}
           </Text>
           <View className="flex items-center relative justify-center">
@@ -242,7 +242,7 @@ const ProfileScreen = () => {
             </View>
           </View>
           <View className="flex-row items-center justify-between px-[32px] my-[10px]">
-            <Text>Store Images</Text>
+            <Text style={{ fontFamily: "Poppins-Regular" }}>Store Images</Text>
             <TouchableOpacity onPress={()=>{handleEditIconPress("other")}}>
               <EditIcon className="p-[10px]" />
               </TouchableOpacity>
@@ -275,6 +275,7 @@ const ProfileScreen = () => {
               onChangeText={setLocation}
               onEditPress={() => handleEditPress("location")}
               onSavePress={() => handleSavePress("location")}
+
             />
             <EditableField
               label="Store Name"
@@ -324,7 +325,7 @@ const ProfileScreen = () => {
           <ActivityIndicator size="large" color="#fb8c00" />
         </View>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -338,14 +339,14 @@ const EditableField = ({
 }) => (
   <View className="flex flex-col gap-[11px]">
     <View className="flex-row justify-between">
-      <Text className="text-[14px] text-[#2e2c43]">{label}</Text>
+      <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>{label}</Text>
       {label === "Store Location" && (
         <Pressable
           onPress={() => {
             console.log("refresh");
           }}
         >
-          <Text className="text-[14px] text-[#FB8C00] font-bold">Refresh</Text>
+          <Text className="text-[14px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>Refresh</Text>
         </Pressable>
       )}
     </View>
@@ -358,10 +359,11 @@ const EditableField = ({
           editable={editable}
           placeholder={label}
           placeholderTextColor={"#dbcdbb"}
-          className="w-[250px] text-[14px] font-semibold text-black capitalize"
+          className="w-[250px] text-[14px]  text-black capitalize"
+          style={{ fontFamily: "Poppins-Regular" }}
         />
         <TouchableOpacity onPress={editable ? onSavePress : onEditPress}>
-          {editable ? <Text className="text-[14px] text-semibold bg-[#FB8C00] text-white p-2 rounded-xl">Save</Text> : <EditIcon className="px-[10px]" />}
+          {editable ? <Text className="text-[14px]  bg-[#FB8C00] text-white p-2 rounded-xl" style={{ fontFamily: "Poppins-SemiBold" }}>Save</Text> : <EditIcon className="px-[10px]" />}
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
