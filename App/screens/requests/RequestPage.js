@@ -93,7 +93,7 @@ const RequestPage = () => {
       }
       // let response = 
       await axios.get(
-        "http://173.212.193.109:5000/chat/get-spade-messages",
+        "https://culturtap.com/api/chat/get-spade-messages",
         {
           params: {
             id: requestInfo?._id ? requestInfo?._id : req?._id,
@@ -222,7 +222,7 @@ const RequestPage = () => {
       }
       try {
         const response = await axios.patch(
-          "http://173.212.193.109:5000/chat/reject-bid",
+          "https://culturtap.com/api/chat/reject-bid",
           {
             messageId: lastMessage?._id,
           }
@@ -239,7 +239,7 @@ const RequestPage = () => {
         });
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
-        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
+        const token=await axios.get(`https://culturtap.com/api/user/unique-token?id=${requestInfo?.customerId._id}`);
        if(token.data.length>0){
         const notification = {
           token: token.data,

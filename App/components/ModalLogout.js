@@ -38,7 +38,7 @@ const ModalLogout = ({ user, modalVisible, setModalVisible }) => {
       await messaging().deleteToken();
       console.log("FCM token deleted.");
       const res = await axios.patch(
-        `http://173.212.193.109:5000/retailer/editretailer`,
+        `https://culturtap.com/api/retailer/editretailer`,
         {
           _id: user?._id,
           uniqueToken: "",
@@ -48,7 +48,9 @@ const ModalLogout = ({ user, modalVisible, setModalVisible }) => {
       dispatch(setUniqueToken(""));
       console.log("User data deleted successfully", res.data);
       //  setModalVisible(false);
-      await AsyncStorage.removeItem("userData");
+      // await AsyncStorage.removeItem("userData");
+      await AsyncStorage.clear();
+
       setLoading(false);
       setModalVisible(false);
     } catch (error) {

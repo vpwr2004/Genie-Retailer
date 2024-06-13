@@ -72,7 +72,7 @@ const BidPreviewPage = () => {
       // console.log("warranty", warranty);
 
       const response = await axios.post(
-        "http://173.212.193.109:5000/chat/send-message",
+        "https://culturtap.com/api/chat/send-message",
         {
           sender: {
             type: "Retailer",
@@ -98,7 +98,7 @@ const BidPreviewPage = () => {
         setMessages(mess);
         setLoading(false)
         navigation.navigate("requestPage");
-        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
+        const token=await axios.get(`https://culturtap.com/api/user/unique-token?id=${requestInfo?.customerId._id}`);
         if(token.data.length>0){
         const notification = {
           token:token.data,

@@ -82,7 +82,7 @@ const PanCardScreen = () => {
       // Send user data to the server
       console.log("User data sent to");
       const response = await axios.post(
-        "http://173.212.193.109:5000/retailer/",
+        "https://culturtap.com/api/retailer/",
         {
           storeOwnerName: storeOwnerName,
           storeName: storeName,

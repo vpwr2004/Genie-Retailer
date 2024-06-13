@@ -32,7 +32,7 @@ const SplashScreen = () => {
         const userData = JSON.parse(await AsyncStorage.getItem("userData"));
         // const authData = JSON.parse(await AsyncStorage.getItem("authData"));
         setTimeout(() => {
-          if (userData) {
+          if (userData!==null) {
             // await AsyncStorage.removeItem('userData');
             dispatch(setUserDetails(userData));
             navigation.navigate("home");

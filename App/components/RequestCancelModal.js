@@ -17,7 +17,7 @@ const RequestCancelModal= ({modalVisible,setModalVisible}) => {
       try {
         // console.log("RequestType canecl response", requestInfo);
         const res = await axios.patch(
-          "http://173.212.193.109:5000/chat/modify-spade-retailer",
+          "https://culturtap.com/api/chat/modify-spade-retailer",
           {
             id: requestInfo?._id,
             type: "cancelled"

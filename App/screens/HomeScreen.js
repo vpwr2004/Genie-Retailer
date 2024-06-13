@@ -70,7 +70,7 @@ const navigationState = useNavigationState(state => state);
               
       
         
-        const response = await axios.get('http://173.212.193.109:5000/retailer/', {
+        const response = await axios.get('https://culturtap.com/api/retailer/', {
             params: {
                 storeMobileNo: userData.storeMobileNo
             }

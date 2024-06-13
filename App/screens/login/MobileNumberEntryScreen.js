@@ -172,7 +172,7 @@ const MobileNumberEntryScreen = () => {
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
-        "http://173.212.193.109:5000/retailer/",
+        "https://culturtap.com/api/retailer/",
         {
           params: {
             storeMobileNo: phoneNumber,
@@ -181,13 +181,13 @@ const MobileNumberEntryScreen = () => {
       );
       console.log("res", response);
       setMobileScreen(true);
-      if (response.data.storeMobileNo) {
+      if (response.data.storeMobileNo.length>0) {
         // If mobile number is registered, navigate to home screen
 
         setOtp("");
         setMobileNumberLocal("");
         const res = await axios.patch(
-          `http://173.212.193.109:5000/retailer/editretailer`,
+          `https://culturtap.com/api/retailer/editretailer`,
           {
             _id: response?.data?._id,
             uniqueToken: token,

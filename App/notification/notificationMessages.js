@@ -1,6 +1,8 @@
 import { getAccessToken, getAccessTokenRetailer } from "./notification";
 
 export const BidAcceptedOtherRetailer = async (mess) => {
+  console.log("notify",mess.token)
+
   try {
     const tokens = mess.token.slice(1);
 
@@ -133,7 +135,7 @@ export const sendCustomNotificationChat = async (mess) => {
           notification: {
             sound: "default",
             //   icon: "fcm_push_icon",
-            //   color:"#fcb800",
+              color:"#fcb800",
             tag: mess?.tag,
           },
         },
@@ -175,6 +177,8 @@ export const sendCustomNotificationChat = async (mess) => {
   }
 };
 export const sendCustomNotificationBid = async (mess) => {
+  console.log("notify",mess.token)
+
   try {
     const message = {
       message: {
@@ -230,6 +234,8 @@ export const sendCustomNotificationBid = async (mess) => {
   }
 };
 export const sendCustomNotificationAttachment = async (mess) => {
+  console.log("notify",mess.token)
+
   try {
     const message = {
       message: {
@@ -286,6 +292,8 @@ export const sendCustomNotificationAttachment = async (mess) => {
 };
 
 export const NotificationRequestAccepted = async (mess) => {
+  console.log("notify",mess.token)
+
   try {
     const message = {
       message: {
@@ -342,6 +350,7 @@ export const NotificationRequestAccepted = async (mess) => {
   }
 };
 export const NotificationBidAccepted = async (mess) => {
+  console.log("notify",mess.token)
   try {
     const message = {
       message: {
@@ -399,6 +408,8 @@ export const NotificationBidAccepted = async (mess) => {
 };
 
 export const NotificationBidRejected = async (mess) => {
+  console.log("notify",mess.token)
+
   try {
     const message = {
       message: {

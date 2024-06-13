@@ -46,7 +46,7 @@ const CameraScreen = () => {
   const sendAttachment = async () => {
     // console.log('res', query, imageUri);
     await axios
-      .post("http://173.212.193.109:5000/chat/send-message", {
+      .post("https://culturtap.com/api/chat/send-message", {
         sender: {
           type: "Retailer",
           refId: user?._id,
@@ -70,7 +70,7 @@ const CameraScreen = () => {
         // console.log("notification send", notification);
         navigation.navigate("requestPage", { data: requestInfo });
         const token = await axios.get(
-          `http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`
+          `https://culturtap.com/api/user/unique-token?id=${requestInfo?.customerId._id}`
         );
         if (token.data.length > 0) {
           const notification = {

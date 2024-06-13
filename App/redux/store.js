@@ -14,6 +14,10 @@ const store = configureStore({
     // Setting the reducer for 'storeData' slice
     // Add other reducers if needed
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

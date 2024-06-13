@@ -33,6 +33,7 @@ const ProfileScreen = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   //   const [user,setUser]= useState(route.params.user);
   const user = useSelector((state) => state.storeData.userDetails);
   console.log("user at profile", user);
@@ -62,10 +63,10 @@ const ProfileScreen = () => {
       panCard,
       location,
     };
-
+      setIsLoading(true)
     try {
       const response = await axios.patch(
-        `https://genie-backend-meg1.onrender.com/retailer/editretailer`,
+        `https://culturtap.com/api/retailer/editretailer`,
         {
           _id: user?._id,
           [field]: fieldMapping[field],
@@ -88,6 +89,8 @@ const ProfileScreen = () => {
     } catch (error) {
       console.error("Failed to update profile", error);
       // Handle error (e.g., show an alert to the user)
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -160,7 +163,7 @@ const ProfileScreen = () => {
        dispatch(setUserDetails(updatedUser));
         await AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
         const response = await axios.patch(
-          `https://genie-backend-meg1.onrender.com/retailer/editretailer`,
+          `https://culturtap.com/api/retailer/editretailer`,
           {
             _id: user?._id,
             storeImages: updatedUser.storeImages,
@@ -189,7 +192,7 @@ const ProfileScreen = () => {
           dispatch(setUserDetails(updatedUser));
           await AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
           const response = await axios.patch(
-            `https://genie-backend-meg1.onrender.com/retailer/editretailer`,
+            `https://culturtap.com/api/retailer/editretailer`,
             {
               _id: user?._id,
               storeImages: updatedUser.storeImages,
@@ -275,6 +278,7 @@ const ProfileScreen = () => {
               onChangeText={setLocation}
               onEditPress={() => handleEditPress("location")}
               onSavePress={() => handleSavePress("location")}
+              isLoading={isLoading}
 
             />
             <EditableField
@@ -284,6 +288,7 @@ const ProfileScreen = () => {
               onChangeText={setStoreName}
               onEditPress={() => handleEditPress("storeName")}
               onSavePress={() => handleSavePress("storeName")}
+              isLoading={isLoading}
             />
             <EditableField
               label="Store Owner Name"
@@ -292,6 +297,7 @@ const ProfileScreen = () => {
               onChangeText={setStoreOwnerName}
               onEditPress={() => handleEditPress("storeOwnerName")}
               onSavePress={() => handleSavePress("storeOwnerName")}
+              isLoading={isLoading}
             />
             <EditableField
               label="Store Category"
@@ -300,14 +306,16 @@ const ProfileScreen = () => {
               onChangeText={setStoreCategory}
               onEditPress={() => handleEditPress("storeCategory")}
               onSavePress={() => handleSavePress("storeCategory")}
+              isLoading={isLoading}
             />
             <EditableField
               label="Mobile Number"
               value={storeMobileNo}
-              editable={editableField === "storeMobileNo"}
+              editable={false}
               onChangeText={setStoreMobileNo}
               onEditPress={() => handleEditPress("storeMobileNo")}
               onSavePress={() => handleSavePress("storeMobileNo")}
+              isLoading={isLoading}
             />
             <EditableField
               label="PanCard"
@@ -316,6 +324,7 @@ const ProfileScreen = () => {
               onChangeText={setPanCard}
               onEditPress={() => handleEditPress("panCard")}
               onSavePress={() => handleSavePress("panCard")}
+              isLoading={isLoading}
             />
           </View>
         </View>
@@ -336,6 +345,7 @@ const EditableField = ({
   onChangeText,
   onEditPress,
   onSavePress,
+  isLoading
 }) => (
   <View className="flex flex-col gap-[11px]">
     <View className="flex-row justify-between">
@@ -362,9 +372,24 @@ const EditableField = ({
           className="w-[250px] text-[14px]  text-black capitalize"
           style={{ fontFamily: "Poppins-Regular" }}
         />
-        <TouchableOpacity onPress={editable ? onSavePress : onEditPress}>
-          {editable ? <Text className="text-[14px]  bg-[#FB8C00] text-white p-2 rounded-xl" style={{ fontFamily: "Poppins-SemiBold" }}>Save</Text> : <EditIcon className="px-[10px]" />}
+        {
+          label!="Mobile Number" && <TouchableOpacity onPress={editable ? onSavePress : onEditPress}>
+          {editable ? (
+            isLoading ? (
+              <View className="text-[14px] bg-[#FB8C00] p-2 px-4 rounded-xl" >
+              <ActivityIndicator size="small" color="#ffffff" />
+              </View>
+            ) : (
+              <Text className="text-[14px] bg-[#FB8C00] text-white p-2 rounded-xl" style={{ fontFamily: "Poppins-SemiBold" }}>
+                Save
+              </Text>
+            )
+          ) : (
+            <EditIcon className="px-[10px]" />
+          )}
         </TouchableOpacity>
+        }
+       
       </View>
     </KeyboardAvoidingView>
   </View>

@@ -81,7 +81,7 @@ const HomeScreenVerified = () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const response = await axios.get(
-        `http://173.212.193.109:5000/chat/retailer-new-spades?id=${userData?._id}`
+        `https://culturtap.com/api/chat/retailer-new-spades?id=${userData?._id}`
       );
       setRequest(true);
       dispatch(setNewRequests(response.data));
@@ -95,7 +95,7 @@ const HomeScreenVerified = () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const ongoingresponse = await axios.get(
-        `http://173.212.193.109:5000/chat/retailer-ongoing-spades?id=${userData?._id}`
+        `https://culturtap.com/api/chat/retailer-ongoing-spades?id=${userData?._id}`
       );
       setRequest(true);
       dispatch(setOngoingRequests(ongoingresponse.data));
@@ -111,7 +111,7 @@ const HomeScreenVerified = () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const history = await axios.get(
-        `http://173.212.193.109:5000/retailer/history?id=${userData?._id}`
+        `https://culturtap.com/api/retailer/history?id=${userData?._id}`
       );
       setRequest(true);
       dispatch(setRetailerHistory(history.data));
