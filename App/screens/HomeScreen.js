@@ -146,7 +146,7 @@ const handleRefresh = () => {
 
 
     return (
-        <View className="flex-1">
+        <View className="flex-1 bg-white ">
             <ScrollView refreshControl={
           <RefreshControl
              refreshing={refreshing}
@@ -156,7 +156,7 @@ const handleRefresh = () => {
             }
           />}
           >
-            <View className="flex flex-col mt-[40px]  gap-[32px]">
+            <View className="flex flex-col mt-[40px]  gap-[32px] ">
                 <View className="flex flex-row justify-between items-center px-[32px]">
                     <View className="bg-[#FB8C00] p-[4px] rounded-full">
                         <TouchableOpacity onPress={()=>navigation.navigate("menu")}>

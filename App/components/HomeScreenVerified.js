@@ -213,7 +213,7 @@ const HomeScreenVerified = () => {
                 <SafeAreaView className="flex-1">
                   {/* <Text className="text-[14px] text-center mb-[20px]">Your ongoing requests</Text> */}
                   {!loading && (
-                    <View className=" flex flex-col gap-[22px] mb-[20px] items-center justify-center">
+                    <View className=" flex flex-col gap-[10px] mb-[20px] items-center justify-center">
                       {newRequests && newRequests.length > 0 ? (
                         newRequests.map((product) => (
                           <TouchableOpacity
@@ -221,6 +221,16 @@ const HomeScreenVerified = () => {
                             onPress={() => {
                               dispatch(setRequestInfo(product));
                               navigation.navigate("requestPage");
+                            }}
+                            style={{
+                              backgroundColor: '#fff', // Ensure the background is white
+                              margin: 10, // Add some margin if necessary for better shadow visibility
+                              shadowColor: '#000',
+                              shadowOffset: { width: 0, height: 2 },
+                              shadowOpacity: 0.3,
+                              shadowRadius: 4,
+                              elevation: 5,
+                              borderRadius:10
                             }}
                           >
                             <ProductOrderCard
@@ -243,7 +253,7 @@ const HomeScreenVerified = () => {
                 <SafeAreaView className="flex-1">
                   {/* <Text className="text-[14px] text-center mb-[20px]">Your ongoing requests</Text> */}
                   {!loading && (
-                    <View className=" flex flex-col gap-[22px] mb-[20px] items-center justify-center">
+                    <View className=" flex flex-col gap-[10px] mb-[20px] items-center justify-center">
                       {ongoingRequests && ongoingRequests.length > 0 ? (
                         ongoingRequests?.map((product) => (
                           <TouchableOpacity
@@ -252,6 +262,16 @@ const HomeScreenVerified = () => {
                               dispatch(setRequestInfo(product));
                               console.log("requestInfo at homeScreen", product);
                               navigation.navigate("requestPage");
+                            }}
+                            style={{
+                              backgroundColor: '#fff', // Ensure the background is white
+                              margin: 10, // Add some margin if necessary for better shadow visibility
+                              shadowColor: '#000',
+                              shadowOffset: { width: 0, height: 2 },
+                              shadowOpacity: 0.3,
+                              shadowRadius: 4,
+                              elevation: 5,
+                              borderRadius:10
                             }}
                           >
                             <ProductOrderCard

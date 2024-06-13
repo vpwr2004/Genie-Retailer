@@ -59,9 +59,20 @@ const MenuScreen = () => {
                  <Text className="text-[16px] flex-1 flex text-center" style={{ fontFamily: "Poppins-Bold" }}>Menu</Text>
              </View>
 
-            <TouchableOpacity onPress={()=>navigation.navigate("profile")}>
-                <View className="flex items-center">
-                    <View className="flex flex-row gap-[32px] bg-white py-[48px] w-[90%] justify-center items-center rounded-md shadow-lg">
+            <TouchableOpacity onPress={()=>navigation.navigate("profile")} 
+                  style={{
+                    backgroundColor: '#fff', // Ensure the background is white
+                    margin: 16, // Add some margin if necessary for better shadow visibility
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 4,
+                    elevation: 5,
+                    borderRadius:16
+                  }}
+                >
+                <View className="flex items-center    ">
+                    <View className="flex flex-row gap-[32px] bg-white py-[48px] justify-center  w-[90%] items-center ">
                         {
                              user?.storeImages.length>0 ?( <Image source={{ uri:user?.storeImages[0] }} width={70} height={70} className="rounded-full" />):
                     (

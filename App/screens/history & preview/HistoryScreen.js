@@ -41,7 +41,7 @@ const HistoryScreen = () => {
         <SafeAreaView className="flex-1">
           <Text className="text-[14px] text-center mb-[20px] " style={{ fontFamily: "Poppins-Bold" }}>Your History</Text>
 
-          <View className=" flex flex-col gap-[22px] mb-[20px] items-center justify-center">
+          <View className=" flex flex-col gap-[10px] mb-[20px] items-center justify-center">
             {retailerHistory && retailerHistory.length > 0 ? (
               retailerHistory?.map((product) => (
                 <TouchableOpacity
@@ -50,6 +50,16 @@ const HistoryScreen = () => {
                     dispatch(setRequestInfo(product));
                     // console.log("requestInfo at history", product);
                     navigation.navigate("requestPage");
+                  }}
+                  style={{
+                    backgroundColor: '#fff', // Ensure the background is white
+                    margin: 10, // Add some margin if necessary for better shadow visibility
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 4,
+                    elevation: 5,
+                    borderRadius:10
                   }}
                 >
                   <ProductOrderCard key={product._id} product={product} />
