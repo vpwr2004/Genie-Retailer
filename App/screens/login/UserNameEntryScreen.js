@@ -89,7 +89,7 @@ const UserNameEntryScreen = () => {
 
   return (
     
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1,backgroundColor:"white"}}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <KeyboardAvoidingView
               behavior="position"

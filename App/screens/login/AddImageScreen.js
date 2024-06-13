@@ -20,7 +20,9 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import ClickImage from "../../assets/ClickImg.svg";
 import AddMoreImage from "../../assets/AddMoreImg.svg";
-import BackArrow from "../../assets/BackArrow.svg"
+
+import BackArrow from "../../assets/arrow-left.svg"
+
 
 import DelImg from "../../assets/delImg.svg"
 import {

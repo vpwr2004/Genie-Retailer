@@ -13,7 +13,7 @@ const ViewRequestScreen = () => {
     const requestInfo= useSelector(state => state.requestData.requestInfo);
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1,backgroundColor:"white"}}>
             <View className=" flex z-40 flex-row items-center justify-center mt-[24px] mb-[24px] mx-[36px]">
             <Pressable
             onPress={() => {

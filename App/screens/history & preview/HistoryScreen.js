@@ -23,7 +23,7 @@ const HistoryScreen = () => {
   const retailerHistory= useSelector(state => state.requestData.retailerHistory|| [])
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <ScrollView>
         <View className="flex flex-row justify-between items-center px-[32px] ">
           <View className="bg-[#FB8C00] p-[4px] rounded-full">
@@ -59,7 +59,7 @@ const HistoryScreen = () => {
                     shadowOpacity: 0.3,
                     shadowRadius: 4,
                     elevation: 5,
-                    borderRadius:10
+                    borderRadius:16
                   }}
                 >
                   <ProductOrderCard key={product._id} product={product} />

@@ -19,6 +19,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setImages, setUserDetails } from "../../redux/reducers/storeDataSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import BackArrow from "../../assets/arrow-left.svg"
+
 
 
 const ImagePreview = () => {
@@ -91,7 +93,8 @@ const [loading,setLoading] = useState(false);
             }}
             className="flex p-2 flex-row items-center  gap-2"
           >
-            <FontAwesome name="arrow-left" size={15} color="black" />
+                           <BackArrow width={14} height={10} />
+
           </Pressable>
           <Text className="flex flex-1 justify-center items-center text-center text-[16px]" style={{ fontFamily: "Poppins-Bold" }}>
             Select Store Profile Pic

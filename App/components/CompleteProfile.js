@@ -42,7 +42,7 @@ const user= useSelector(state => state.storeData.userDetails)
     }
   };
   return (
-    <View className="gap-[17px] mb-[20px]">
+    <View className="gap-[17px] mb-[20px] bg-white">
       {!completeProfile ? (
         <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Bold" }}>
           Please complete your store profile {"\n"} before starting
@@ -62,6 +62,16 @@ const user= useSelector(state => state.storeData.userDetails)
           <TouchableOpacity
             disabled={user.serviceProvider === "true"}
             onPress={handleLocation}
+            style={{
+              backgroundColor: '#fff', // Ensure the background is white
+              // Add some margin if necessary for better shadow visibility
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4,
+              elevation: 5,
+              borderRadius:10
+            }}
           >
             <View className="w-[90%] flex-row items-center bg-white gap-[15px] h-[127px] rounded-3xl shadow-3xl px-[18px]">
               <View className="w-full flex-row justify-between">
@@ -92,6 +102,16 @@ const user= useSelector(state => state.storeData.userDetails)
           <TouchableOpacity
             disabled={user.serviceProvider === "true"}
             onPress={handleStore}
+            style={{
+              backgroundColor: '#fff', // Ensure the background is white
+              // Add some margin if necessary for better shadow visibility
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4,
+              elevation: 5,
+              borderRadius:10
+            }}
           >
             <View className="w-[90%] flex-row items-center bg-white gap-[15px] h-[127px] rounded-3xl shadow-3xl px-[18px]">
               <View className="w-full flex-row justify-between">
@@ -129,7 +149,7 @@ const user= useSelector(state => state.storeData.userDetails)
           
 
           <View>
-            <Text className="text-[14px] font-bold text-center" style={{ fontFamily: "Poppins-Bold" }}>
+            <Text className="text-[14px]  text-center" style={{ fontFamily: "Poppins-Bold" }}>
               Are you a maintenance service providers ?{" "}
             </Text>
             <Text className="text-[14px]  text-center" style={{ fontFamily: "Poppins-Light" }}>
@@ -143,6 +163,16 @@ const user= useSelector(state => state.storeData.userDetails)
         <TouchableOpacity
           
           onPress={handleServiceLocation}
+          style={{
+            backgroundColor: '#fff', // Ensure the background is white
+                        
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 5,
+            borderRadius:10
+          }}
         >
           <View className="w-[90%] flex-row items-center bg-white gap-[15px] h-[127px] rounded-3xl shadow-3xl px-[18px]">
             <View className="w-full flex-row justify-between">

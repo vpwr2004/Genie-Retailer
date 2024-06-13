@@ -19,7 +19,10 @@ import { useDispatch } from "react-redux";
 import {
   setUniqueToken,
   setUserDetails,
+  storeClear,
 } from "../redux/reducers/storeDataSlice";
+import { bidClear } from "../redux/reducers/bidSlice";
+import { requestClear } from "../redux/reducers/requestDataSlice";
 
 
 
@@ -50,9 +53,12 @@ const ModalLogout = ({ user, modalVisible, setModalVisible }) => {
       //  setModalVisible(false);
       // await AsyncStorage.removeItem("userData");
       await AsyncStorage.clear();
-
+      
       setLoading(false);
       setModalVisible(false);
+      dispatch(bidClear());
+      dispatch(requestClear());
+      // dispatch(storeClear());
     } catch (error) {
       setLoading(false);
       console.error("Error deleting user data:", error);

@@ -76,7 +76,7 @@ const RequestAcceptModal = ({
             (request) => request._id !== requestInfo?._id
           );
           dispatch(setNewRequests(filteredRequests));
-          const updatedOngoing = [requestInfo, ...ongoingRequests];
+          const updatedOngoing = [tmp, ...ongoingRequests];
           dispatch(setOngoingRequests(updatedOngoing));
 
           setAcceptLocal(true);

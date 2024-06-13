@@ -27,6 +27,8 @@ import {
         Entypo,
       
       } from "@expo/vector-icons";
+import BackArrow from "../../assets/arrow-left.svg"
+
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -205,18 +207,29 @@ const ProfileScreen = () => {
       
 
   return (
-    <View className="">
+    <View className="bg-white">
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mt-[50px] flex">
           <View className="flex  relative flex-row px-[32px] items-center">
-            <Pressable
+            <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
               }}
-              className="flex z-40 absolute flex-row p-[10px] pl-[32px] left-0  items-center gap-2"
+              className="flex "
+              style={{
+                position:"absolute",
+                left:28,
+                top:0,
+                zIndex:40,
+                padding:6,
+               }}
             >
-              <FontAwesome name="arrow-left" size={15} color="black" />
-            </Pressable>
+              <View className="p-2 rounded-full">
+              <BackArrow width={14} height={10} />
+              </View>
+                                   
+
+            </TouchableOpacity>
             <Text className="text-[16px] flex-1 text-center" style={{ fontFamily: "Poppins-Bold" }}>
               Store Profile
             </Text>
@@ -350,7 +363,7 @@ const EditableField = ({
   <View className="flex flex-col gap-[11px]">
     <View className="flex-row justify-between">
       <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>{label}</Text>
-      {label === "Store Location" && (
+      {/* {label === "Store Location" && (
         <Pressable
           onPress={() => {
             console.log("refresh");
@@ -358,7 +371,7 @@ const EditableField = ({
         >
           <Text className="text-[14px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>Refresh</Text>
         </Pressable>
-      )}
+      )} */}
     </View>
 
     <KeyboardAvoidingView className="flex items-center">

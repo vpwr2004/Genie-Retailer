@@ -21,6 +21,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Profile from "../../assets/ProfileIcon2.svg";
 import { setBidDetails } from "../../redux/reducers/bidSlice";
 import { useDispatch, useSelector } from "react-redux";
+import BackArrow from "../../assets/arrow-left.svg"
+
 
 const BidPageInput = () => {
   const route = useRoute();
@@ -63,7 +65,8 @@ const BidPageInput = () => {
                 navigation.goBack();
               }}
             >
-              <FontAwesome name="arrow-left" size={15} color="black" />
+                         <BackArrow width={14} height={10} />
+
             </Pressable>
 
             <View className="gap-[9px]">

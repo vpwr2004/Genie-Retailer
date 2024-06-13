@@ -31,10 +31,13 @@ const requestDataSlice = createSlice({
       setRetailerHistory: (state, action) => {
         state.retailerHistory = action.payload;
       },
-
+      requestClear: (state) => {
+        return initialState;
+      }
+    
   
   },
 });
 
-export const { setNewRequests,setOngoingRequests,setMessages,setRequestInfo,setRetailerHistory} = requestDataSlice.actions;
+export const { setNewRequests,setOngoingRequests,setMessages,setRequestInfo,setRetailerHistory,requestClear} = requestDataSlice.actions;
 export default requestDataSlice.reducer;

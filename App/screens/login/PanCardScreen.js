@@ -229,7 +229,7 @@ const PanCardScreen = () => {
 
   return (
     <>
-   {!cameraScreen && (<View style={{ flex: 1 }}>
+   {!cameraScreen && (<View style={{ flex: 1,backgroundColor:"white" }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="height"

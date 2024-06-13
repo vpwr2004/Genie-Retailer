@@ -1,4 +1,4 @@
-import { View, Text,  Image, Pressable, ScrollView } from 'react-native'
+import { View, Text,  Image, Pressable, ScrollView, TouchableOpacity } from 'react-native'
 import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
@@ -7,17 +7,20 @@ import Time from "../../assets/aboutClock.svg"
 import Wealth  from "../../assets/aboutWealth.svg"
 import Health  from "../../assets/aboutHealth.svg"
 import { SafeAreaView } from 'react-native-safe-area-context';
+import BackArrow from "../../assets/arrow-left.svg"
+
 const AboutScreen = () => {
     const navigation = useNavigation();
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 ,backgroundColor:"white"}}>
             <ScrollView style={{ flex: 1 }} className="relative">
 
 
                 <View className="z-50 absolute top-[40px] left-[40px] pb-[8px] px-[4px]">
-                    <Pressable onPress={() => { navigation.goBack(); }} className="p-2">
-                        <Image source={require('../../assets/arrow-left.png')} />
-                    </Pressable>
+                    <TouchableOpacity onPress={() => { navigation.goBack(); }} style={{padding:6,borderRadius:100}}>
+                    <BackArrow width={14} height={10} />
+
+                    </TouchableOpacity>
                 </View>
 
 

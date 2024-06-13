@@ -32,6 +32,8 @@ import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { manipulateAsync } from "expo-image-manipulator";
 import { launchCamera } from "react-native-image-picker";
 import Close from "../../assets/RedClose.svg";
+import BackArrow from "../../assets/arrow-left.svg"
+
 
 const BidPageImageUpload = () => {
   const [images, setImages] = useState([]);
@@ -183,7 +185,7 @@ const BidPageImageUpload = () => {
   return (
     <>
       {!cameraScreen && (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 ,backgroundColor:"#ffe7c8"}}>
           <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View className="relative flex-grow bg-[#ffe7c8]">
               <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-evenly gap-[5px] items-center pt-[40px] pb-[20px]">
@@ -193,12 +195,13 @@ const BidPageImageUpload = () => {
                   }}
                   style={{ padding: 4 }}
                 >
-                  <FontAwesome name="arrow-left" size={15} color="black" />
+                                          <BackArrow width={14} height={10} />
+
                 </Pressable>
 
-                <View className="gap-[9px]">
+                <View className="gap-[9px] ml-4">
                   <View className="flex-row gap-[18px] items-center">
-                    <View className="p-2 rounded-full">
+                    <View className="p-2 rounded-full ">
                       {requestInfo?.customerId?.pic ? (
                         <Image
                           source={{ uri: requestInfo?.customerId?.pic }}
@@ -287,7 +290,10 @@ const BidPageImageUpload = () => {
                 </Text>
               </View>
 
-              <View className="pb-[100px]">
+              
+            </View>
+          </ScrollView>
+          <View className="pb-[100px]">
                 {images.length === 0 && (
                   <View className="z-0">
                     <View>
@@ -458,8 +464,6 @@ const BidPageImageUpload = () => {
                   </View>
                 )}
               </View>
-            </View>
-          </ScrollView>
           <ModalCancel
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}

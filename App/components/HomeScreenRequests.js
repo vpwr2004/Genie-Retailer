@@ -11,8 +11,18 @@ import ThumbIcon from "../assets/ThumbIcon.svg"
 
 const HomeScreenRequests = () => {
   return (
-    <View className="flex items-center gap-[30px]">
-                <View className="flex flex-row gap-[32px] bg-white py-[20px] w-[90%] justify-center items-center rounded-3xl shadow-md px-[20px]">
+    <View className="flex items-center gap-[30px] bg-white">
+                <View className="flex flex-row gap-[32px] bg-white py-[20px] w-[90%] justify-center items-center rounded-3xl shadow-md px-[20px]"
+                 style={{
+                  backgroundColor: '#fff', // Ensure the background is white
+                  margin: 10, // Add some margin if necessary for better shadow visibility
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 4,
+                  elevation: 5,
+                  borderRadius:16
+                }}>
                     <View className="w-[16px] h-[16px] bg-[#70B241] rounded-full">
                     </View>
                     <View className="flex-col flex-1">

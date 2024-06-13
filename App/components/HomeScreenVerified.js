@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -31,15 +31,17 @@ const HomeScreenVerified = () => {
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [tab, setTab] = useState("New");
-  const [request, setRequest] = useState(true);
+  const [request, setRequest] = useState(false);
   const newRequests = useSelector(
     (state) => state.requestData.newRequests || []
   );
   const ongoingRequests = useSelector(
     (state) => state.requestData.ongoingRequests || []
   );
-  const retailerHistory= useSelector(state => state.requestData.retailerHistory|| [])
+  const retailerHistory= useSelector(state => state.requestData.retailerHistory|| []) 
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const userData= useSelector(state => state.storeData.userDetails)
   //  console.log("user at verified",userData)
 
@@ -78,28 +80,42 @@ const HomeScreenVerified = () => {
   }, [isFocused]);
 
   const fetchNewRequests = async () => {
+    setLoading(true);
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const response = await axios.get(
         `https://culturtap.com/api/chat/retailer-new-spades?id=${userData?._id}`
       );
+      if(response.data){
       setRequest(true);
+      console.log("hiii")
       dispatch(setNewRequests(response.data));
+      setLoading(false);
+      }
     } catch (error) {
+      setLoading(false);
       dispatch(setNewRequests([]));
       // console.error('Error fetching new requests:', error);
     }
   };
 
   const fetchOngoingRequests = async () => {
+ setIsLoading(true);
+
+  
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const ongoingresponse = await axios.get(
         `https://culturtap.com/api/chat/retailer-ongoing-spades?id=${userData?._id}`
       );
+      if(ongoingresponse.data){
       setRequest(true);
+      console.log("hiiiuu")
       dispatch(setOngoingRequests(ongoingresponse.data));
+      setIsLoading(false)
+      }
     } catch (error) {
+      setIsLoading(false)
       dispatch(setOngoingRequests([]));
       //console.error('Error fetching ongoing requests:', error);
     }
@@ -113,8 +129,10 @@ const HomeScreenVerified = () => {
       const history = await axios.get(
         `https://culturtap.com/api/retailer/history?id=${userData?._id}`
       );
+      if(history.data){
       setRequest(true);
       dispatch(setRetailerHistory(history.data));
+      }
       // console.log("history",history.data);
     } catch (error) {
       dispatch(setRetailerHistory([]));
@@ -126,13 +144,14 @@ const HomeScreenVerified = () => {
 
   const handleRefresh = () => {
     setRefreshing(true); // Show the refresh indicator
-    setLoading(true);
+   
     try {
       // Fetch new data from the server
       fetchNewRequests();
       fetchOngoingRequests();
       fetchRetailerHistory();
       if(newRequests?.length>0 || ongoingRequests?.length>0 || retailerHistory?.length>0){
+        console.log("updated request")
             setRequest(true);
       }
        else{
@@ -146,6 +165,8 @@ const HomeScreenVerified = () => {
   };
 
 
+
+ 
 
   // Setting socket for requests
 
@@ -167,6 +188,7 @@ const HomeScreenVerified = () => {
           />
         }
       >
+         {!request && <HomeScreenRequests />}
         {request && (
           <View className="flex items-center">
             <View>
@@ -230,7 +252,7 @@ const HomeScreenVerified = () => {
                               shadowOpacity: 0.3,
                               shadowRadius: 4,
                               elevation: 5,
-                              borderRadius:10
+                              borderRadius:16
                             }}
                           >
                             <ProductOrderCard
@@ -271,7 +293,7 @@ const HomeScreenVerified = () => {
                               shadowOpacity: 0.3,
                               shadowRadius: 4,
                               elevation: 5,
-                              borderRadius:10
+                              borderRadius:16
                             }}
                           >
                             <ProductOrderCard
@@ -287,13 +309,13 @@ const HomeScreenVerified = () => {
                       )}
                     </View>
                   )}
-                  {loading && <RequestLoader />}
+                  {isLoading && <RequestLoader />}
                 </SafeAreaView>
               )}
             </View>
           </View>
         )}
-        {!request && <HomeScreenRequests />}
+       
       </ScrollView>
     </View>
   );

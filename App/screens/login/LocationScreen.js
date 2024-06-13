@@ -26,7 +26,8 @@ import { setServiceProvider, setStoreLocation, setUserDetails } from "../../redu
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import BackArrow from "../../assets/BackArrow.svg";
+import BackArrow from "../../assets/arrow-left.svg"
+
 
 
 const LocationScreen = () => {
@@ -226,8 +227,9 @@ const LocationScreen = () => {
                     value={location}
                     onChangeText={handleLocationChange}
                     className="w-[330px] overflow-x-scroll  text-[14px]  px-[20px] py-[15px] bg-[#F9F9F9]  text-black rounded-[16px]"
+                    style={{ fontFamily: "Poppins-Regular" }}
                   />
-                  style={{ fontFamily: "Poppins-Regular" }}
+                  
                 </View>
                 
               <View className="flex items-start mt-[20px] mb-[40px]">
@@ -314,7 +316,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     backgroundColor: '#F9F9F9',
-    fontWeight: 'bold',
+    fontFamily:"Poppins-Regular",
     color: 'black',
     borderRadius: 16,
     height:"max-content", // Adj

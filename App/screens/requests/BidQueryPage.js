@@ -26,6 +26,7 @@ import { socket } from "../utils/socket.io/socket";
 import { useDispatch, useSelector } from "react-redux";
 import { setMessages } from "../../redux/reducers/requestDataSlice";
 import { sendCustomNotificationChat } from "../../notification/notificationMessages";
+import BackArrow from "../../assets/arrow-left.svg"
 
 
 const BidQueryPage = () => {
@@ -125,13 +126,14 @@ const BidQueryPage = () => {
               onPress={() => {
                 navigation.goBack();
               }}
+              style={{padding:4}}
             >
-              <FontAwesome name="arrow-left" size={15} color="black" />
+              <BackArrow width={14} height={10} />
             </Pressable>
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="flex items-center justify-center rounded-full">
+                <View className="flex items-center justify-center rounded-full ml-4">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}

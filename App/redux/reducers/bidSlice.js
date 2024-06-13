@@ -31,10 +31,13 @@ const bidSlice = createSlice({
       setAccept:(state,action)=>{
         state.accept = action.payload;
       },
+      bidClear: (state) => {
+        return initialState;
+      }
     
   
   },
 });
 
-export const { setBidDetails,setBidImages,setBidOfferedPrice,setProductWarranty,setAccept} = bidSlice.actions;
+export const { setBidDetails,setBidImages,setBidOfferedPrice,setProductWarranty,setAccept,bidClear } = bidSlice.actions;
 export default bidSlice.reducer;

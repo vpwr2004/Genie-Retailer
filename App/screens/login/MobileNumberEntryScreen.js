@@ -32,6 +32,7 @@ import {
   setMobileNumber,
   setUniqueToken,
   setUserDetails,
+  storeClear,
 } from "../../redux/reducers/storeDataSlice.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -130,6 +131,7 @@ const MobileNumberEntryScreen = () => {
     console.log(otp);
   };
   const sendVerification = async () => {
+    dispatch(storeClear());
     if (mobileNumber.length === 10) {
       // Navigate to OTP screen if the phone number is valid
       setLoading(true);
@@ -180,12 +182,11 @@ const MobileNumberEntryScreen = () => {
         }
       );
       console.log("res", response);
-      setMobileScreen(true);
-      if (response.data.storeMobileNo.length>0) {
+      
+      if (response.data.storeMobileNo) {
         // If mobile number is registered, navigate to home screen
 
-        setOtp("");
-        setMobileNumberLocal("");
+       
         const res = await axios.patch(
           `https://culturtap.com/api/retailer/editretailer`,
           {
@@ -198,10 +199,15 @@ const MobileNumberEntryScreen = () => {
 
         setToken("");
         navigation.navigate("home");
+        setOtp("");
+        setMobileNumberLocal("");
+        setMobileScreen(true);
       } else if (response.data.status === 404) {
         // If mobile number is not registered, continue with the registration process
-        setMobileNumberLocal("");
+        
         navigation.navigate("registerUsername");
+        setMobileNumberLocal("");
+        setMobileScreen(true);
       }
       // }
       // else{
@@ -211,7 +217,7 @@ const MobileNumberEntryScreen = () => {
       //   return;
       // }
     } catch (error) {
-      console.log("Invalid otp:");
+      console.log("Invalid otp:",otp);
       alert("Invalid otp");
       console.error("Error checking mobile number:", error);
     } finally {

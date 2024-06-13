@@ -1,10 +1,10 @@
 import { View, Text, Pressable, ScrollView, BackHandler, TouchableOpacity, RefreshControl } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Profile from "../assets/ProfileIcon.svg"
 import GinieIcon from "../assets/GinieBusinessIcon.svg"
 import History from "../assets/HistoryIcon.svg"
-import { useIsFocused, useNavigation, useNavigationState } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused, useNavigation, useNavigationState } from '@react-navigation/native'
 import HomeScreenVerified from '../components/HomeScreenVerified'
 import CompleteProfile from '../components/CompleteProfile'
 import axios from 'axios'
@@ -56,119 +56,180 @@ const navigationState = useNavigationState(state => state);
   }, [isHomeScreen]);
 
   
-  const fetchUserData = async () => {
-    try {
-       const userDataString = await AsyncStorage.getItem('userData');
-        if (!userDataString) {
-            console.log('User data not found in AsyncStorage');
-            return;
-        }
-        const userData = JSON.parse(userDataString);
-        dispatch(setUserDetails(userData));
+//   const fetchUserData = async () => {
+//     try {
+//         const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+//         dispatch(setUserDetails(userData));
 
-        console.log('Fetched user data successfully at HomeScreen',userData);
+//         console.log('Fetched user data successfully at HomeScreen',userData);
               
       
         
-        const response = await axios.get('https://culturtap.com/api/retailer/', {
-            params: {
-                storeMobileNo: userData.storeMobileNo
-            }
-        });
-        //  console.log("res at home",response.data);
+//         const response = await axios.get('https://culturtap.com/api/retailer/', {
+//             params: {
+//                 storeMobileNo: userData.storeMobileNo
+//             }
+//         });
+//           console.log("res at home",response.data);
         
-        if (response.status === 200) {
-            dispatch(setUserDetails(response.data));
-            // setLocation(response?.data.longitude);
-            // setStore(response?.data.storeImages);
-            // setServiceProvider(response?.data.serviceProvider);
-            if (response.data.storeApproved) {
-              console.log('Store  approved at Home Screen');
-              setVerified(true);
-              return;
+//         if (response.status === 200) {
+            
+//             // setLocation(response?.data.longitude);
+//             // setStore(response?.data.storeImages);
+//             // setServiceProvider(response?.data.serviceProvider);
+//             if (response.data.storeApproved) {
+//               console.log('Store  approved at Home Screen');
+//               setVerified(true);
+//               return;
               
-           }
+//            }
     
-            if (!response.data.storeApproved) {
-                console.log('Store not approved');
-                setVerified(false);
+//             if (!response.data.storeApproved) {
+//                 console.log('Store not approved');
+//                 setVerified(false);
                 
-            }
+//             }
     
            
            
            
             
-            if(response.data.location && response.data.serviceProvider==="true"){
-                setCompleteProfile(true);
-                return;
-            }
-           else if (response.data.location && response.data.storeImages?.length > 0) {
-                setCompleteProfile(true);
-                return;
-            }
-            else{
-                setCompleteProfile(false);
-            }
-           
+//             if(response.data.location && response.data.serviceProvider==="true"){
+//                 setCompleteProfile(true);
+//                 return;
+//             }
+//            else if (response.data.location && response.data.storeImages?.length > 0) {
+//                 setCompleteProfile(true);
+//                 return;
+//             }
+//             else{
+//                 setCompleteProfile(false);
+//             }
+//             dispatch(setUserDetails(response.data));
             
-            await AsyncStorage.setItem('userData', JSON.stringify(response.data));
-            console.log('User data fetched successfully from backend',response.data);
-            // Update state with user data
+//             await AsyncStorage.setItem('userData', JSON.stringify(response.data));
+//             console.log('User data fetched successfully from backend',response.data);
+//             // Update state with user data
         
-        }
+//         }
       
-    } catch (error) {
-        console.error('Error fetching user data on home screen:', error);
-    }
-};
+//     } catch (error) {
+//         console.error('Error fetching user data on home screen:', error);
+//     }
+// };
   
-useEffect(() => {
+// useEffect(() => {
+//     if (isFocused) {
+      
+//        handleRefresh();
+//       // 
+//     }
+//   }, [isFocused]);
+
+  
+
+// // Only re-run effect when screen is focused
+// const handleRefresh = () => {
+//     setRefreshing(true); // Show the refresh indicator
+//     // setLoading(true);
+//     try {
+//       fetchUserData();
+//     } catch (error) {
+//       console.error("Error fetching data:", error);
+//     }
+//     // setLoading(false);
+//      setRefreshing(false); // Hide the refresh indicator
+//   };
+
+const fetchUserData = async (dispatch, setVerified, setCompleteProfile) => {
+  try {
+    const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+    if (userData) {
+      dispatch(setUserDetails(userData));
+      console.log('Fetched user data successfully at HomeScreen', userData);
+    }
+
+    const response = await axios.get('https://culturtap.com/api/retailer/', {
+      params: {
+        storeMobileNo: userData?.storeMobileNo
+      }
+    });
+
+    if (response.status === 200) {
+      const data = response.data;
+
+      console.log("res at home", data);
+
+      if (data.storeApproved) {
+        console.log('Store approved at Home Screen');
+        setVerified(true);
+      } else {
+        console.log('Store not approved');
+        setVerified(false);
+      }
+
+      if ((data.location && data.serviceProvider === "true") || (data.location && data.storeImages?.length > 0)) {
+        setCompleteProfile(true);
+      } else {
+        setCompleteProfile(false);
+      }
+
+      dispatch(setUserDetails(data));
+      await AsyncStorage.setItem('userData', JSON.stringify(data));
+      console.log('User data fetched successfully from backend', data);
+    }
+  } catch (error) {
+    console.error('Error fetching user data on home screen:', error);
+  }
+};
+
+
+const handleRefresh = useCallback(() => {
+  setRefreshing(true);
+  fetchUserData(dispatch, setVerified, setCompleteProfile).finally(() => {
+    setRefreshing(false);
+  });
+}, [dispatch, setVerified, setCompleteProfile]);
+
+useFocusEffect(
+  useCallback(() => {
     if (isFocused) {
       handleRefresh();
-      // 
     }
-  }, [isFocused]);
-
-// Only re-run effect when screen is focused
-const handleRefresh = () => {
-    setRefreshing(true); // Show the refresh indicator
-    // setLoading(true);
-    try {
-      fetchUserData();
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-    // setLoading(false);
-     setRefreshing(false); // Hide the refresh indicator
-  };
+  }, [isFocused, handleRefresh])
+);
 
 
 
     return (
         <View className="flex-1 bg-white ">
-            <ScrollView refreshControl={
-          <RefreshControl
-             refreshing={refreshing}
-            onRefresh={handleRefresh}
-             colors={["#9Bd35A", "#689F38"]
+            <ScrollView 
+          //   refreshControl={
+          // <RefreshControl
+          //    refreshing={refreshing}
+          //   onRefresh={handleRefresh}
+          //    colors={["#9Bd35A", "#689F38"]
 
-            }
-          />}
+          //   }
+          // />}
           >
             <View className="flex flex-col mt-[40px]  gap-[32px] ">
                 <View className="flex flex-row justify-between items-center px-[32px]">
-                    <View className="bg-[#FB8C00] p-[4px] rounded-full">
-                        <TouchableOpacity onPress={()=>navigation.navigate("menu")}>
+                  
+                        <TouchableOpacity onPress={()=>navigation.navigate("menu")} style={{padding:4}}>
+                           <View className="bg-[#FB8C00] p-[4px] rounded-full">
                             <Profile />
+                            </View>
                         </TouchableOpacity>
-                    </View>
+                   
                     <GinieIcon/>
-                    <View className="bg-[#FB8C00] p-[4px] rounded-full">
-                        <TouchableOpacity onPress={()=>navigation.navigate("history")}>
+                    
+                        <TouchableOpacity onPress={()=>navigation.navigate("history")} style={{padding:4}}>
+                        <View className="bg-[#FB8C00] p-[4px] rounded-full">
                             <History height={28} width={28}/>
+                            </View>
                         </TouchableOpacity>
-                    </View>
+                   
                     
                 </View>
                 {

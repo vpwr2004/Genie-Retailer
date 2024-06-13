@@ -20,6 +20,8 @@ import {
   setProductWarranty,
 } from "../../redux/reducers/bidSlice";
 import { TouchableOpacity } from "react-native";
+import BackArrow from "../../assets/arrow-left.svg"
+
 
 const BidOfferedPrice = () => {
   const route = useRoute();
@@ -78,8 +80,10 @@ const BidOfferedPrice = () => {
               onPress={() => {
                 navigation.goBack();
               }}
+              style={{padding:4}}
             >
-              <FontAwesome name="arrow-left" size={15} color="black" />
+                                      <BackArrow width={14} height={10} />
+
             </Pressable>
 
             <View className="gap-[9px]">

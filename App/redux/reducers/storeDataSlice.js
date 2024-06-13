@@ -65,9 +65,13 @@ const storeDataSlice = createSlice({
     setPanScreenImage:(state, action) => {
       state.panScreenImage = action.payload;
     },
+    storeClear: (state) => {
+      return initialState;
+    }
+  
   
   },
 });
 
-export const { setMobileNumber ,setStoreName,setStoreOwnerName,setPanCard,setStoreService,setStoreLocation,setStoreCategory,setStoreDescription,setImages,setUserDetails,setAuthData,setUniqueToken,setServiceProvider,setPanScreenImage} = storeDataSlice.actions;
+export const { setMobileNumber ,setStoreName,setStoreOwnerName,setPanCard,setStoreService,setStoreLocation,setStoreCategory,setStoreDescription,setImages,setUserDetails,setAuthData,setUniqueToken,setServiceProvider,setPanScreenImage,storeClear} = storeDataSlice.actions;
 export default storeDataSlice.reducer;

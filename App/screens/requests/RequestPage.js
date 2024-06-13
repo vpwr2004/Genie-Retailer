@@ -48,6 +48,8 @@ import Attachment from "../../components/Attachment";
 import { setRequestInfo } from "../../redux/reducers/requestDataSlice";
 import { NotificationBidRejected } from "../../notification/notificationMessages";
 import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
+import BackArrow from "../../assets/arrow-left.svg"
+
 // import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 // import { setMessages } from "../../redux/reducers/requestDataSlice";
 
@@ -319,7 +321,7 @@ const RequestPage = () => {
   // const messages = useSelector(state => state.requestData.messages);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 ,backgroundColor:"white"}}>
       <View className="relative" >
         {attachmentScreen && (
           <View style={styles.overlay}>
@@ -339,18 +341,18 @@ const RequestPage = () => {
             onPress={() => {
               navigation.goBack();
             }}
-            style={{ padding: 2 }}
+            style={{ padding: 4 }}
           >
-            <FontAwesome name="arrow-left" size={15} color="black" />
+           <BackArrow width={14} height={10} />
           </Pressable>
 
           <View className="gap-[9px]">
             <View className="flex-row gap-[18px]">
-              <View className=" flex items-center justify-center rounded-full">
+              <View className=" flex items-center justify-center rounded-full ml-4">
                 {requestInfo?.customerId?.pic ? (
                   <Image
                     source={{ uri: requestInfo?.customerId?.pic }}
-                    style={{
+                    style={{ 
                       width: 40,
                       height: 40,
                       borderRadius: 20,
