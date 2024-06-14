@@ -86,7 +86,7 @@ const MenuScreen = () => {
                 <View className="flex items-center    ">
                     <View className="flex flex-row gap-[32px] bg-white py-[48px] justify-center  w-[90%] items-center ">
                         {
-                             user?.storeImages.length>0 ?( <Image source={{ uri:user?.storeImages[0] }} width={70} height={70} className="rounded-full" />):
+                             user?.storeImages ?( <Image source={{ uri:user?.storeImages[0] }} width={70} height={70} className="rounded-full" />):
                     (
                         <Profile  width={40} height={40}/>
                     )

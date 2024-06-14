@@ -38,6 +38,8 @@ import { launchCamera } from "react-native-image-picker";
 import DelImg from "../../assets/delImg.svg"
 
 
+
+
 const PanCardScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -355,6 +357,7 @@ const PanCardScreen = () => {
               <View className="w-full flex flex-row justify-between px-[40px] py-[20px]">
                 <Text className="text-[14px]" style={{ fontFamily: "Poppins-Regular" }}>Upload Image</Text>
                 <FontAwesome name="arrow-right" size={15} color="black" />
+
               </View>
             </TouchableOpacity>
             <View className="h-[1px] w-full bg-gray-300"></View>

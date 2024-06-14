@@ -292,8 +292,7 @@ const BidPageImageUpload = () => {
 
               
             </View>
-          </ScrollView>
-          <View className="pb-[100px]">
+            <View className="pb-[100px]">
                 {images.length === 0 && (
                   <View className="z-0">
                     <View>
@@ -464,6 +463,8 @@ const BidPageImageUpload = () => {
                   </View>
                 )}
               </View>
+          </ScrollView>
+         
           <ModalCancel
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
