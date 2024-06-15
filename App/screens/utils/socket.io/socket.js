@@ -1,3 +1,3 @@
 import io from 'socket.io-client';
 
-export const socket = io('https://culturtap.com/api/');
+export const socket = io('https://culturtap.com/');

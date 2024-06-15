@@ -41,7 +41,7 @@ const ModalLogout = ({ user, modalVisible, setModalVisible }) => {
       await messaging().deleteToken();
       console.log("FCM token deleted.");
       const res = await axios.patch(
-        `https://culturtap.com/api/retailer/editretailer`,
+        `https://culturtap.com/retailer/editretailer`,
         {
           _id: user?._id,
           uniqueToken: "",

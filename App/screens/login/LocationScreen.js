@@ -141,7 +141,7 @@ const LocationScreen = () => {
       dispatch(setStoreLocation(location));
       // Update location on server
       const response = await axios.patch(
-        `https://culturtap.com/api/retailer/editretailer`,
+        `https://culturtap.com/retailer/editretailer`,
         {
           _id: userId,
           location: location,

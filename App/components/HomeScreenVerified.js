@@ -31,7 +31,7 @@ const HomeScreenVerified = () => {
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [tab, setTab] = useState("New");
-  const [request, setRequest] = useState(false);
+  const [request, setRequest] = useState(true);
   const newRequests = useSelector(
     (state) => state.requestData.newRequests || []
   );
@@ -74,6 +74,7 @@ const HomeScreenVerified = () => {
 
   useEffect(() => {
     if (isFocused) {
+      console.log("request fetching")
       handleRefresh();
       // 
     }
@@ -84,11 +85,11 @@ const HomeScreenVerified = () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const response = await axios.get(
-        `https://culturtap.com/api/chat/retailer-new-spades?id=${userData?._id}`
+        `https://culturtap.com/chat/retailer-new-spades?id=${userData?._id}`
       );
       if(response.data){
       setRequest(true);
-      console.log("hiii")
+      console.log("hiii");
       dispatch(setNewRequests(response.data));
       setLoading(false);
       }
@@ -106,7 +107,7 @@ const HomeScreenVerified = () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const ongoingresponse = await axios.get(
-        `https://culturtap.com/api/chat/retailer-ongoing-spades?id=${userData?._id}`
+        `https://culturtap.com/chat/retailer-ongoing-spades?id=${userData?._id}`
       );
       if(ongoingresponse.data){
       setRequest(true);
@@ -127,7 +128,7 @@ const HomeScreenVerified = () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const history = await axios.get(
-        `https://culturtap.com/api/retailer/history?id=${userData?._id}`
+        `https://culturtap.com/retailer/history?id=${userData?._id}`
       );
       if(history.data){
       setRequest(true);
@@ -148,14 +149,23 @@ const HomeScreenVerified = () => {
     try {
       // Fetch new data from the server
       fetchNewRequests();
+      if(newRequests?.length>0){
+        console.log("updated request 1")
+            setRequest(true);
+      }
       fetchOngoingRequests();
+      if(newRequests?.length>0 || ongoingRequests?.length>0){
+        console.log("updated request 2")
+            setRequest(true);
+      }
       fetchRetailerHistory();
       if(newRequests?.length>0 || ongoingRequests?.length>0 || retailerHistory?.length>0){
-        console.log("updated request")
+        console.log("updated request 3")
             setRequest(true);
       }
        else{
-          setRequest(false);
+        console.log("updated no");
+          // setRequest(false);
       }
     } catch (error) {
       console.error("Error fetching data:", error);

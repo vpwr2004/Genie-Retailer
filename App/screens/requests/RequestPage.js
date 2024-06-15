@@ -95,7 +95,7 @@ const RequestPage = () => {
       }
       // let response = 
       await axios.get(
-        "https://culturtap.com/api/chat/get-spade-messages",
+        "https://culturtap.com/chat/get-spade-messages",
         {
           params: {
             id: requestInfo?._id ? requestInfo?._id : req?._id,

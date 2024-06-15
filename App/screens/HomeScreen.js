@@ -149,7 +149,7 @@ const fetchUserData = async (dispatch, setVerified, setCompleteProfile) => {
       console.log('Fetched user data successfully at HomeScreen', userData);
     }
 
-    const response = await axios.get('https://culturtap.com/api/retailer/', {
+    const response = await axios.get('https://culturtap.com/retailer/', {
       params: {
         storeMobileNo: userData?.storeMobileNo
       }

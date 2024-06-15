@@ -56,7 +56,7 @@ const BidQueryPage = () => {
      
 
       const response = await axios.post(
-        "https://culturtap.com/api/chat/send-message",
+        "https://culturtap.com/chat/send-message",
         {
           sender: {
             type: "Retailer",
@@ -86,7 +86,7 @@ const BidQueryPage = () => {
         // console.log("notification", notification.requestInfo);
         setLoading(false)
         navigation.navigate("requestPage");
-        const token=await axios.get(`https://culturtap.com/api/user/unique-token?id=${requestInfo?.customerId._id}`);
+        const token=await axios.get(`https://culturtap.com/user/unique-token?id=${requestInfo?.customerId._id}`);
         console.log("token",token.data);
         if(token.data.length > 0){
         const notification = {

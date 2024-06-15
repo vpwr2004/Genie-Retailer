@@ -70,7 +70,7 @@ const CameraScreen = () => {
         // console.log("notification send", notification);
         navigation.navigate("requestPage", { data: requestInfo });
         const token = await axios.get(
-          `https://culturtap.com/api/user/unique-token?id=${requestInfo?.customerId._id}`
+          `https://culturtap.com/user/unique-token?id=${requestInfo?.customerId._id}`
         );
         if (token.data.length > 0) {
           const notification = {

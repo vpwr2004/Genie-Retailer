@@ -62,7 +62,7 @@ const RequestAcceptModal = ({
       if (requestInfo?.requestType === "new") {
         try {
           const res = await axios.patch(
-            "https://culturtap.com/api/chat/modify-spade-retailer",
+            "https://culturtap.com/chat/modify-spade-retailer",
             {
               id: requestInfo?._id,
               type: "ongoing",
@@ -83,7 +83,7 @@ const RequestAcceptModal = ({
           setModalVisible(false);
           setLoading(false);
           const token = await axios.get(
-            `https://culturtap.com/api/user/unique-token?id=${requestInfo?.customerId._id}`
+            `https://culturtap.com/user/unique-token?id=${requestInfo?.customerId._id}`
           );
           console.log("notify token: " + token.data);
           if (token.data.length > 0) {
@@ -106,7 +106,7 @@ const RequestAcceptModal = ({
       } else {
         try {
           const accept = await axios.patch(
-            `https://culturtap.com/api/chat/accept-bid`,
+            `https://culturtap.com/chat/accept-bid`,
             {
               messageId: lastMessage?._id,
               userRequestId: requestInfo?.requestId?._id,

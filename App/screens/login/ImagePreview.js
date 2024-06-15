@@ -54,7 +54,7 @@ const [loading,setLoading] = useState(false);
 
       // Update location on server
       const response = await axios.patch(
-        `https://culturtap.com/api/retailer/editretailer`,
+        `https://culturtap.com/retailer/editretailer`,
         {
           _id: userId,
           storeImages: newImages,

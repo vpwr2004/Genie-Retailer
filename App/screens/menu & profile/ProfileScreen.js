@@ -68,7 +68,7 @@ const ProfileScreen = () => {
       setIsLoading(true)
     try {
       const response = await axios.patch(
-        `https://culturtap.com/api/retailer/editretailer`,
+        `https://culturtap.com/retailer/editretailer`,
         {
           _id: user?._id,
           [field]: fieldMapping[field],
@@ -165,7 +165,7 @@ const ProfileScreen = () => {
        dispatch(setUserDetails(updatedUser));
         await AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
         const response = await axios.patch(
-          `https://culturtap.com/api/retailer/editretailer`,
+          `https://culturtap.com/retailer/editretailer`,
           {
             _id: user?._id,
             storeImages: updatedUser.storeImages,
@@ -194,7 +194,7 @@ const ProfileScreen = () => {
           dispatch(setUserDetails(updatedUser));
           await AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
           const response = await axios.patch(
-            `https://culturtap.com/api/retailer/editretailer`,
+            `https://culturtap.com/retailer/editretailer`,
             {
               _id: user?._id,
               storeImages: updatedUser.storeImages,

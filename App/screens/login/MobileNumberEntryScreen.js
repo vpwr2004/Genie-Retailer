@@ -174,7 +174,7 @@ const MobileNumberEntryScreen = () => {
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
-        "https://culturtap.com/api/retailer/",
+        "https://culturtap.com/retailer/",
         {
           params: {
             storeMobileNo: phoneNumber,
@@ -188,7 +188,7 @@ const MobileNumberEntryScreen = () => {
 
        
         const res = await axios.patch(
-          `https://culturtap.com/api/retailer/editretailer`,
+          `https://culturtap.com/retailer/editretailer`,
           {
             _id: response?.data?._id,
             uniqueToken: token,
