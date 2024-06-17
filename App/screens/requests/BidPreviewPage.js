@@ -86,6 +86,7 @@ const BidPreviewPage = () => {
           bidImages: bidImages,
           chat: requestInfo?._id,
           warranty: warranty,
+          userRequest:requestInfo?.requestId?._id
         }
       );
       console.log("res of meassage", response);

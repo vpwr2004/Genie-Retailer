@@ -42,11 +42,14 @@ const CameraScreen = () => {
   console.log("store", openCamera);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const sendAttachment = async () => {
     // console.log('res', query, imageUri);
+    setIsLoading(true)
     await axios
-      .post("https://culturtap.com/api/chat/send-message", {
+      .post("https://culturtap.com/chat/send-message", {
         sender: {
           type: "Retailer",
           refId: user?._id,
@@ -56,6 +59,7 @@ const CameraScreen = () => {
         bidImages: [imageUri],
         bidAccepted: "new",
         chat: requestInfo?._id,
+        userRequest:requestInfo?.requestId?._id
       })
       .then(async (res) => {
         console.log(res.data);
@@ -66,6 +70,7 @@ const CameraScreen = () => {
 
         setMessages(mess);
         // setAttachmentScreen(false);
+        setIsLoading(false)
 
         // console.log("notification send", notification);
         navigation.navigate("requestPage", { data: requestInfo });
@@ -87,6 +92,8 @@ const CameraScreen = () => {
         }
       })
       .catch((err) => {
+    setIsLoading(false)
+
         console.log(err);
       });
   };
@@ -272,7 +279,12 @@ const CameraScreen = () => {
                 sendAttachment();
               }}
             >
-              <Send />
+               {isLoading ? (
+                <View className="bg-[#fb8c00] p-[20px] rounded-full">
+                  <ActivityIndicator size="small" color="#ffffff" />
+                </View>
+              ) : (
+              <Send />)}
             </TouchableOpacity>
           </View>
         </View>

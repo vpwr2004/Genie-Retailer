@@ -68,6 +68,8 @@ const BidQueryPage = () => {
           bidPrice: 0,
           bidImages: [],
           chat: requestInfo?._id,
+          userRequest:requestInfo?.requestId?._id
+
         }
       );
       //    console.log("res",response);

@@ -131,10 +131,11 @@ const MobileNumberEntryScreen = () => {
     console.log(otp);
   };
   const sendVerification = async () => {
-    dispatch(storeClear());
+   
     if (mobileNumber.length === 10) {
       // Navigate to OTP screen if the phone number is valid
       setLoading(true);
+      dispatch(storeClear());
       try {
          const phoneNumber = countryCode + mobileNumber;
         // console.log(phoneNumber);

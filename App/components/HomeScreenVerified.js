@@ -165,7 +165,7 @@ const HomeScreenVerified = () => {
       }
        else{
         console.log("updated no");
-          // setRequest(false);
+           setRequest(false);
       }
     } catch (error) {
       console.error("Error fetching data:", error);

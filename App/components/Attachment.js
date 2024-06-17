@@ -8,6 +8,7 @@ import Gallery from '../assets/Gallerys.svg';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // import { socket } from '../../utils/scoket.io/socket';
 
 const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMessages}) => {
@@ -96,9 +97,9 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
     };
 
     return (
-        <View style={styles.attachments} className="flex flex-col absolute top-0 left-0 right-0  z-50 h-screen" >
+        <SafeAreaView style={styles.attachments} className="flex flex-col  absolute top-0 bottom-0 left-0 right-0  z-50 h-screen" >
             <TouchableOpacity onPress={() => { setAttachmentScreen(false) }} >
-                <View className="h-4/5 w-screen  bg-transparent" >
+                <View className=" w-screen h-4/5  bg-transparent" >
                 </View>
             </TouchableOpacity>
             <View className="bg-white py-[20px] h-1/5 gap-5" >
@@ -122,7 +123,7 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
 
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

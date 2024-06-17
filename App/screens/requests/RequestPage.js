@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ActivityIndicator,
   
 } from "react-native";
 import React, {
@@ -74,6 +75,9 @@ const RequestPage = () => {
   const [attachmentScreen, setAttachmentScreen] = useState(false);
   const [cameraScreen, setCameraScreen] = useState(false);
   const [loading,setLoading]=useState(true);
+  const [isLoading,setisLoading]=useState(false);
+
+
   const requestInfo = useSelector(
     (state) => state.requestData.requestInfo || {}
   );
@@ -216,6 +220,7 @@ const RequestPage = () => {
   // Fetch request data
 
   const RejectBid = async () => {
+    setisLoading(true);
     try {
       const lastMessage = messages[messages.length - 1]; // Get the last message
       if (!lastMessage) {
@@ -224,7 +229,7 @@ const RequestPage = () => {
       }
       try {
         const response = await axios.patch(
-          "https://culturtap.com/api/chat/reject-bid",
+          "https://culturtap.com/chat/reject-bid",
           {
             messageId: lastMessage?._id,
           }
@@ -241,7 +246,8 @@ const RequestPage = () => {
         });
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
-        const token=await axios.get(`https://culturtap.com/api/user/unique-token?id=${requestInfo?.customerId._id}`);
+        setisLoading(false);
+        const token=await axios.get(`https://culturtap.com/user/unique-token?id=${requestInfo?.customerId._id}`);
        if(token.data.length>0){
         const notification = {
           token: token.data,
@@ -255,12 +261,16 @@ const RequestPage = () => {
          NotificationBidRejected(notification);
         }
       } catch (error) {
+        setisLoading(false);
+
         console.log("Error updating chat:", error);
       }
       // } else {
       //   console.error("Error updating message.");
       // }
     } catch (error) {
+      setisLoading(false);
+
       console.error("Error updating requesttype:", error);
     }
   };
@@ -322,8 +332,7 @@ const RequestPage = () => {
 
   return (
     <View style={{ flex: 1 ,backgroundColor:"white"}}>
-      <View className="relative" >
-        {attachmentScreen && (
+      {attachmentScreen && (
           <View style={styles.overlay}>
             <Attachment
               setAttachmentScreen={setAttachmentScreen}
@@ -335,6 +344,8 @@ const RequestPage = () => {
             />
           </View>
         )}
+      <View className="relative" >
+        
 
         <View className=" relative bg-[#ffe7c8] pt-[40px] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
           <Pressable
@@ -580,6 +591,7 @@ const RequestPage = () => {
         {requestInfo?.requestType !== "closed" &&
           requestInfo?.requestType !== "cancelled" &&
           requestInfo?.requestType !== "new" &&
+          
           ((requestInfo?.requestId?.requestActive === "completed" &&
             requestInfo?.requestId?.requestAcceptedChat === user?._id) ||
             (messages[messages.length - 1]?.bidType === "true" &&
@@ -660,9 +672,13 @@ const RequestPage = () => {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={RejectBid} style={{ flex: 1 }}>
                   <View className="h-[63px] flex items-center justify-center border-2 border-[#FB8C00] bg-white">
+                  {isLoading ? (
+                <ActivityIndicator size="small" color="#FB8C00" />
+              ) : (
                     <Text className=" text-[16px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Black" }}>
                       No
                     </Text>
+              )}
                   </View>
                 </TouchableOpacity>
               </View>
@@ -677,7 +693,7 @@ const RequestPage = () => {
           ((messages[messages.length - 1]?.bidType === "true" &&
             messages[messages.length - 1]?.bidAccepted === "rejected") ||
             messages[messages.length - 1]?.bidType === "false" ||
-            messages[messages.length - 1]?.bidType === "image") && (
+            messages[messages.length - 1]?.bidType === "image") &&  (
             <View className="gap-[20px] bg-white pt-2">
               <TouchableOpacity
                 onPress={() =>

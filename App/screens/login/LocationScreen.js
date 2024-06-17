@@ -149,10 +149,14 @@ const LocationScreen = () => {
           longitude: longitude,
           serviceProvider:data==="service"?"true":"false",
           uniqueToken: uniqueToken,
+          coords:{
+            type:"Point",
+            coordinates:[longitude, latitude]
+          }
         }
       );
 
-      console.log("Location updated successfully:", response.data);
+      console.log("Location updated successfully:", response.data); 
        dispatch(setUserDetails(response.data));
       // Update user data in AsyncStorage
       await AsyncStorage.setItem("userData", JSON.stringify(response.data));
@@ -175,15 +179,16 @@ const LocationScreen = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
      
-      <KeyboardAvoidingView behavior="padding">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+     
+      <ScrollView contentContainerStyle={{flexGrow:1}}>
+      <KeyboardAvoidingView behavior="position" >
       <View style={{ flex: 1, backgroundColor: "white",position:"relative" }} >
           <View className="w-full absolute px-[32px]  mt-[40px] flex flex-row justify-between items-center">
             <Pressable
               onPress={() => {
                 navigation.goBack();
               }}
-              className="flex flex-row p-2 items-center  gap-2"
+              className="flex flex-row p-4 items-center  gap-2"
             >
                            <BackArrow width={14} height={10} />
 
@@ -232,7 +237,7 @@ const LocationScreen = () => {
                   
                 </View>
                 
-              <View className="flex items-start mt-[20px] mb-[40px]">
+              <View className="flex items-start mt-[20px] pb-[20px]">
                 <Pressable onPress={handleRefreshLocation} className="w-max">
                   <Text className="text-[#E76063] text-[14px] " style={{ fontFamily: "Poppins-ExtraBold" }}>
                     Refresh
@@ -243,8 +248,9 @@ const LocationScreen = () => {
           </View>
           
           </View>
-          </ScrollView>
           </KeyboardAvoidingView>
+
+          </ScrollView>
           
           
           <TouchableOpacity
