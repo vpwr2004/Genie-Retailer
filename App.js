@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, TextInput, Bu
 import { NavigationContainer } from "@react-navigation/native";
 import GlobalNavigation from './App/navigation/appNavigation';
 import './global.css';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './App/redux/store';
 import { useEffect,useState } from 'react';
 import navigationService from './App/navigation/navigationService';
@@ -33,13 +33,21 @@ export default function App() {
     }
  )
 
+//  const NotificationHandler = () => {
+//   const dispatch = useDispatch();
+//   const newRequests = useSelector((state) => state.requestData.newRequests || []);
 
+ 
 
-  useEffect(()=>{
+//   return null;
+// };
+
+//  useEffect(()=>{
   
-    notificationListeners();
+//   notificationListeners();
 
-  },[]);
+// },[]);
+ 
   
   // Adjust this import according to your project structure
   
@@ -87,6 +95,7 @@ export default function App() {
     <Provider store={store}>
        <NavigationContainer ref={(ref) => navigationService.setTopLevelNavigator(ref)} >
       <GlobalNavigation />
+
       <StatusBar style="auto" />
     </NavigationContainer>
     </Provider>

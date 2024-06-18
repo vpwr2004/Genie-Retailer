@@ -50,6 +50,8 @@ const PanCardScreen = () => {
   const storeService = useSelector((state) => state.storeData.storeService);
   const storeCategory = useSelector((state) => state.storeData.storeCategory);
   const user = useSelector((state) => state.storeData.userDetails);
+  const uniqueToken = useSelector((state) => state.storeData.uniqueToken);
+
   const [cameraScreen, setCameraScreen] = useState(false);
   const [imagesLocal, setImagesLocal] = useState("");
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -67,7 +69,8 @@ const PanCardScreen = () => {
     storeName,
     storeOwnerName,
     storeService,
-    panCard
+    panCard,
+    uniqueToken
   );
 
   const handlePanCard = (panCard) => {
@@ -92,6 +95,7 @@ const PanCardScreen = () => {
           storeCategory: storeCategory,
           homeDelivery: storeService,
           panCard: panCard,
+          uniqueToken:uniqueToken
         }
       );
       console.log("res", response);
@@ -259,7 +263,7 @@ const PanCardScreen = () => {
             >
               <Pressable
                 onPress={() => navigation.goBack()}
-                style={{ padding: 2 }}
+                style={{ padding: 4 }}
               >
                 <BackArrow width={14} height={10} />
               </Pressable>
@@ -273,7 +277,7 @@ const PanCardScreen = () => {
               </TouchableOpacity>
             </View>
             <View className="flex flex-col justify-center items-center px-[32px] gap-[20px]">
-              <StoreName height={400} width={width} className="object-cover" />
+              <StoreName width={width} className="object-cover" />
               <Text className="text-[14.5px]  text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>
                 Step 6/9
               </Text>

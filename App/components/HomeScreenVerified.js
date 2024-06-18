@@ -73,12 +73,20 @@ const HomeScreenVerified = () => {
   // },[]);
 
   useEffect(() => {
-    if (isFocused) {
+    const setupNotifications = async () => {
+      console.log("notify",newRequests)
+      await notificationListeners(dispatch, newRequests);
+    };
+    setupNotifications();
+  }, []);
+
+  useEffect(() => {
+    // if (isFocused) {
       console.log("request fetching")
       handleRefresh();
       // 
-    }
-  }, [isFocused]);
+    // }
+  }, []);
 
   const fetchNewRequests = async () => {
     setLoading(true);
@@ -89,7 +97,7 @@ const HomeScreenVerified = () => {
       );
       if(response.data){
       setRequest(true);
-      console.log("hiii");
+     console.log("hiii verified", response.data);
       dispatch(setNewRequests(response.data));
       setLoading(false);
       }
@@ -111,7 +119,7 @@ const HomeScreenVerified = () => {
       );
       if(ongoingresponse.data){
       setRequest(true);
-      console.log("hiiiuu")
+      // console.log("hiiiuu")
       dispatch(setOngoingRequests(ongoingresponse.data));
       setIsLoading(false)
       }

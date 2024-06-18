@@ -22,7 +22,7 @@ const ProductOrderCard = ({product}) => {
     <View className="max-w-[340px] flex-row items-center justify-between bg-white gap-[15px]  rounded-3xl shadow-2xl  px-[20px] h-max py-[20px]" >
                        <View className="w-[95px] h-[95px]  rounded-[15px]">
           
-                              <Image source={{ uri:prod.requestId.requestImages.length>0? prod.requestId.requestImages[0]:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }} className="w-full h-full object-contain rounded-[15px]"  />
+                              <Image source={{ uri:prod?.requestId?.requestImages?.length>0? prod.requestId.requestImages[0]:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }} className="w-full h-full object-contain rounded-[15px]"  />
                         
 
                           

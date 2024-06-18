@@ -43,7 +43,7 @@ const ServiceDeliveryScreen = () => {
                         </Pressable>
                     </View>
                     <View className="flex flex-col justify-center items-center px-[32px] gap-[20px] ">
-                        <StoreName height={400} width={width} className="object-cover" />
+                        <StoreName  width={width} className="object-cover" />
                         <Text className="text-[14.5px]  text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>Step 5/9</Text>
                     </View>
                     <View className="my-[30px] flex flex-col gap-[33px] px-[32px]">

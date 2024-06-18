@@ -207,6 +207,8 @@ const MobileNumberEntryScreen = () => {
         // If mobile number is not registered, continue with the registration process
         
         navigation.navigate("registerUsername");
+        setOtp("");
+        setToken("")
         setMobileNumberLocal("");
         setMobileScreen(true);
       }
@@ -236,7 +238,7 @@ const MobileNumberEntryScreen = () => {
                 <View className="bg-white flex-col justify-center">
                   <View className="flex flex-col justify-center items-center gap-[20px]">
                     <MobileNumberImg
-                      height={400}
+                      // height={400}
                       width={width}
                       className="object-cover"
                     />
@@ -337,7 +339,7 @@ const MobileNumberEntryScreen = () => {
                   }}
                 >
                   <MobileNumberImg
-                    height={400}
+                    // height={400}
                     width={width}
                     className="object-cover"
                   />
@@ -397,7 +399,7 @@ const MobileNumberEntryScreen = () => {
                     />
                   </View>
 
-                  <View style={{ flexDirection: "column", marginTop: 15 }}>
+                  <View style={{ flexDirection: "column", marginTop: 15 ,paddingBottom:80}}>
                     <Text style={{ fontSize: 16, color: "#2e2c43",fontFamily:"Poppins-Medium" }}>
                       Didn't receive it?
                     </Text>
