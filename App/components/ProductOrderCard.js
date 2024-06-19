@@ -24,7 +24,6 @@ const ProductOrderCard = ({product}) => {
           
                               <Image source={{ uri:prod?.requestId?.requestImages?.length>0? prod.requestId.requestImages[0]:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }} className="w-full h-full object-contain rounded-[15px]"  />
                         
-
                           
                        </View>
                         

@@ -65,13 +65,13 @@ const UserNameEntryScreen = () => {
     // Update the mobile number state
     setStoreNameLocal(storeName);
     // Log the mobile number value
-    console.log(storeName);
+    // console.log(storeName);
   };
   const handleStoreOwnerName = (storeOwnerName) => {
     // Update the mobile number state
     setStoreOwnerNameLocal(storeOwnerName);
     // Log the mobile number value
-    console.log(storeOwnerName);
+    // console.log(storeOwnerName);
   };
 
   const storeDetails = () => {

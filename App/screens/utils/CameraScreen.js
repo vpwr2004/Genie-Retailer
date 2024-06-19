@@ -25,6 +25,7 @@ import { manipulateAsync } from "expo-image-manipulator";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { launchCamera } from "react-native-image-picker";
 import { sendCustomNotificationAttachment } from "../../notification/notificationMessages";
+import { setOngoingRequests } from "../../redux/reducers/requestDataSlice";
 
 // import { setMessages } from '../../redux/reducers/requestDataSlice';
 
@@ -43,6 +44,9 @@ const CameraScreen = () => {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const ongoingRequests = useSelector(
+    (state) => state.requestData.ongoingRequests || []
+  );
 
 
   const sendAttachment = async () => {
@@ -70,6 +74,15 @@ const CameraScreen = () => {
 
         setMessages(mess);
         // setAttachmentScreen(false);
+        const filteredRequests = ongoingRequests.filter(
+          (request) => request._id !==requestInfo._id
+        );
+        const requests = ongoingRequests.filter(
+          (request) => request._id ===requestInfo._id
+        );
+        console.log("request ongoing",filteredRequests.length,requests.length)
+        const data=[...requests,...filteredRequests];
+         dispatch(setOngoingRequests(data));
         setIsLoading(false)
 
         // console.log("notification send", notification);
@@ -186,7 +199,7 @@ const CameraScreen = () => {
           const newImageUri = response.assets[0].uri;
           const compressedImage = await manipulateAsync(
             newImageUri,
-            [{ resize: { width: 800, height: 800 } }],
+            [{ resize: { width: 800, height: 800 } }], 
             { compress: 0.5, format: "jpeg", base64: true }
           );
           await getImageUrl(compressedImage);
@@ -204,7 +217,7 @@ const CameraScreen = () => {
       allowsEditing: true,
       aspect: [4, 3],
       base64: true,
-      quality: 0.5,
+      quality: 0.25,
     });
 
     console.log("pickImage", "result");

@@ -57,7 +57,7 @@ const RequestAcceptModal = ({
         return;
       }
 
-      console.log("Updating card", requestInfo);
+      // console.log("Updating card", requestInfo);
 
       if (requestInfo?.requestType === "new") {
         try {
@@ -118,8 +118,11 @@ const RequestAcceptModal = ({
             try {
               socket.emit("new message", accept.data?.message);
               let tmp = {
-                ...requestInfo?.requestId,
-                requestActive: "completed",
+                ...requestInfo,
+                requestId: {
+                  ...requestInfo.requestId,
+                  requestActive: "completed"
+                }
               };
               dispatch(setRequestInfo(tmp));
               const updatedMessages = messages.map((message) => {

@@ -6,6 +6,7 @@ import {
   RefreshControl,
   Pressable,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -38,13 +39,14 @@ const HomeScreenVerified = () => {
   const ongoingRequests = useSelector(
     (state) => state.requestData.ongoingRequests || []
   );
-  const retailerHistory= useSelector(state => state.requestData.retailerHistory|| []) 
+  const retailerHistory = useSelector(
+    (state) => state.requestData.retailerHistory || []
+  );
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const userData= useSelector(state => state.storeData.userDetails)
+  const userData = useSelector((state) => state.storeData.userDetails);
   //  console.log("user at verified",userData)
-
 
   // async function requestUserPermission() {
   //   const authStatus = await messaging().requestPermission();
@@ -73,18 +75,10 @@ const HomeScreenVerified = () => {
   // },[]);
 
   useEffect(() => {
-    const setupNotifications = async () => {
-      console.log("notify",newRequests)
-      await notificationListeners(dispatch, newRequests);
-    };
-    setupNotifications();
-  }, []);
-
-  useEffect(() => {
     // if (isFocused) {
-      console.log("request fetching")
-      handleRefresh();
-      // 
+    console.log("request fetching");
+    handleRefresh();
+    //
     // }
   }, []);
 
@@ -95,11 +89,11 @@ const HomeScreenVerified = () => {
       const response = await axios.get(
         `https://culturtap.com/chat/retailer-new-spades?id=${userData?._id}`
       );
-      if(response.data){
-      setRequest(true);
-     console.log("hiii verified", response.data);
-      dispatch(setNewRequests(response.data));
-      setLoading(false);
+      if (response.data) {
+        setRequest(true);
+        // console.log("hiii verified", response.data);
+        dispatch(setNewRequests(response.data));
+        setLoading(false);
       }
     } catch (error) {
       setLoading(false);
@@ -109,27 +103,24 @@ const HomeScreenVerified = () => {
   };
 
   const fetchOngoingRequests = async () => {
- setIsLoading(true);
+    setIsLoading(true);
 
-  
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const ongoingresponse = await axios.get(
         `https://culturtap.com/chat/retailer-ongoing-spades?id=${userData?._id}`
       );
-      if(ongoingresponse.data){
-      setRequest(true);
-      // console.log("hiiiuu")
-      dispatch(setOngoingRequests(ongoingresponse.data));
-      setIsLoading(false)
+      if (ongoingresponse.data) {
+        setRequest(true);
+        // console.log("hiiiuu")
+        dispatch(setOngoingRequests(ongoingresponse.data));
+        setIsLoading(false);
       }
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
       dispatch(setOngoingRequests([]));
       //console.error('Error fetching ongoing requests:', error);
     }
-
-
   };
 
   const fetchRetailerHistory = async () => {
@@ -138,42 +129,43 @@ const HomeScreenVerified = () => {
       const history = await axios.get(
         `https://culturtap.com/retailer/history?id=${userData?._id}`
       );
-      if(history.data){
-      setRequest(true);
-      dispatch(setRetailerHistory(history.data));
+      if (history.data) {
+        setRequest(true);
+        dispatch(setRetailerHistory(history.data));
       }
       // console.log("history",history.data);
     } catch (error) {
       dispatch(setRetailerHistory([]));
       //console.error('Error fetching ongoing requests:', error);
     }
-
-    
   };
 
   const handleRefresh = () => {
     setRefreshing(true); // Show the refresh indicator
-   
+
     try {
       // Fetch new data from the server
       fetchNewRequests();
-      if(newRequests?.length>0){
-        console.log("updated request 1")
-            setRequest(true);
+      if (newRequests?.length > 0) {
+        console.log("updated request 1");
+        setRequest(true);
       }
       fetchOngoingRequests();
-      if(newRequests?.length>0 || ongoingRequests?.length>0){
-        console.log("updated request 2")
-            setRequest(true);
+      if (newRequests?.length > 0 || ongoingRequests?.length > 0) {
+        console.log("updated request 2");
+        setRequest(true);
       }
       fetchRetailerHistory();
-      if(newRequests?.length>0 || ongoingRequests?.length>0 || retailerHistory?.length>0){
-        console.log("updated request 3")
-            setRequest(true);
-      }
-       else{
+      if (
+        newRequests?.length > 0 ||
+        ongoingRequests?.length > 0 ||
+        retailerHistory?.length > 0
+      ) {
+        console.log("updated request 3");
+        setRequest(true);
+      } else {
         console.log("updated no");
-           setRequest(false);
+        setRequest(false);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -182,22 +174,47 @@ const HomeScreenVerified = () => {
     setRefreshing(false); // Hide the refresh indicator
   };
 
-
-
- 
-
   // Setting socket for requests
+  useEffect(() => {
+    const setupNotifications = async () => {
+      console.log("notify data", ongoingRequests.length);
+      await notificationListeners(dispatch, newRequests,ongoingRequests,retailerHistory);
+      
+      setRequest(true);
+    };
+    setupNotifications();
+  }, [newRequests,ongoingRequests]);
 
-  useEffect(()=> {
+  useEffect(() => {
     socket.emit("setup", userData?._id);
+  }, []);
 
-  },[]);
 
-
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        dispatch(setRequestInfo(item));
+        navigation.navigate("requestPage");
+      }}
+      style={{
+        backgroundColor: '#fff',
+        margin: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 5,
+        borderRadius: 16,
+      }}
+    >
+      <ProductOrderCard product={item} />
+    </TouchableOpacity>
+  );
+  
 
   return (
     <View>
-      <ScrollView
+      <View
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -206,16 +223,17 @@ const HomeScreenVerified = () => {
           />
         }
       >
-         {!request && <HomeScreenRequests />}
+        {!request && <HomeScreenRequests />}
         {request && (
           <View className="flex items-center">
             <View>
-              <View className="flex-row justify-between px-[20px]  gap-[5x]">
+              <View className="flex-row justify-between px-[20px]  gap-[5x] mb-[20px]">
                 <TouchableOpacity onPress={() => setTab("New")}>
                   <View className="flex-row  gap-[5px]  items-center p-[4px]">
                     <Text
                       style={{
-                        fontFamily:tab==="New"?"Poppins-Bold":"Poppins-Regular",
+                        fontFamily:
+                          tab === "New" ? "Poppins-Bold" : "Poppins-Regular",
                         borderBottomWidth: tab === "New" ? 3 : 0,
                         borderBottomColor: "#FB8C00",
                       }}
@@ -223,7 +241,10 @@ const HomeScreenVerified = () => {
                       New Requests
                     </Text>
                     <View className="bg-[#E76063] h-[22px] flex justify-center items-center w-[22px]  rounded-full">
-                      <Text className="text-white  " style={{ fontFamily: "Poppins-Regular" }}>
+                      <Text
+                        className="text-white  "
+                        style={{ fontFamily: "Poppins-Regular" }}
+                      >
                         {newRequests ? newRequests.length : 0}
                       </Text>
                     </View>
@@ -233,7 +254,10 @@ const HomeScreenVerified = () => {
                   <View className="flex-row gap-[5px] items-center p-[4px]">
                     <Text
                       style={{
-                        fontFamily:tab==="Ongoing"?"Poppins-Bold":"Poppins-Regular",
+                        fontFamily:
+                          tab === "Ongoing"
+                            ? "Poppins-Bold"
+                            : "Poppins-Regular",
 
                         borderBottomWidth: tab === "Ongoing" ? 3 : 0,
                         borderBottomColor: "#FB8C00",
@@ -242,7 +266,10 @@ const HomeScreenVerified = () => {
                       Ongoing Requests
                     </Text>
                     <View className="bg-[#E76063] h-[22px] flex justify-center items-center w-[22px]  rounded-full">
-                      <Text className="text-white  " style={{ fontFamily: "Poppins-Regular" }}>
+                      <Text
+                        className="text-white  "
+                        style={{ fontFamily: "Poppins-Regular" }}
+                      >
                         {ongoingRequests ? ongoingRequests.length : 0}
                       </Text>
                     </View>
@@ -250,91 +277,39 @@ const HomeScreenVerified = () => {
                 </TouchableOpacity>
               </View>
               {tab === "New" && (
-                <SafeAreaView className="flex-1">
-                  {/* <Text className="text-[14px] text-center mb-[20px]">Your ongoing requests</Text> */}
-                  {!loading && (
-                    <View className=" flex flex-col gap-[10px] mb-[20px] items-center justify-center">
-                      {newRequests && newRequests.length > 0 ? (
-                        newRequests.map((product) => (
-                          <TouchableOpacity
-                            key={product._id}
-                            onPress={() => {
-                              dispatch(setRequestInfo(product));
-                              navigation.navigate("requestPage");
-                            }}
-                            style={{
-                              backgroundColor: '#fff', // Ensure the background is white
-                              margin: 10, // Add some margin if necessary for better shadow visibility
-                              shadowColor: '#000',
-                              shadowOffset: { width: 0, height: 2 },
-                              shadowOpacity: 0.3,
-                              shadowRadius: 4,
-                              elevation: 5,
-                              borderRadius:16
-                            }}
-                          >
-                            <ProductOrderCard
-                              key={product._id}
-                              product={product}
-                            />
-                          </TouchableOpacity>
-                        ))
-                      ) : (
-                        <Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>
-                          No New Requests
-                        </Text>
-                      )}
-                    </View>
-                  )}
-                  {loading && <RequestLoader />}
-                </SafeAreaView>
-              )}
-              {tab === "Ongoing" && (
-                <SafeAreaView className="flex-1">
-                  {/* <Text className="text-[14px] text-center mb-[20px]">Your ongoing requests</Text> */}
-                  {!loading && (
-                    <View className=" flex flex-col gap-[10px] mb-[20px] items-center justify-center">
-                      {ongoingRequests && ongoingRequests.length > 0 ? (
-                        ongoingRequests?.map((product) => (
-                          <TouchableOpacity
-                            key={product._id}
-                            onPress={() => {
-                              dispatch(setRequestInfo(product));
-                              console.log("requestInfo at homeScreen", product);
-                              navigation.navigate("requestPage");
-                            }}
-                            style={{
-                              backgroundColor: '#fff', // Ensure the background is white
-                              margin: 10, // Add some margin if necessary for better shadow visibility
-                              shadowColor: '#000',
-                              shadowOffset: { width: 0, height: 2 },
-                              shadowOpacity: 0.3,
-                              shadowRadius: 4,
-                              elevation: 5,
-                              borderRadius:16
-                            }}
-                          >
-                            <ProductOrderCard
-                              key={product._id}
-                              product={product}
-                            />
-                          </TouchableOpacity>
-                        ))
-                      ) : (
-                        <Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>
-                          No Ongoing Requests
-                        </Text>
-                      )}
-                    </View>
-                  )}
-                  {isLoading && <RequestLoader />}
-                </SafeAreaView>
-              )}
+              <FlatList
+                data={newRequests}
+                renderItem={renderItem}
+                keyExtractor={(item) => {
+                  if (!item?._id) {
+                    // console.error('Item without _id:', item);
+                    return Math.random().toString();
+                  }
+                  return item?._id.toString();
+                }}
+                ListEmptyComponent={<Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>No New Requests</Text>}
+                
+              />
+            )}
+            {tab === "Ongoing" && (
+              <FlatList
+                data={ongoingRequests}
+                renderItem={renderItem}
+                keyExtractor={(item) => {
+                  if (!item?._id) {
+                    // console.error('Item without _id:', item);
+                    return Math.random().toString();
+                  }
+                  return item?._id.toString();
+                }}
+                ListEmptyComponent={<Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>No Ongoing Requests</Text>}
+              />
+            )}
+              
             </View>
           </View>
         )}
-       
-      </ScrollView>
+      </View>
     </View>
   );
 };

@@ -61,7 +61,7 @@ const PanCardScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { width } = Dimensions.get("window");
-
+  console.log("User data sent to",uniqueToken);
 
   console.log(
     mobileNumber,
@@ -85,7 +85,7 @@ const PanCardScreen = () => {
       // Create user data object
 
       // Send user data to the server
-      console.log("User data sent to");
+     
       const response = await axios.post(
         "https://culturtap.com/retailer/",
         {
@@ -95,21 +95,30 @@ const PanCardScreen = () => {
           storeCategory: storeCategory,
           homeDelivery: storeService,
           panCard: panCard,
-          uniqueToken:uniqueToken
+          
         }
       );
-      console.log("res", response);
+      // console.log("res", response);
 
       // Check if user creation was successful
 
       if (response.status === 201) {
         console.log("User created:", response.data);
-        dispatch(setUserDetails(response.data));
-        console.log("user", user);
-        await AsyncStorage.setItem("userData", JSON.stringify(response.data));
+        // dispatch(setUserDetails(response.data));
+        const res = await axios.patch(
+          `https://culturtap.com/retailer/editretailer`,
+          {
+            _id: response?.data?._id,
+            uniqueToken:uniqueToken,
+          }
+        );
+        dispatch(setUserDetails(res.data));
+        await AsyncStorage.setItem("userData", JSON.stringify(res.data));
+      
+       
 
         // Navigate to the next screen
-        navigation.navigate("home");
+         navigation.navigate("home");
       } else {
         // Handle error if user creation failed
         console.error("Error creating user:");

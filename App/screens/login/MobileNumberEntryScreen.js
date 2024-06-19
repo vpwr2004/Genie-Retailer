@@ -30,6 +30,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   setMobileNumber,
+  setPanCard,
   setUniqueToken,
   setUserDetails,
   storeClear,
@@ -135,7 +136,8 @@ const MobileNumberEntryScreen = () => {
     if (mobileNumber.length === 10) {
       // Navigate to OTP screen if the phone number is valid
       setLoading(true);
-      dispatch(storeClear());
+      setPanCard("");
+      // dispatch(storeClear());
       try {
          const phoneNumber = countryCode + mobileNumber;
         // console.log(phoneNumber);

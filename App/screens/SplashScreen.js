@@ -1,6 +1,6 @@
 // SplashScreen.js
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Animated } from 'react-native';
+import { View, Text, Animated, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
@@ -13,6 +13,9 @@ const SplashScreen = () => {
   const dispatch = useDispatch();
  
   const opacity = useRef(new Animated.Value(0)).current;
+  const { width } = Dimensions.get("window");
+  const { height } = Dimensions.get("window");
+
 
   useEffect(() => {
     const animateSplash = () => {
@@ -88,7 +91,7 @@ const SplashScreen = () => {
   return (
     <View className="flex justify-center items-center">
       <Animated.View style={{ opacity }}>
-        <Splash />
+        <Splash width={width} height={height}/>
       </Animated.View>
     </View>
   );

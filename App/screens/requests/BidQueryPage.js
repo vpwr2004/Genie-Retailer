@@ -24,7 +24,7 @@ import Profile from "../../assets/ProfileIcon2.svg";
 import axios from "axios";
 import { socket } from "../utils/socket.io/socket";
 import { useDispatch, useSelector } from "react-redux";
-import { setMessages } from "../../redux/reducers/requestDataSlice";
+import { setMessages, setOngoingRequests } from "../../redux/reducers/requestDataSlice";
 import { sendCustomNotificationChat } from "../../notification/notificationMessages";
 import BackArrow from "../../assets/arrow-left.svg"
 
@@ -38,6 +38,9 @@ const BidQueryPage = () => {
   const { user, messages, setMessages } = route.params;
   const requestInfo = useSelector((state) => state.requestData.requestInfo);
   const [loading,setLoading]=useState(false)
+  const ongoingRequests = useSelector(
+    (state) => state.requestData.ongoingRequests || []
+  );
   // const messages = useSelector(state => state.requestData.messages);
   // console.log("messages of ",messages);
 
@@ -84,6 +87,16 @@ const BidQueryPage = () => {
 
         //  dispatch(setMessages(mess));
         setMessages(mess);
+        const filteredRequests = ongoingRequests.filter(
+          (request) => request._id !==requestInfo._id
+        );
+        const requests = ongoingRequests.filter(
+          (request) => request._id ===requestInfo._id
+        );
+        console.log("request ongoing",filteredRequests.length,requests.length)
+        const data=[...requests,...filteredRequests];
+         dispatch(setOngoingRequests(data));
+        
        
         // console.log("notification", notification.requestInfo);
         setLoading(false)

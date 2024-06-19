@@ -46,7 +46,7 @@ import UserAttachment from "../../components/UserAttachment";
 import RequestCancelModal from "../../components/RequestCancelModal";
 import { socket } from "../utils/socket.io/socket";
 import Attachment from "../../components/Attachment";
-import { setRequestInfo } from "../../redux/reducers/requestDataSlice";
+import { setOngoingRequests, setRequestInfo, setRetailerHistory } from "../../redux/reducers/requestDataSlice";
 import { NotificationBidRejected } from "../../notification/notificationMessages";
 import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 import BackArrow from "../../assets/arrow-left.svg"
@@ -76,7 +76,12 @@ const RequestPage = () => {
   const [cameraScreen, setCameraScreen] = useState(false);
   const [loading,setLoading]=useState(true);
   const [isLoading,setisLoading]=useState(false);
-
+  const retailerHistory = useSelector(
+    (state) => state.requestData.retailerHistory || []
+  );
+  const ongoingRequests = useSelector(
+    (state) => state.requestData.ongoingRequests || []
+  );
 
   const requestInfo = useSelector(
     (state) => state.requestData.requestInfo || {}
@@ -278,7 +283,20 @@ const RequestPage = () => {
   // New message recieved from socket code
   useEffect(() => {
     const handleMessageReceived = (newMessageReceived) => {
-      // console.log("Message received from socket:", newMessageReceived);
+      console.log("Message received from socket:", newMessageReceived);
+      if(newMessageReceived?.bidType==="update"){
+        let tmp = { ...requestInfo, requestType: "closed" };
+
+        dispatch(setRequestInfo(tmp));
+        const filteredRequests = ongoingRequests.filter(
+          (request) => request._id !== requestInfo?._id
+        );
+        dispatch(setOngoingRequests(filteredRequests));
+        const newHistory=[tmp,...retailerHistory];
+        dispatch(setRetailerHistory(newHistory));
+        
+         
+      }
       setMessages((prevMessages) => {
         if (
           prevMessages[prevMessages.length - 1]?.chat._id ===
@@ -446,7 +464,7 @@ const RequestPage = () => {
           onContentSizeChange={() =>
             scrollViewRef.current.scrollToEnd({ animated: true })
           }
-          style={{ marginBottom: 90 }}
+          style={{ marginBottom: 120 }}
         >
           {
             loading && 
@@ -477,9 +495,9 @@ const RequestPage = () => {
                   return (
                     <View
                       key={message?._id}
-                      className="flex flex-row justify-center bg-[#FFE7C8] rounded-xl px-4 py-1"
+                      className="flex flex-row justify-center bg-[#FFE7C8] rounded-[24px] px-[32px] py-[10px]"
                     >
-                      <Text className="text-[16px] text-[#FB8C00]">
+                      <Text className="text-[16px] text-center text-[#FB8C00]"  style={{ fontFamily: "Poppins-Regular" }}>
                         {message?.message}
                       </Text>
                     </View>

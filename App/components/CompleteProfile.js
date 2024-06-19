@@ -27,17 +27,17 @@ const user= useSelector(state => state.storeData.userDetails)
 
 
   const handleLocation = () => {
-    if (!user.lattitude) {
+    if (!user?.lattitude) {
       navigation.navigate("locationScreen", { data: "notservice" });
     }
   };
   const handleServiceLocation = () => {
-    if (!user.lattitude && user.storeImages?.length === 0) {
+    if (!user?.lattitude && user?.storeImages?.length === 0) {
       navigation.navigate("locationScreen", { data: "service" });
     }
   };
   const handleStore = () => {
-    if (user.storeImages?.length === 0 && user.serviceProvider !== "true") {
+    if (user?.storeImages?.length === 0 && user?.serviceProvider !== "true") {
       navigation.navigate("writeAboutStore");
     }
   };
@@ -60,7 +60,7 @@ const user= useSelector(state => state.storeData.userDetails)
       {user.serviceProvider !== "true" && (
         <View className="flex items-center gap-[10px]">
           <TouchableOpacity
-            disabled={user.serviceProvider === "true"}
+            disabled={user?.serviceProvider === "true"}
             onPress={handleLocation}
             style={{
               backgroundColor: '#fff', // Ensure the background is white
@@ -90,7 +90,7 @@ const user= useSelector(state => state.storeData.userDetails)
                   </Text>
                 </View>
                 <View className="flex-row gap-[8px]">
-                  {user.lattitude && user.serviceProvider === "false" ? (
+                  {user?.lattitude && user?.serviceProvider === "false" ? (
                     <Tick />
                   ) : (
                     <Arrow />
@@ -100,7 +100,7 @@ const user= useSelector(state => state.storeData.userDetails)
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            disabled={user.serviceProvider === "true"}
+            disabled={user?.serviceProvider === "true"}
             onPress={handleStore}
             style={{
               backgroundColor: '#fff', // Ensure the background is white
@@ -130,7 +130,7 @@ const user= useSelector(state => state.storeData.userDetails)
                   </Text>
                 </View>
                 <View className="flex-row gap-[8px]">
-                  {user.storeImages.length === 0 ? <Arrow /> : <Tick />}
+                  {user?.storeImages?.length === 0 ? <Arrow /> : <Tick />}
                 </View>
               </View>
             </View>
@@ -138,7 +138,7 @@ const user= useSelector(state => state.storeData.userDetails)
         </View>
       )}
       <View className="mt-[10px]flex items-center justify-center gap-[20px]">
-      {((user.serviceProvider !== "true" && user.serviceProvider!=="false" && user.storeImages?.length === 0)) && ( 
+      {((user?.serviceProvider !== "true" && user?.serviceProvider!=="false" && user?.storeImages?.length === 0)) && ( 
       <View className="gap-[30px]">
          
             <View className="flex-row items-center justify-between gap-[20px]">
@@ -159,7 +159,7 @@ const user= useSelector(state => state.storeData.userDetails)
         </View>
       )}
       {
-        user.serviceProvider  !== "false" && user.storeImages?.length === 0 && 
+        user?.serviceProvider  !== "false" && user?.storeImages?.length === 0 && 
         <TouchableOpacity
           
           onPress={handleServiceLocation}
@@ -191,7 +191,7 @@ const user= useSelector(state => state.storeData.userDetails)
                 </Text>
               </View>
               <View className="flex-row gap-[8px]">
-                {user.lattitude  && user.serviceProvider  === "true" ? <Tick /> : <Arrow />}
+                {user?.lattitude  && user?.serviceProvider  === "true" ? <Tick /> : <Arrow />}
               </View>
             </View>
           </View>
