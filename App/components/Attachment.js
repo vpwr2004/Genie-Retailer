@@ -19,28 +19,6 @@ const Attachment = ({ setAttachmentScreen, setCameraScreen,user ,messages,setMes
     const { height } = Dimensions.get("window");
     // console.log("height: " + height);
 
-    const sendAttachment = async () => {
-        // console.log('res', query, imageUri);
-        // await axios.post('https://genie-backend-meg1.onrender.com/chat/send-message', {
-        //     sender: {
-        //         type: 'UserRequest',
-        //         refId: details.requestId,
-        //     },
-        //     message: query,
-        //     bidType: "false",
-        //     bidImages: [imageUri],
-        //     chat: details._id,
-        // })
-        //     .then(res => {
-        //         console.log(res);
-        //         socket.emit("new message", res.data);
-        //         navigation.navigate('bargain');
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     })
-
-    }
 
     const getImageUrl = async (image) => {
 

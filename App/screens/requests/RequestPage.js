@@ -104,7 +104,7 @@ const RequestPage = () => {
       }
       // let response = 
       await axios.get(
-        "https://culturtap.com/chat/get-spade-messages",
+        "http://173.212.193.109:5000/chat/get-spade-messages",
         {
           params: {
             id: requestInfo?._id ? requestInfo?._id : req?._id,
@@ -234,7 +234,7 @@ const RequestPage = () => {
       }
       try {
         const response = await axios.patch(
-          "https://culturtap.com/chat/reject-bid",
+          "http://173.212.193.109:5000/chat/reject-bid",
           {
             messageId: lastMessage?._id,
           }
@@ -252,7 +252,7 @@ const RequestPage = () => {
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
         setisLoading(false);
-        const token=await axios.get(`https://culturtap.com/user/unique-token?id=${requestInfo?.customerId._id}`);
+        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
        if(token.data.length>0){
         const notification = {
           token: token.data,
@@ -390,7 +390,9 @@ const RequestPage = () => {
                     // className="w-[40px] h-[40px] rounded-full"
                   />
                 ) : (
+                 
                   <Profile className="w-full h-full rounded-full" />
+
                 )}
               </View>
               <View className="w-[60%]">

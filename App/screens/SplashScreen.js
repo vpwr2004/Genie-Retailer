@@ -39,7 +39,7 @@ const SplashScreen = () => {
             // await AsyncStorage.removeItem('userData')
             dispatch(setUserDetails(userData))
             if(userData.storeApproved){
-              navigation.navigate("home");
+              navigation.navigate("home", { data: "" });
               }
               else if(!userData.storeApproved){
                 navigation.navigate("completeProfile");

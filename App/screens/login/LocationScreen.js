@@ -141,7 +141,7 @@ const LocationScreen = () => {
       dispatch(setStoreLocation(location));
       // Update location on server
       const response = await axios.patch(
-        `https://culturtap.com/retailer/editretailer`,
+        `http://173.212.193.109:5000/retailer/editretailer`,
         {
           _id: userId,
           location: location,

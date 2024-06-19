@@ -5,29 +5,7 @@ import AccountVerify from "../assets/AccountVerifyImg.svg"
 
 
 const HomeScreenUnverified = () => {
-//   const isFocused = useIsFocused();
 
-
-//   const fetchUserData = async () => {
-//     try {
-//         const userData = JSON.parse(await AsyncStorage.getItem('userData'));
-//         console.log(userData);
-//         if (userData) {
-//             if (userData.storeApproved) {
-//                 setVerified(true);
-//             }
-            
-//         }
-//     } catch (error) {
-//         console.error('Not verified store:', error);
-//     }
-// };
-
-// useEffect(() => {
-//     if (isFocused) {
-//         fetchUserData();
-//     }
-// }, [isFocused]);
 
   return (
     <View className="flex flex-col gap-[32px] bg-white px-[32px]">

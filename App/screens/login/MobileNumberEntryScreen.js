@@ -136,7 +136,7 @@ const MobileNumberEntryScreen = () => {
     if (mobileNumber.length === 10) {
       // Navigate to OTP screen if the phone number is valid
       setLoading(true);
-      setPanCard("");
+      dispatch(setPanCard(""));
       // dispatch(storeClear());
       try {
          const phoneNumber = countryCode + mobileNumber;
@@ -177,7 +177,7 @@ const MobileNumberEntryScreen = () => {
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
-        "https://culturtap.com/retailer/",
+        "http://173.212.193.109:5000/retailer/",
         {
           params: {
             storeMobileNo: phoneNumber,
@@ -191,7 +191,7 @@ const MobileNumberEntryScreen = () => {
 
        
         const res = await axios.patch(
-          `https://culturtap.com/retailer/editretailer`,
+          `http://173.212.193.109:5000/retailer/editretailer`,
           {
             _id: response?.data?._id,
             uniqueToken:token,
@@ -202,7 +202,7 @@ const MobileNumberEntryScreen = () => {
 
         setToken("");
         if(response.data.storeApproved){
-        navigation.navigate("home");
+        navigation.navigate("home", { data: "" });
         }
         else{
           navigation.navigate("completeProfile");

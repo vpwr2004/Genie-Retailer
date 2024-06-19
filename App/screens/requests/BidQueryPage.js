@@ -59,7 +59,7 @@ const BidQueryPage = () => {
      
 
       const response = await axios.post(
-        "https://culturtap.com/chat/send-message",
+        "http://173.212.193.109:5000/chat/send-message",
         {
           sender: {
             type: "Retailer",
@@ -101,7 +101,7 @@ const BidQueryPage = () => {
         // console.log("notification", notification.requestInfo);
         setLoading(false)
         navigation.navigate("requestPage");
-        const token=await axios.get(`https://culturtap.com/user/unique-token?id=${requestInfo?.customerId._id}`);
+        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
         console.log("token",token.data);
         if(token.data.length > 0){
         const notification = {
@@ -175,11 +175,11 @@ const BidQueryPage = () => {
                             </Pressable> */}
           </View>
           <View className="px-[50px] pb-[20px] flex bg-[#ffe7c8]">
-            <View className="flex-row gap-[10px] items-center">
+            <View className="flex-row gap-[10px] items-center mb-2">
               <Text className="text-[16px]" style={{ fontFamily: "Poppins-Bold" }}>Request Id</Text>
               <Text style={{ fontFamily: "Poppins-Regular" }}>{requestInfo?.requestId?._id}</Text>
             </View>
-            <Text style={{ fontFamily: "Poppins-Regular" }}>
+            <Text style={{ fontFamily: "Poppins-Regular"}}>
             {requestInfo?.requestId?.requestDescription
               ?.split(" ")
               .slice(0, 12)

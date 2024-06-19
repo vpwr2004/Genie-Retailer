@@ -17,7 +17,7 @@ import {
   setRetailerHistory,
 } from "../redux/reducers/requestDataSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import HomeScreenRequests from "./HomeScreenRequests";
 import ProductOrderCard from "./ProductOrderCard";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,6 +29,7 @@ import { socket } from "../screens/utils/socket.io/socket";
 const HomeScreenVerified = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const route=useRoute();
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [tab, setTab] = useState("New");
@@ -76,24 +77,19 @@ const HomeScreenVerified = () => {
   // },[]);
 
   useEffect(() => {
-    // if (isFocused) {
-    // console.log("request fetching");
-    // handleRefresh();
-    if (isFirstLoad.current) {
-      console.log("request fetching");
+   
+      console.log("request refreshing")
       handleRefresh();
-      isFirstLoad.current = false; // Set the flag to false after the first refresh
-    }
-    //
-    // }
-  }, [isFirstLoad.current]);
+      
+    
+  }, [route.params]);
 
   const fetchNewRequests = async () => {
     setLoading(true);
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const response = await axios.get(
-        `https://culturtap.com/chat/retailer-new-spades?id=${userData?._id}`
+        `http://173.212.193.109:5000/chat/retailer-new-spades?id=${userData?._id}`
       );
       if (response.data) {
       
@@ -114,7 +110,7 @@ const HomeScreenVerified = () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const ongoingresponse = await axios.get(
-        `https://culturtap.com/chat/retailer-ongoing-spades?id=${userData?._id}`
+        `http://173.212.193.109:5000/chat/retailer-ongoing-spades?id=${userData?._id}`
       );
       if (ongoingresponse.data) {
        
@@ -133,7 +129,7 @@ const HomeScreenVerified = () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const history = await axios.get(
-        `https://culturtap.com/retailer/history?id=${userData?._id}`
+        `http://173.212.193.109:5000/retailer/history?id=${userData?._id}`
       );
       if (history.data) {
        

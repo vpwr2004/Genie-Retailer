@@ -89,7 +89,7 @@ const fetchUserData = async () => {
   try {
    
 
-    const response = await axios.get('https://culturtap.com/retailer/', {
+    const response = await axios.get('http://173.212.193.109:5000/retailer/', {
       params: {
         storeMobileNo: user?.storeMobileNo
       }
@@ -105,7 +105,7 @@ const fetchUserData = async () => {
       if (data.storeApproved) {
         console.log('Store approved at profile Screen');
         // setVerified(true);
-        navigation.navigate("home");
+        navigation.navigate("home", { data: "" });
       } 
      
 
@@ -113,7 +113,7 @@ const fetchUserData = async () => {
         // setCompleteProfile(true);
         console.log("profile updated successfully")
         const res = await axios.patch(
-          `https://culturtap.com/retailer/editretailer`,
+          `http://173.212.193.109:5000/retailer/editretailer`,
           {
             _id:user?._id,
             profileCompleted:true

@@ -87,7 +87,7 @@ const PanCardScreen = () => {
       // Send user data to the server
      
       const response = await axios.post(
-        "https://culturtap.com/retailer/",
+        "http://173.212.193.109:5000/retailer/",
         {
           storeOwnerName: storeOwnerName,
           storeName: storeName,
@@ -106,7 +106,7 @@ const PanCardScreen = () => {
         console.log("User created:", response.data);
         // dispatch(setUserDetails(response.data));
         const res = await axios.patch(
-          `https://culturtap.com/retailer/editretailer`,
+          `http://173.212.193.109:5000/retailer/editretailer`,
           {
             _id: response?.data?._id,
             uniqueToken:uniqueToken,
