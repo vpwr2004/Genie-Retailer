@@ -26,10 +26,7 @@ const HomeScreen = () => {
 //    const serviceProvider= useSelector(state => state.storeData.serviceProvider);
 //   console.log("user: " ,user);
   // const [store,setStore]=useState(false)
-  
-  const [location, setLocation] = useState("");
-  const [store,setStore]=useState("");
-  const [serviceProvider,setServiceProvider] = useState("");
+ 
 // const userData= useSelector(state => state.storeData.userDetails)
 
 
@@ -141,77 +138,31 @@ const navigationState = useNavigationState(state => state);
 //      setRefreshing(false); // Hide the refresh indicator
 //   };
 
-const fetchUserData = async (dispatch, setVerified, setCompleteProfile) => {
-  try {
+const fetchUserData = async () => {
+  // try {
     const userData = JSON.parse(await AsyncStorage.getItem("userData"));
     if (userData) {
       dispatch(setUserDetails(userData));
       console.log('Fetched user data successfully at HomeScreen', userData);
     }
 
-    const response = await axios.get('https://culturtap.com/retailer/', {
-      params: {
-        storeMobileNo: userData?.storeMobileNo
-      }
-    });
 
-    if (response.status === 200) {
-      const data = response.data;
-
-      console.log("res at home", data);
-
-      if (data.storeApproved) {
-        console.log('Store approved at Home Screen');
-        setVerified(true);
-      } else {
-        console.log('Store not approved');
-        setVerified(false);
-      }
-
-      if ((data.location && data.serviceProvider === "true") || (data.location && data.storeImages?.length > 0)) {
-        setCompleteProfile(true);
-      } else {
-        setCompleteProfile(false);
-      }
-
-      dispatch(setUserDetails(data));
-      await AsyncStorage.setItem('userData', JSON.stringify(data));
-      console.log('User data fetched successfully from backend', data);
-    }
-  } catch (error) {
-    console.error('Error fetching user data on home screen:', error);
-  }
 };
 
 
-const handleRefresh = useCallback(() => {
-  setRefreshing(true);
-  fetchUserData(dispatch, setVerified, setCompleteProfile).finally(() => {
-    setRefreshing(false);
-  });
-}, [dispatch, setVerified, setCompleteProfile]);
 
-useFocusEffect(
-  useCallback(() => {
-    if (isFocused) {
-      handleRefresh();
-    }
-  }, [isFocused, handleRefresh])
-);
+useEffect(()=>{
+  if(isFocused) {
+   fetchUserData();
+  
+}}, [isFocused])
 
 
 
     return (
         <View className="flex-1 bg-white ">
             <ScrollView 
-          //   refreshControl={
-          // <RefreshControl
-          //    refreshing={refreshing}
-          //   onRefresh={handleRefresh}
-          //    colors={["#9Bd35A", "#689F38"]
-
-          //   }
-          // />}
+          
           >
             <View className="flex flex-col mt-[40px]  gap-[32px] ">
                 <View className="flex flex-row justify-between items-center px-[32px]">
@@ -233,7 +184,7 @@ useFocusEffect(
                     
                 </View>
                 {
-                    verified ?( <HomeScreenVerified />):<CompleteProfile completeProfile={completeProfile}  verified={verified} />
+                     <HomeScreenVerified />
                 }
                
             

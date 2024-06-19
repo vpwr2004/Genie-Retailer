@@ -118,7 +118,7 @@ const PanCardScreen = () => {
        
 
         // Navigate to the next screen
-         navigation.navigate("home");
+         navigation.navigate("completeProfile");
       } else {
         // Handle error if user creation failed
         console.error("Error creating user:");
@@ -129,7 +129,7 @@ const PanCardScreen = () => {
       // Handle error if request fails
       console.error("Error creating user:", error);
       Alert.alert(
-        "Error",
+        
         "An unexpected error occurred. Please try again later."
       );
       setLoading(false);

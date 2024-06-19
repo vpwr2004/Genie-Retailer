@@ -169,7 +169,7 @@ const LocationScreen = () => {
       else if(data==="notservice"){
         dispatch(setServiceProvider("false"));
       }
-      navigation.navigate("home");
+      navigation.navigate("completeProfile");
     } catch (error) {
       console.error("Failed to update location:", error);
       // Optionally handle error differently here

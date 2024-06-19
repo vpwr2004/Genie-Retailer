@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -46,6 +46,7 @@ const HomeScreenVerified = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userData = useSelector((state) => state.storeData.userDetails);
+  const isFirstLoad = useRef(true);
   //  console.log("user at verified",userData)
 
   // async function requestUserPermission() {
@@ -76,11 +77,16 @@ const HomeScreenVerified = () => {
 
   useEffect(() => {
     // if (isFocused) {
-    console.log("request fetching");
-    handleRefresh();
+    // console.log("request fetching");
+    // handleRefresh();
+    if (isFirstLoad.current) {
+      console.log("request fetching");
+      handleRefresh();
+      isFirstLoad.current = false; // Set the flag to false after the first refresh
+    }
     //
     // }
-  }, []);
+  }, [isFirstLoad.current]);
 
   const fetchNewRequests = async () => {
     setLoading(true);
@@ -90,8 +96,8 @@ const HomeScreenVerified = () => {
         `https://culturtap.com/chat/retailer-new-spades?id=${userData?._id}`
       );
       if (response.data) {
-        setRequest(true);
-        // console.log("hiii verified", response.data);
+      
+        console.log("hiii verified");
         dispatch(setNewRequests(response.data));
         setLoading(false);
       }
@@ -111,8 +117,8 @@ const HomeScreenVerified = () => {
         `https://culturtap.com/chat/retailer-ongoing-spades?id=${userData?._id}`
       );
       if (ongoingresponse.data) {
-        setRequest(true);
-        // console.log("hiiiuu")
+       
+         console.log("hiiiuu")
         dispatch(setOngoingRequests(ongoingresponse.data));
         setIsLoading(false);
       }
@@ -130,7 +136,7 @@ const HomeScreenVerified = () => {
         `https://culturtap.com/retailer/history?id=${userData?._id}`
       );
       if (history.data) {
-        setRequest(true);
+       
         dispatch(setRetailerHistory(history.data));
       }
       // console.log("history",history.data);
@@ -142,31 +148,13 @@ const HomeScreenVerified = () => {
 
   const handleRefresh = () => {
     setRefreshing(true); // Show the refresh indicator
-
+    setLoading(true)
     try {
       // Fetch new data from the server
       fetchNewRequests();
-      if (newRequests?.length > 0) {
-        console.log("updated request 1");
-        setRequest(true);
-      }
-      fetchOngoingRequests();
-      if (newRequests?.length > 0 || ongoingRequests?.length > 0) {
-        console.log("updated request 2");
-        setRequest(true);
-      }
+      fetchOngoingRequests(); 
       fetchRetailerHistory();
-      if (
-        newRequests?.length > 0 ||
-        ongoingRequests?.length > 0 ||
-        retailerHistory?.length > 0
-      ) {
-        console.log("updated request 3");
-        setRequest(true);
-      } else {
-        console.log("updated no");
-        setRequest(false);
-      }
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -178,17 +166,21 @@ const HomeScreenVerified = () => {
   useEffect(() => {
     const setupNotifications = async () => {
       console.log("notify data", ongoingRequests.length);
-      await notificationListeners(dispatch, newRequests,ongoingRequests,retailerHistory);
-      
-      setRequest(true);
+      await notificationListeners(
+        dispatch,
+        newRequests,
+        ongoingRequests,
+        retailerHistory
+      );
+
+      // setRequest(true);
     };
     setupNotifications();
-  }, [newRequests,ongoingRequests]);
+  }, [newRequests, ongoingRequests]);
 
   useEffect(() => {
     socket.emit("setup", userData?._id);
   }, []);
-
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -197,9 +189,9 @@ const HomeScreenVerified = () => {
         navigation.navigate("requestPage");
       }}
       style={{
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
         margin: 10,
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
@@ -210,7 +202,6 @@ const HomeScreenVerified = () => {
       <ProductOrderCard product={item} />
     </TouchableOpacity>
   );
-  
 
   return (
     <View>
@@ -223,8 +214,10 @@ const HomeScreenVerified = () => {
           />
         }
       >
-        {!request && <HomeScreenRequests />}
-        {request && (
+        
+        {(newRequests?.length > 0 ||
+          ongoingRequests?.length > 0 ||
+          retailerHistory?.length > 0) && (
           <View className="flex items-center">
             <View>
               <View className="flex-row justify-between px-[20px]  gap-[5x] mb-[20px]">
@@ -277,38 +270,56 @@ const HomeScreenVerified = () => {
                 </TouchableOpacity>
               </View>
               {tab === "New" && (
-              <FlatList
-                data={newRequests}
-                renderItem={renderItem}
-                keyExtractor={(item) => {
-                  if (!item?._id) {
-                    // console.error('Item without _id:', item);
-                    return Math.random().toString();
+                <FlatList
+                  data={newRequests}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => {
+                    if (!item?._id) {
+                      // console.error('Item without _id:', item);
+                      return Math.random().toString();
+                    }
+                    return item?._id.toString();
+                  }}
+                  ListEmptyComponent={
+                    <Text
+                      className="text-[14px] text-center mb-[20px]"
+                      style={{ fontFamily: "Poppins-Regular" }}
+                    >
+                      No New Requests
+                    </Text>
                   }
-                  return item?._id.toString();
-                }}
-                ListEmptyComponent={<Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>No New Requests</Text>}
-                
-              />
-            )}
-            {tab === "Ongoing" && (
-              <FlatList
-                data={ongoingRequests}
-                renderItem={renderItem}
-                keyExtractor={(item) => {
-                  if (!item?._id) {
-                    // console.error('Item without _id:', item);
-                    return Math.random().toString();
+                />
+              )}
+              {tab === "Ongoing" && (
+                <FlatList
+                  data={ongoingRequests}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => {
+                    if (!item?._id) {
+                      // console.error('Item without _id:', item);
+                      return Math.random().toString();
+                    }
+                    return item?._id.toString();
+                  }}
+                  ListEmptyComponent={
+                    <Text
+                      className="text-[14px] text-center mb-[20px]"
+                      style={{ fontFamily: "Poppins-Regular" }}
+                    >
+                      No Ongoing Requests
+                    </Text>
                   }
-                  return item?._id.toString();
-                }}
-                ListEmptyComponent={<Text className="text-[14px] text-center mb-[20px]" style={{ fontFamily: "Poppins-Regular" }}>No Ongoing Requests</Text>}
-              />
-            )}
-              
+                />
+              )}
             </View>
           </View>
         )}
+        {!(
+          newRequests?.length > 0 ||
+          ongoingRequests?.length > 0 ||
+          retailerHistory?.length > 0
+        ) && <HomeScreenRequests />
+        }
       </View>
     </View>
   );

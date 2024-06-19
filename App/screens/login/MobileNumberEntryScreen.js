@@ -194,14 +194,19 @@ const MobileNumberEntryScreen = () => {
           `https://culturtap.com/retailer/editretailer`,
           {
             _id: response?.data?._id,
-            uniqueToken: token,
+            uniqueToken:token,
           }
         );
         dispatch(setUserDetails(res.data));
         await AsyncStorage.setItem("userData", JSON.stringify(res.data));
 
         setToken("");
+        if(response.data.storeApproved){
         navigation.navigate("home");
+        }
+        else{
+          navigation.navigate("completeProfile");
+        }
         setOtp("");
         setMobileNumberLocal("");
         setMobileScreen(true);

@@ -71,7 +71,7 @@ const [loading,setLoading] = useState(false);
 
       // Navigate to home only after successfully updating the location
       setLoading(false);
-      navigation.navigate("home");
+      navigation.navigate("completeProfile");
     } catch (error) {
       setLoading(false);
       console.error("Failed to update images:", error);

@@ -36,10 +36,15 @@ const SplashScreen = () => {
         // const authData = JSON.parse(await AsyncStorage.getItem("authData"));
         setTimeout(() => {
           if (userData!==null) {
-            // await AsyncStorage.removeItem('userData');
-            dispatch(setUserDetails(userData));
-            navigation.navigate("home");
-           
+            // await AsyncStorage.removeItem('userData')
+            dispatch(setUserDetails(userData))
+            if(userData.storeApproved){
+              navigation.navigate("home");
+              }
+              else if(!userData.storeApproved){
+                navigation.navigate("completeProfile");
+              }
+
           }
           else {
             navigation.navigate('mobileNumber');
@@ -89,7 +94,7 @@ const SplashScreen = () => {
 
 
   return (
-    <View className="flex justify-center items-center">
+    <View className="flex justify-center items-center bg-white">
       <Animated.View style={{ opacity }}>
         <Splash width={width} height={height}/>
       </Animated.View>

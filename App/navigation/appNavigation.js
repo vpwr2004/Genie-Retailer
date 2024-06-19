@@ -29,6 +29,7 @@ import BidQueryPage from '../screens/requests/BidQueryPage';
 import ViewRequestScreen from '../screens/requests/ViewRequestScreen';
 import SplashScreen from '../screens/SplashScreen';
 import MessageLoaderSkeleton from '../screens/utils/MessageLoaderSkeleton';
+import CompleteProfile from '../components/CompleteProfile';
 const Stack = createNativeStackNavigator();
 const GlobalNavigation = () => {
 
@@ -53,6 +54,7 @@ const GlobalNavigation = () => {
         <Stack.Screen name="locationScreen" component={LocationScreen} />
         <Stack.Screen name="searchCategory" component={SearchCategoryScreen} />
         <Stack.Screen name="writeAboutStore" component={WriteAboutStoreScreen} />
+        <Stack.Screen name="completeProfile" component={CompleteProfile} />
         <Stack.Screen name="profile" component={ProfileScreen} />
         <Stack.Screen name="menu" component={MenuScreen} />
         <Stack.Screen name="modal" component={ModalScreen} />

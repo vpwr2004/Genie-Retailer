@@ -8,7 +8,7 @@ const ModalScreenConfirm = ({modalConfirmVisible,setModalConfirmVisible}) => {
   const navigation=useNavigation();
   const handleModal=()=>{
     setModalConfirmVisible(false);
-    navigation.navigate('home');
+    navigation.navigate('completeProfile');
   }
   return (
     
