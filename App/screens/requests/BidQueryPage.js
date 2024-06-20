@@ -93,6 +93,7 @@ const BidQueryPage = () => {
         const requests = ongoingRequests.filter(
           (request) => request._id ===requestInfo._id
         );
+       
         console.log("request ongoing",filteredRequests.length,requests.length)
         const data=[...requests,...filteredRequests];
          dispatch(setOngoingRequests(data));

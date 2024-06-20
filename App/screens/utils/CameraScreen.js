@@ -26,6 +26,8 @@ import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { launchCamera } from "react-native-image-picker";
 import { sendCustomNotificationAttachment } from "../../notification/notificationMessages";
 import { setOngoingRequests } from "../../redux/reducers/requestDataSlice";
+import { socket } from "../utils/socket.io/socket";
+
 
 // import { setMessages } from '../../redux/reducers/requestDataSlice';
 
@@ -73,6 +75,8 @@ const CameraScreen = () => {
         //  console.log("query update",mess);
 
         setMessages(mess);
+        socket.emit("new message", res.data);
+
         // setAttachmentScreen(false);
         const filteredRequests = ongoingRequests.filter(
           (request) => request._id !==requestInfo._id

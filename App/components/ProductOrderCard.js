@@ -19,7 +19,13 @@ const ProductOrderCard = ({product}) => {
     // Call the function to format the date and time
     const { formattedTime, formattedDate } = formatDateTime(prod?.updatedAt);
   return (
-    <View className="max-w-[340px] flex-row items-center justify-between bg-white gap-[15px]  rounded-3xl shadow-2xl  px-[20px] h-max py-[20px]" >
+    <View className="max-w-[340px] flex-row relative items-center justify-between bg-white gap-[15px]  rounded-3xl shadow-2xl  px-[20px] h-max py-[20px]" >
+                      {
+                        prod?.latestMessage?.sender?.type==="UserRequest" && prod?.unreadCount>0 &&
+                        <View className="w-[30px] h-[30px] flex justify-center items-center  bg-[#E76063] rounded-full absolute top-0 right-0" style={{backgroundColor:"red"}}>
+                           <Text className="text-white text-center" style={{ fontFamily: "Poppins-Regular" }} >{prod?.unreadCount}</Text>
+                         </View>
+                      }
                        <View className="w-[95px] h-[95px]  rounded-[15px]">
           
                               <Image source={{ uri:prod?.requestId?.requestImages?.length>0? prod.requestId.requestImages[0]:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }} className="w-full h-full object-contain rounded-[15px]"  />

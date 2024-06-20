@@ -181,35 +181,46 @@ export async function notificationListeners(dispatch, newRequests,ongoingRequest
 
         if(remoteMessage?.data?.requestInfo){
           const res = JSON.parse(remoteMessage.data.requestInfo);
-            // console.log("fcm message", res);
+            console.log("fcm message", res);
+            try {
+                const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+                // console.log("user data notify", userData);
+                const response = await axios.get(
+                    `https://culturtap.com/chat/get-particular-chat?retailerId=${userData?._id}&requestId=${res?.requestId?._id}`
+                );
+                if (response.data) {
 
       
                     //  console.log("hiii received", response.data);
                     // Prepend new data to the existing state
-                    console.log("response data id",res._id,ongoingRequests.length);
+                    console.log("response data id",ongoingRequests.length);
 
                     
                     const filteredRequests = ongoingRequests.filter(
                       (request) => request._id !==res._id
                     );
-                    const requests = ongoingRequests.filter(
-                      (request) => request._id ===res._id
-                    );
+                    // const requests = ongoingRequests.filter(
+                    //   (request) => request._id ===res._id
+                    // );
                     // if (requests && requests[0]) {
                     //   requests[0].updatedAt = new Date().toISOString();
                     // console.log("request ongoing",requests[0]?.updatedAt, new Date().toISOString());
 
                     // }
-                    const data=[...requests,...filteredRequests];
+                    const data=[...response.data,...filteredRequests];
                      dispatch(setOngoingRequests(data));
                     // const newHistory=[...response.data,...retailerHistory];
                     // dispatch(setRetailerHistory(newHistory));
                    
-                
+                }
+            
 
-        }
+            }catch(e){
+            console.error(e);
+          }
         // handleNotification(remoteMessage);
-    });
+       }
+});
 
     return unsubscribe;
 }

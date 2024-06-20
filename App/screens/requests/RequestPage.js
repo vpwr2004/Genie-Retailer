@@ -111,15 +111,33 @@ const RequestPage = () => {
           },
         }
       )
-      .then(response => {
+      .then(async(response) => {
           setMessages(response?.data);
 
-          console.log("Messages found successfully",response.data);
+          // console.log("Messages found successfully",response.data);
           // console.log("user joined chat with chatId", response.data[0].chat._id);
           socket.emit("join chat", response?.data[0].chat._id);
 
           console.log("socket join chat setup successfully");
+          
           setLoading(false);
+          if (requestInfo?.unreadCount > 0 && requestInfo?.latestMessage.sender.type === 'UserRequest') {
+            const res = await axios.patch('http://173.212.193.109:5000/chat/mark-as-read', {
+                id: requestInfo?._id
+            });
+
+            let tmp = { ...requestInfo, unreadCount:0};
+
+            dispatch(setRequestInfo(tmp));
+            const filteredRequests = ongoingRequests.filter(
+              (request) => request._id !== requestInfo?._id
+            );
+            const data=[tmp,...filteredRequests];
+            dispatch(setOngoingRequests(data));
+
+
+          console.log("mark as read",res.data,res.data.unreadCount);
+          }
           
       })
 
