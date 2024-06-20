@@ -140,10 +140,10 @@ const MobileNumberEntryScreen = () => {
       // dispatch(storeClear());
       try {
          const phoneNumber = countryCode + mobileNumber;
-        // console.log(phoneNumber);
-        // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        // setConfirm(confirmation);
-        // console.log(confirmation);
+        console.log(phoneNumber);
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        setConfirm(confirmation);
+        console.log(confirmation);
 
         dispatch(setMobileNumber(phoneNumber));
         setMobileScreen(false);
@@ -169,11 +169,11 @@ const MobileNumberEntryScreen = () => {
     try {
       // Make a request to your backend API to check if the mobile number is registered
 
-      //  console.log(confirm)
-      //  const res=await confirm.confirm(otp);
-      //  console.log("res",res);
-      // console.log(otp);
-      // if(res){
+       console.log(confirm) 
+       const res=await confirm.confirm(otp);
+       console.log("res",res);
+      console.log(otp);
+      if(res.status===200 || res?.user?.phoneNumber?.length>0){
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
@@ -190,19 +190,19 @@ const MobileNumberEntryScreen = () => {
         // If mobile number is registered, navigate to home screen
 
        
-        const res = await axios.patch(
+        const result = await axios.patch(
           `http://173.212.193.109:5000/retailer/editretailer`,
           {
             _id: response?.data?._id,
             uniqueToken:token,
           }
         );
-        dispatch(setUserDetails(res.data));
-        await AsyncStorage.setItem("userData", JSON.stringify(res.data));
+        dispatch(setUserDetails(result.data));
+        await AsyncStorage.setItem("userData", JSON.stringify(result.data));
 
         setToken("");
         if(response.data.storeApproved){
-        navigation.navigate("home", { data: "" });
+          navigation.navigate("home", { data: "" });
         }
         else{
           navigation.navigate("completeProfile");
@@ -219,13 +219,13 @@ const MobileNumberEntryScreen = () => {
         setMobileNumberLocal("");
         setMobileScreen(true);
       }
-      // }
-      // else{
-      //   setLoading(false);
-      //   console.log('Invalid otp:');
-      //   alert('Invalid otp');
-      //   return;
-      // }
+      }
+      else{
+        setLoading(false);
+        console.log('Invalid otp:');
+        alert('Invalid otp');
+        return;
+      }
     } catch (error) {
       console.log("Invalid otp:",otp);
       alert("Invalid otp");
@@ -394,7 +394,7 @@ const MobileNumberEntryScreen = () => {
                         letterSpacing: 8,
                         textAlignVertical: "center",
                         borderWidth: 1,
-                        borderColor: "#2e2c43",
+                        borderColor: "#c9c8c7",
                         backgroundColor: "#f9f9f9",
                         borderRadius: 16,
                         width: "100%",
@@ -412,7 +412,7 @@ const MobileNumberEntryScreen = () => {
                     </Text>
                     <TouchableOpacity onPress={sendVerification}>
                     {loading ? (
-                <ActivityIndicator size="small" color="#ffffff" />
+                    <ActivityIndicator size="small" color="#e76043" />
               ) : (
                       <Text
                         style={{

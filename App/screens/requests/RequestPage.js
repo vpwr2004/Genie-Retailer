@@ -121,7 +121,7 @@ const RequestPage = () => {
           console.log("socket join chat setup successfully");
 
           setLoading(false);
-          if (requestInfo?.unreadCount > 0 && requestInfo?.latestMessage.sender.type === 'UserRequest') {
+          if (requestInfo?.unreadCount > 0 && requestInfo?.latestMessage?.sender?.type === 'UserRequest') {
             const res = await axios.patch('http://173.212.193.109:5000/chat/mark-as-read', {
               id: requestInfo?._id
             });

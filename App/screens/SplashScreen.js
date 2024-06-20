@@ -96,7 +96,7 @@ const SplashScreen = () => {
   return (
     <View className="flex justify-center items-center bg-white">
       <Animated.View style={{ opacity }}>
-        <Splash width={width} height={height}/>
+        <Splash width={width} />
       </Animated.View>
     </View>
   );

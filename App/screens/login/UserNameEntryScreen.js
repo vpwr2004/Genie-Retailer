@@ -107,12 +107,12 @@ const UserNameEntryScreen = () => {
                   <QuestionIcon />
                 </Pressable>
               </View>
-              <View className="flex flex-col justify-center items-center gap-[10px]">
+              <View className="flex flex-col justify-center items-center gap-[8px]">
                 <StoreName  width={width} className="object-cover" />
                 <Text className="text-[14.5px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Bold" }}>Step 3/9</Text>
               </View>
               
-              <View className="mt-[20px] flex flex-col gap-[15px] px-[32px]">
+              <View className="mt-[10px] flex flex-col gap-[15px] px-[32px] ">
                 <View>
                   <Text className="text-[16px] text-[#2e2c43] " style={{ fontFamily: "Poppins-ExtraBold" }}>Please enter your</Text>
                   <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>Store Name</Text>

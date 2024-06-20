@@ -58,6 +58,8 @@ const HomeScreenVerified = () => {
     socket.on('connected', () => setSocketConnected(true));
     console.log('Home Screen socekt connect with id', id);
   })
+
+
   useEffect(() => {
     connectSocket(userData._id);
   }, []);
@@ -75,11 +77,12 @@ const HomeScreenVerified = () => {
       // const data = formatDateTime(updatedUser.updatedAt);
       // updatedUser.createdAt = data.formattedDate;
       // updatedUser.updatedAt = data.formattedTime;
+      console.log("ongoing requests", ongoingRequests.length)
 
       const filteredRequests = ongoingRequests.filter(
         (request) => request._id !== updatedUser._id
       );
-
+      console.log("ongoing requests", filteredRequests.length)
       const updatedRequest = [updatedUser, ...filteredRequests];
       dispatch(setOngoingRequests(updatedRequest));
 
@@ -111,7 +114,7 @@ const HomeScreenVerified = () => {
     return () => {
       socket.off("updated retailer", handleMessageReceived);
     };
-  }, [dispatch]);
+  }, [dispatch,ongoingRequests]);
 
 
 
@@ -130,7 +133,7 @@ const HomeScreenVerified = () => {
 
   }, [route.params]);
 
-  const fetchNewRequests = async () => {
+  const fetchNewRequests = (async () => {
     setLoading(true);
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
@@ -148,9 +151,9 @@ const HomeScreenVerified = () => {
       dispatch(setNewRequests([]));
       // console.error('Error fetching new requests:', error);
     }
-  };
+  });
 
-  const fetchOngoingRequests = async () => {
+  const fetchOngoingRequests =useCallback( async () => {
     setIsLoading(true);
 
     try {
@@ -169,9 +172,9 @@ const HomeScreenVerified = () => {
       dispatch(setOngoingRequests([]));
       //console.error('Error fetching ongoing requests:', error);
     }
-  };
+  });
 
-  const fetchRetailerHistory = async () => {
+  const fetchRetailerHistory =useCallback( async () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const history = await axios.get(
@@ -186,7 +189,7 @@ const HomeScreenVerified = () => {
       dispatch(setRetailerHistory([]));
       //console.error('Error fetching ongoing requests:', error);
     }
-  };
+  });
 
   const handleRefresh = () => {
     setRefreshing(true); // Show the refresh indicator
@@ -218,7 +221,7 @@ const HomeScreenVerified = () => {
       // setRequest(true);
     };
     setupNotifications();
-  }, [newRequests, ongoingRequests]);
+  }, [dispatch,newRequests]);
 
   useEffect(() => {
     socket.emit("setup", userData?._id);
