@@ -135,7 +135,7 @@ export async function notificationListeners(dispatch, newRequests, ongoingReques
                 const userData = JSON.parse(await AsyncStorage.getItem("userData"));
                 // console.log("user data notify", userData);
                 const response = await axios.get(
-                    `https://culturtap.com/chat/get-particular-chat?retailerId=${userData?._id}&requestId=${res}`
+                    `http://173.212.193.109:5000/chat/get-particular-chat?retailerId=${userData?._id}&requestId=${res}`
                 );
                 if (response.data) {
                     //  console.log("hiii received", response.data);
