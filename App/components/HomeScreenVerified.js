@@ -25,11 +25,12 @@ import messaging from "@react-native-firebase/messaging";
 import { notificationListeners } from "../notification/notificationServices";
 import RequestLoader from "../screens/utils/RequestLoader";
 import { socket } from "../screens/utils/socket.io/socket";
+import { formatDateTime } from "../screens/utils/lib";
 
 const HomeScreenVerified = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const route=useRoute();
+  const route = useRoute();
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [tab, setTab] = useState("New");
@@ -48,40 +49,85 @@ const HomeScreenVerified = () => {
 
   const userData = useSelector((state) => state.storeData.userDetails);
   const isFirstLoad = useRef(true);
-  //  console.log("user at verified",userData)
+  const [socketConnected, setSocketConnected] = useState(false);
 
-  // async function requestUserPermission() {
-  //   const authStatus = await messaging().requestPermission();
-  //   const enabled =
-  //     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-  //     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  const connectSocket = useCallback(async (id) => {
+    // socket.emit("setup", currentSpadeRetailer?.users[1]._id);
+    socket.emit("setup", id);
+    //  console.log('Request connected with socket with id', spadeId);
+    socket.on('connected', () => setSocketConnected(true));
+    console.log('Home Screen socekt connect with id', id);
+  })
+  useEffect(() => {
+    connectSocket(userData._id);
+  }, []);
 
-  //   if (enabled) {
-  //     console.log('Authorization status:', authStatus);
-  //   }
-  // }
 
-  // useEffect(()=>{
 
-  //   if(requestUserPermission()){
-  //       messaging().getToken().then(token=>{
-  //         console.log(token)
-  //       })
-  //   }
-  //   else{
-  //     console.log("permission not granted",authStatus);
-  //   }
-  //   // createNotificationChannels();
-  //   notificationListeners();
-
-  // },[]);
 
   useEffect(() => {
-   
-      console.log("request refreshing")
-      handleRefresh();
-      
-    
+    const handleMessageReceived = (updatedUser) => {
+      console.log('Updated user data received at socket', updatedUser._id, updatedUser.latestMessage.message, updatedUser.unreadCount);
+      // if (userData._id === updatedUser.requestId._id) {
+
+
+
+      // const data = formatDateTime(updatedUser.updatedAt);
+      // updatedUser.createdAt = data.formattedDate;
+      // updatedUser.updatedAt = data.formattedTime;
+
+      const filteredRequests = ongoingRequests.filter(
+        (request) => request._id !== updatedUser._id
+      );
+
+      const updatedRequest = [updatedUser, ...filteredRequests];
+      dispatch(setOngoingRequests(updatedRequest));
+
+      // dispatch(setCurrentSpadeRetailers((prevUsers) => {
+      //     return prevUsers.map((user) =>
+      //         user._id === updatedUser._id ? updatedUser : user
+      //     );
+      // }));
+      // if (updatedUser.latestMessage.bidType === "true" && updatedUser.latestMessage.bidAccepted === "accepted") {
+      //   const tmp = { ...currentSpade, requestActive: "completed", requestAcceptedChat: updatedUser._id };
+      //   dispatch(setCurrentSpade(tmp));
+      //   let allSpades = [...spades];
+      //   allSpades.map((curr, index) => {
+      //     if (curr._id === tmp._id) {
+      //       allSpades[index] = tmp;
+      //     }
+      //   })
+      //   dispatch(setSpades(allSpades));
+      // }
+
+
+
+      // }
+    };
+
+    socket.on("updated retailer", handleMessageReceived);
+
+    // Cleanup the effect
+    return () => {
+      socket.off("updated retailer", handleMessageReceived);
+    };
+  }, [dispatch]);
+
+
+
+
+
+
+
+
+
+
+  useEffect(() => {
+
+    console.log("request refreshing")
+    handleRefresh();
+
+
   }, [route.params]);
 
   const fetchNewRequests = async () => {
@@ -92,7 +138,7 @@ const HomeScreenVerified = () => {
         `http://173.212.193.109:5000/chat/retailer-new-spades?id=${userData?._id}`
       );
       if (response.data) {
-      
+
         console.log("hiii verified");
         dispatch(setNewRequests(response.data));
         setLoading(false);
@@ -113,8 +159,8 @@ const HomeScreenVerified = () => {
         `http://173.212.193.109:5000/chat/retailer-ongoing-spades?id=${userData?._id}`
       );
       if (ongoingresponse.data) {
-       
-         console.log("hiiiuu")
+
+        console.log("hiiiuu")
         dispatch(setOngoingRequests(ongoingresponse.data));
         setIsLoading(false);
       }
@@ -132,7 +178,7 @@ const HomeScreenVerified = () => {
         `http://173.212.193.109:5000/retailer/history?id=${userData?._id}`
       );
       if (history.data) {
-       
+
         dispatch(setRetailerHistory(history.data));
       }
       // console.log("history",history.data);
@@ -148,9 +194,9 @@ const HomeScreenVerified = () => {
     try {
       // Fetch new data from the server
       fetchNewRequests();
-      fetchOngoingRequests(); 
+      fetchOngoingRequests();
       fetchRetailerHistory();
-      
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -172,7 +218,7 @@ const HomeScreenVerified = () => {
       // setRequest(true);
     };
     setupNotifications();
-  }, [newRequests,ongoingRequests]);
+  }, [newRequests, ongoingRequests]);
 
   useEffect(() => {
     socket.emit("setup", userData?._id);
@@ -210,106 +256,106 @@ const HomeScreenVerified = () => {
           />
         }
       >
-        
+
         {(newRequests?.length > 0 ||
           ongoingRequests?.length > 0 ||
           retailerHistory?.length > 0) && (
-          <View className="flex items-center">
-            <View>
-              <View className="flex-row justify-between px-[20px]  gap-[5x] mb-[20px]">
-                <TouchableOpacity onPress={() => setTab("New")}>
-                  <View className="flex-row  gap-[5px]  items-center p-[4px]">
-                    <Text
-                      style={{
-                        fontFamily:
-                          tab === "New" ? "Poppins-Bold" : "Poppins-Regular",
-                        borderBottomWidth: tab === "New" ? 3 : 0,
-                        borderBottomColor: "#FB8C00",
-                      }}
-                    >
-                      New Requests
-                    </Text>
-                    <View className="bg-[#E76063] h-[22px] flex justify-center items-center w-[22px]  rounded-full">
+            <View className="flex items-center">
+              <View>
+                <View className="flex-row justify-between px-[20px]  gap-[5x] mb-[20px]">
+                  <TouchableOpacity onPress={() => setTab("New")}>
+                    <View className="flex-row  gap-[5px]  items-center p-[4px]">
                       <Text
-                        className="text-white  "
-                        style={{ fontFamily: "Poppins-Regular" }}
+                        style={{
+                          fontFamily:
+                            tab === "New" ? "Poppins-Bold" : "Poppins-Regular",
+                          borderBottomWidth: tab === "New" ? 3 : 0,
+                          borderBottomColor: "#FB8C00",
+                        }}
                       >
-                        {newRequests ? newRequests.length : 0}
+                        New Requests
                       </Text>
+                      <View className="bg-[#E76063] h-[22px] flex justify-center items-center w-[22px]  rounded-full">
+                        <Text
+                          className="text-white  "
+                          style={{ fontFamily: "Poppins-Regular" }}
+                        >
+                          {newRequests ? newRequests.length : 0}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setTab("Ongoing")}>
-                  <View className="flex-row gap-[5px] items-center p-[4px]">
-                    <Text
-                      style={{
-                        fontFamily:
-                          tab === "Ongoing"
-                            ? "Poppins-Bold"
-                            : "Poppins-Regular",
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setTab("Ongoing")}>
+                    <View className="flex-row gap-[5px] items-center p-[4px]">
+                      <Text
+                        style={{
+                          fontFamily:
+                            tab === "Ongoing"
+                              ? "Poppins-Bold"
+                              : "Poppins-Regular",
 
-                        borderBottomWidth: tab === "Ongoing" ? 3 : 0,
-                        borderBottomColor: "#FB8C00",
-                      }}
-                    >
-                      Ongoing Requests
-                    </Text>
-                    <View className="bg-[#E76063] h-[22px] flex justify-center items-center w-[22px]  rounded-full">
+                          borderBottomWidth: tab === "Ongoing" ? 3 : 0,
+                          borderBottomColor: "#FB8C00",
+                        }}
+                      >
+                        Ongoing Requests
+                      </Text>
+                      <View className="bg-[#E76063] h-[22px] flex justify-center items-center w-[22px]  rounded-full">
+                        <Text
+                          className="text-white  "
+                          style={{ fontFamily: "Poppins-Regular" }}
+                        >
+                          {ongoingRequests ? ongoingRequests.length : 0}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                {tab === "New" && (
+                  <FlatList
+                    data={newRequests}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => {
+                      if (!item?._id) {
+                        // console.error('Item without _id:', item);
+                        return Math.random().toString();
+                      }
+                      return item?._id.toString();
+                    }}
+                    ListEmptyComponent={
                       <Text
-                        className="text-white  "
+                        className="text-[14px] text-center mb-[20px]"
                         style={{ fontFamily: "Poppins-Regular" }}
                       >
-                        {ongoingRequests ? ongoingRequests.length : 0}
+                        No New Requests
                       </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
+                    }
+                  />
+                )}
+                {tab === "Ongoing" && (
+                  <FlatList
+                    data={ongoingRequests}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => {
+                      if (!item?._id) {
+                        // console.error('Item without _id:', item);
+                        return Math.random().toString();
+                      }
+                      return item?._id.toString();
+                    }}
+                    ListEmptyComponent={
+                      <Text
+                        className="text-[14px] text-center mb-[20px]"
+                        style={{ fontFamily: "Poppins-Regular" }}
+                      >
+                        No Ongoing Requests
+                      </Text>
+                    }
+                  />
+                )}
               </View>
-              {tab === "New" && (
-                <FlatList
-                  data={newRequests}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => {
-                    if (!item?._id) {
-                      // console.error('Item without _id:', item);
-                      return Math.random().toString();
-                    }
-                    return item?._id.toString();
-                  }}
-                  ListEmptyComponent={
-                    <Text
-                      className="text-[14px] text-center mb-[20px]"
-                      style={{ fontFamily: "Poppins-Regular" }}
-                    >
-                      No New Requests
-                    </Text>
-                  }
-                />
-              )}
-              {tab === "Ongoing" && (
-                <FlatList
-                  data={ongoingRequests}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => {
-                    if (!item?._id) {
-                      // console.error('Item without _id:', item);
-                      return Math.random().toString();
-                    }
-                    return item?._id.toString();
-                  }}
-                  ListEmptyComponent={
-                    <Text
-                      className="text-[14px] text-center mb-[20px]"
-                      style={{ fontFamily: "Poppins-Regular" }}
-                    >
-                      No Ongoing Requests
-                    </Text>
-                  }
-                />
-              )}
             </View>
-          </View>
-        )}
+          )}
         {!(
           newRequests?.length > 0 ||
           ongoingRequests?.length > 0 ||

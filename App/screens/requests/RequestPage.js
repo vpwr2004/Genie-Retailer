@@ -10,7 +10,7 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
-  
+
 } from "react-native";
 import React, {
   useCallback,
@@ -74,8 +74,8 @@ const RequestPage = () => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [attachmentScreen, setAttachmentScreen] = useState(false);
   const [cameraScreen, setCameraScreen] = useState(false);
-  const [loading,setLoading]=useState(true);
-  const [isLoading,setisLoading]=useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isLoading, setisLoading] = useState(false);
   const retailerHistory = useSelector(
     (state) => state.requestData.retailerHistory || []
   );
@@ -88,7 +88,7 @@ const RequestPage = () => {
   );
   //  console.log("params",route?.params?.data?.requestInfo);
 
-   
+
 
   const fetchRequestData = async () => {
     setLoading(true);
@@ -111,7 +111,7 @@ const RequestPage = () => {
           },
         }
       )
-      .then(async(response) => {
+        .then(async (response) => {
           setMessages(response?.data);
 
           // console.log("Messages found successfully",response.data);
@@ -119,30 +119,30 @@ const RequestPage = () => {
           socket.emit("join chat", response?.data[0].chat._id);
 
           console.log("socket join chat setup successfully");
-          
+
           setLoading(false);
           if (requestInfo?.unreadCount > 0 && requestInfo?.latestMessage.sender.type === 'UserRequest') {
             const res = await axios.patch('http://173.212.193.109:5000/chat/mark-as-read', {
-                id: requestInfo?._id
+              id: requestInfo?._id
             });
 
-            let tmp = { ...requestInfo, unreadCount:0};
+            let tmp = { ...requestInfo, unreadCount: 0 };
 
             dispatch(setRequestInfo(tmp));
             const filteredRequests = ongoingRequests.filter(
               (request) => request._id !== requestInfo?._id
             );
-            const data=[tmp,...filteredRequests];
+            const data = [tmp, ...filteredRequests];
             dispatch(setOngoingRequests(data));
 
 
-          console.log("mark as read",res.data,res.data.unreadCount);
+            console.log("mark as read", res.data, res.data.unreadCount);
           }
-          
-      })
+
+        })
 
       // dispatch(setMessages(response.data));
-      
+
       // socket.emit("join chat", response?.data[0].chat._id);
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -150,12 +150,7 @@ const RequestPage = () => {
   };
 
   const SocketSetUp = async (id) => {
-    // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
-    // setUser(userData);
-    // let req;
-    // if (route?.params?.data) {
-    //   req = JSON.parse(route?.pa;'rams?.data?.requestInfo);
-    // }
+
     socket.emit(
       "setup",
       id
@@ -165,37 +160,40 @@ const RequestPage = () => {
 
     socket.on("connected", () => {
       setSocketConnected(true);
-
-      // console.log("socket connected", userData._id, requestInfo?._id);
     });
+
   };
 
   useEffect(() => {
     // console.log('route.params.data',route?.params?.data);
-    if(requestInfo){
+    if (requestInfo) {
       console.log("find error of requestPage from home screen")
-         SocketSetUp(requestInfo?.users[0]?._id);
+      SocketSetUp(requestInfo?.users[0]?._id);
     }
     if (route?.params?.data) {
       console.log("Params data found");
       let req = JSON.parse(route?.params?.data?.requestInfo);
       // console.log('reqInfo from notification section',req);
-      
+
       dispatch(setRequestInfo(req));
       SocketSetUp(req?.users[0]._id);
-      
+
       // setTimeout(()=>{
       //   console.log('reqInfo from params',requestInfo);
       // },2000);
     }
-    
-    fetchRequestData();
-    // SocketSetUp();
 
-    // }
+    fetchRequestData();
+
+    return () => {
+      if (socket) {
+        // socket.disconnect();
+        socket.emit('leave room', requestInfo?.users[0]._id);
+      }
+    }
   }, []);
 
- 
+
 
   // useEffect(() => {
   //   const fetchRequestData = async () => {
@@ -270,18 +268,18 @@ const RequestPage = () => {
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
         setisLoading(false);
-        const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
-       if(token.data.length>0){
-        const notification = {
-          token: token.data,
-          title: user?.storeName,
-          body: lastMessage.message,
-          requestInfo: requestInfo,
-          tag: user?._id,
-          image: lastMessage?.bidImages[0],
-          redirect_to: "bargain",
-        };
-         NotificationBidRejected(notification);
+        const token = await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
+        if (token.data.length > 0) {
+          const notification = {
+            token: token.data,
+            title: user?.storeName,
+            body: lastMessage.message,
+            requestInfo: requestInfo,
+            tag: user?._id,
+            image: lastMessage?.bidImages[0],
+            redirect_to: "bargain",
+          };
+          NotificationBidRejected(notification);
         }
       } catch (error) {
         setisLoading(false);
@@ -302,7 +300,7 @@ const RequestPage = () => {
   useEffect(() => {
     const handleMessageReceived = (newMessageReceived) => {
       console.log("Message received from socket:", newMessageReceived);
-      if(newMessageReceived?.bidType==="update"){
+      if (newMessageReceived?.bidType === "update") {
         let tmp = { ...requestInfo, requestType: "closed" };
 
         dispatch(setRequestInfo(tmp));
@@ -310,10 +308,10 @@ const RequestPage = () => {
           (request) => request._id !== requestInfo?._id
         );
         dispatch(setOngoingRequests(filteredRequests));
-        const newHistory=[tmp,...retailerHistory];
+        const newHistory = [tmp, ...retailerHistory];
         dispatch(setRetailerHistory(newHistory));
-        
-         
+
+
       }
       setMessages((prevMessages) => {
         if (
@@ -367,21 +365,21 @@ const RequestPage = () => {
   // const messages = useSelector(state => state.requestData.messages);
 
   return (
-    <View style={{ flex: 1 ,backgroundColor:"white"}}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       {attachmentScreen && (
-          <View style={styles.overlay}>
-            <Attachment
-              setAttachmentScreen={setAttachmentScreen}
-              setCameraScreen={setCameraScreen}
-              user={user}
-              // requestInfo={requestInfo}
-              messages={messages}
-              setMessages={setMessages}
-            />
-          </View>
-        )}
+        <View style={styles.overlay}>
+          <Attachment
+            setAttachmentScreen={setAttachmentScreen}
+            setCameraScreen={setCameraScreen}
+            user={user}
+            // requestInfo={requestInfo}
+            messages={messages}
+            setMessages={setMessages}
+          />
+        </View>
+      )}
       <View className="relative" >
-        
+
 
         <View className=" relative bg-[#ffe7c8] pt-[40px] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
           <Pressable
@@ -390,7 +388,7 @@ const RequestPage = () => {
             }}
             style={{ padding: 4 }}
           >
-           <BackArrow width={14} height={10} />
+            <BackArrow width={14} height={10} />
           </Pressable>
 
           <View className="gap-[9px]">
@@ -399,16 +397,16 @@ const RequestPage = () => {
                 {requestInfo?.customerId?.pic ? (
                   <Image
                     source={{ uri: requestInfo?.customerId?.pic }}
-                    style={{ 
+                    style={{
                       width: 40,
                       height: 40,
                       borderRadius: 20,
                       objectFit: "cover",
                     }}
-                    // className="w-[40px] h-[40px] rounded-full"
+                  // className="w-[40px] h-[40px] rounded-full"
                   />
                 ) : (
-                 
+
                   <Profile className="w-full h-full rounded-full" />
 
                 )}
@@ -476,8 +474,8 @@ const RequestPage = () => {
         </View>
 
         {/*  message are mapped here */}
-          
-        
+
+
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 150 }}
           ref={scrollViewRef}
@@ -487,23 +485,23 @@ const RequestPage = () => {
           style={{ marginBottom: 120 }}
         >
           {
-            loading && 
-            <View style={{flex:1}}>
-               <View style={{ flex: 1,alignSelf:"flex-start" }}>
-            <MessageLoaderSkeleton />
+            loading &&
+            <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, alignSelf: "flex-start" }}>
+                <MessageLoaderSkeleton />
+              </View>
+              <View style={{ flex: 1, alignSelf: "flex-end" }}>
+                <MessageLoaderSkeleton />
+              </View>
+
+
             </View>
-              <View style={{ flex: 1,alignSelf:"flex-end" }}>
-            <MessageLoaderSkeleton />
-            </View>
-           
-           
-            </View>
-           
-             
-            
+
+
+
           }
-          
-          {  !loading && <View className="flex gap-[21px] px-[10px] pt-[40px] pb-[100px]">
+
+          {!loading && <View className="flex gap-[21px] px-[10px] pt-[40px] pb-[100px]">
             {/* <ChatMessage
               bidDetails={messages[0]}
              
@@ -517,7 +515,7 @@ const RequestPage = () => {
                       key={message?._id}
                       className="flex flex-row justify-center bg-[#FFE7C8] rounded-[24px] px-[32px] py-[10px]"
                     >
-                      <Text className="text-[16px] text-center text-[#FB8C00]"  style={{ fontFamily: "Poppins-Regular" }}>
+                      <Text className="text-[16px] text-center text-[#FB8C00]" style={{ fontFamily: "Poppins-Regular" }}>
                         {message?.message}
                       </Text>
                     </View>
@@ -574,7 +572,7 @@ const RequestPage = () => {
                 }
               })}
           </View>
-            }
+          }
 
           {/* Spacer View */}
         </ScrollView>
@@ -583,16 +581,15 @@ const RequestPage = () => {
 
       {/* Typing Area */}
       <View
-        className={`absolute bottom-0 left-0 right-0 pt-[10] ${
-          attachmentScreen ? "-z-50" : "z-50"
-        } `}
+        className={`absolute bottom-0 left-0 right-0 pt-[10] ${attachmentScreen ? "-z-50" : "z-50"
+          } `}
       >
         {requestInfo?.requestType !== "closed" &&
           requestInfo?.requestType === "new" &&
           available === false && (
             <View className="gap-[20px] items-center bg-white pt-[20px] shadow-2xl">
               <View>
-                <Text className="text-[14px] text-center"style={{ fontFamily: "Poppins-Bold" }}>
+                <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Bold" }}>
                   Are you accepting the customer bid?
                 </Text>
                 <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Regular" }}>
@@ -607,7 +604,7 @@ const RequestPage = () => {
                   style={{ flex: 1 }}
                 >
                   <View className="h-[63px] flex items-center justify-center border-[1px] bg-[#FB8C00] border-[#FB8C00]">
-                    <Text className=" text-[16px] text-white "style={{ fontFamily: "Poppins-Black" }}>
+                    <Text className=" text-[16px] text-white " style={{ fontFamily: "Poppins-Black" }}>
                       Accept
                     </Text>
                   </View>
@@ -629,7 +626,7 @@ const RequestPage = () => {
         {requestInfo?.requestType !== "closed" &&
           requestInfo?.requestType !== "cancelled" &&
           requestInfo?.requestType !== "new" &&
-          
+
           ((requestInfo?.requestId?.requestActive === "completed" &&
             requestInfo?.requestId?.requestAcceptedChat === user?._id) ||
             (messages[messages.length - 1]?.bidType === "true" &&
@@ -710,13 +707,13 @@ const RequestPage = () => {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={RejectBid} style={{ flex: 1 }}>
                   <View className="h-[63px] flex items-center justify-center border-2 border-[#FB8C00] bg-white">
-                  {isLoading ? (
-                <ActivityIndicator size="small" color="#FB8C00" />
-              ) : (
-                    <Text className=" text-[16px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Black" }}>
-                      No
-                    </Text>
-              )}
+                    {isLoading ? (
+                      <ActivityIndicator size="small" color="#FB8C00" />
+                    ) : (
+                      <Text className=" text-[16px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Black" }}>
+                        No
+                      </Text>
+                    )}
                   </View>
                 </TouchableOpacity>
               </View>
@@ -731,7 +728,7 @@ const RequestPage = () => {
           ((messages[messages.length - 1]?.bidType === "true" &&
             messages[messages.length - 1]?.bidAccepted === "rejected") ||
             messages[messages.length - 1]?.bidType === "false" ||
-            messages[messages.length - 1]?.bidType === "image") &&  (
+            messages[messages.length - 1]?.bidType === "image") && (
             <View className="gap-[20px] bg-white pt-2">
               <TouchableOpacity
                 onPress={() =>
@@ -755,7 +752,7 @@ const RequestPage = () => {
       <RequestCancelModal
         modalVisible={cancelRequestModal}
         setModalVisible={setCancelRequestModal}
-        // requestInfo={requestInfo}
+      // requestInfo={requestInfo}
       />
       {/* <RequestCancelModal
         modalVisible={closeRequestModal}
