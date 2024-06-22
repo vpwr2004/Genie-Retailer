@@ -77,14 +77,21 @@ const HomeScreenVerified = () => {
       // const data = formatDateTime(updatedUser.updatedAt);
       // updatedUser.createdAt = data.formattedDate;
       // updatedUser.updatedAt = data.formattedTime;
-      console.log("ongoing requests", ongoingRequests.length)
+      console.log("ongoing requests", ongoingRequests.length,updatedUser)
 
       const filteredRequests = ongoingRequests.filter(
-        (request) => request._id !== updatedUser._id
+        (request) => request?._id !== updatedUser?._id
       );
       console.log("ongoing requests", filteredRequests.length)
+      // if(updatedUser?.latestMessage?.bidType==="update"){
+      //   dispatch(setOngoingRequests(filteredRequests));
+      //   const updatedRequests=[updatedUser,...retailerHistory]
+      //   dispatch(setRetailerHistory(updatedRequests));
+      // }
+      // else{
       const updatedRequest = [updatedUser, ...filteredRequests];
       dispatch(setOngoingRequests(updatedRequest));
+      // }
 
       // dispatch(setCurrentSpadeRetailers((prevUsers) => {
       //     return prevUsers.map((user) =>

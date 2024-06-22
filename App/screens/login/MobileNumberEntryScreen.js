@@ -40,6 +40,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import auth from "@react-native-firebase/auth";
 import axios from "axios";
 import messaging from "@react-native-firebase/messaging";
+import BackArrow from "../../assets/BackArrow.svg";
+
 
 
 const MobileNumberEntryScreen = () => {
@@ -140,10 +142,10 @@ const MobileNumberEntryScreen = () => {
       // dispatch(storeClear());
       try {
          const phoneNumber = countryCode + mobileNumber;
-        console.log(phoneNumber);
-        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-        setConfirm(confirmation);
-        console.log(confirmation);
+        // console.log(phoneNumber);
+        // const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        // setConfirm(confirmation);
+        // console.log(confirmation);
 
         dispatch(setMobileNumber(phoneNumber));
         setMobileScreen(false);
@@ -169,11 +171,11 @@ const MobileNumberEntryScreen = () => {
     try {
       // Make a request to your backend API to check if the mobile number is registered
 
-       console.log(confirm) 
-       const res=await confirm.confirm(otp);
-       console.log("res",res);
-      console.log(otp);
-      if(res.status===200 || res?.user?.phoneNumber?.length>0){
+      //  console.log(confirm) 
+      //  const res=await confirm.confirm(otp);
+      //  console.log("res",res);
+      // console.log(otp);
+      // if(res.status===200 || res?.user?.phoneNumber?.length>0){
       const phoneNumber = countryCode + mobileNumber;
       console.log("phone", phoneNumber);
       const response = await axios.get(
@@ -219,13 +221,13 @@ const MobileNumberEntryScreen = () => {
         setMobileNumberLocal("");
         setMobileScreen(true);
       }
-      }
-      else{
-        setLoading(false);
-        console.log('Invalid otp:');
-        alert('Invalid otp');
-        return;
-      }
+      // }
+      // else{
+      //   setLoading(false);
+      //   console.log('Invalid otp:');
+      //   alert('Invalid otp');
+      //   return;
+      // }
     } catch (error) {
       console.log("Invalid otp:",otp);
       alert("Invalid otp");
@@ -257,7 +259,7 @@ const MobileNumberEntryScreen = () => {
                     <View className="flex flex-col gap-[5px]">
                       <View className="flex flex-col gap-[5px]">
                         <Text className="text-[18px] " style={{ fontFamily: "Poppins-ExtraBold" }}>
-                          Please enter your store owner
+                          Please enter store owner
                         </Text>
                       </View>
                       <View className="flex flex-col gap-[15px]">
@@ -338,6 +340,12 @@ const MobileNumberEntryScreen = () => {
           <KeyboardAvoidingView behavior="padding">
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
               <View style={{ alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => setMobileScreen(true)}
+                style={{ padding:14 ,position:"absolute",top:40,left:8,zIndex:50 }}
+              >
+                <BackArrow width={18} height={14} />
+              </TouchableOpacity>
                 <View
                   style={{
                     justifyContent: "center",

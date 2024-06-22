@@ -3,19 +3,56 @@ import { View, Text, TextInput, Image, Pressable, ScrollView, KeyboardAvoidingVi
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackArrow from "../../assets/arrow-left.svg"
+import { useSelector } from 'react-redux';
+import { ActivityIndicator } from 'react-native-paper';
+import axios from 'axios';
 
 
 const HelpScreen = () => {
     const navigation = useNavigation();
     const [query, setQuery] = useState("");
-    const handleHelp=()=>{
-         alert("Message sent!!");
-         setQuery("");
-        //  navigation.navigate('menu')
-    }
+    const user=useSelector(state=>state.storeData.userDetails);
+    
+   //  navigation.navigate('menu')
+    const [loading,setLoading] = useState(false)
+
+    const handleHelp = async () => {
+          
+          setLoading(true);
+          try {
+            const mobileNo = user?.storeMobileNo?.slice(3, 13);
+
+              const res = await axios.post(
+                `https://culturtap-genie-backend.onrender.com/contact`,
+                {
+                  name: user?.storeName,
+                  countryCode:"+91",
+                  mobileNo:mobileNo,
+                  email:"Info@culturtap.com",
+                  concern:query,
+                }
+              );
+              console.log("res", res.data);
+              if (res) {
+                setLoading(false);
+                navigation.navigate('home');
+                setQuery("");
+
+              }
+            
+    
+              
+            
+          } catch (error) {
+            setLoading(false);
+            console.log("error", error);
+            return;
+          }
+        }
+    
 
     return (
-        <SafeAreaView style={{ flex: 1 ,backgroundColor:"white"}}>
+        <View style={{ flex: 1 ,backgroundColor:"white"}}>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -64,12 +101,35 @@ const HelpScreen = () => {
             </KeyboardAvoidingView>
 
             <TouchableOpacity
-                onPress={handleHelp} disabled={!query}
-                style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#fb8c00', height: 68, justifyContent: 'center' }}
+           disabled={!query} 
+           onPress={handleHelp}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 68,
+              width: "100%",
+              backgroundColor:
+              !query? "#e6e6e6" : "#FB8C00",
+              justifyContent: "center", // Center content vertically
+              alignItems: "center", // Center content horizontally
+            }}
+          >
+            {loading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily:"Poppins-Black",
+                color: !query ? "#888888" : "white",
+              }}
             >
-                <Text style={{ color: 'white', fontSize: 16, textAlign: 'center' ,fontFamily:"Poppins-Black"}}>Submit</Text>
-            </TouchableOpacity>
-        </SafeAreaView>
+              SUBMIT
+            </Text>)}
+          </TouchableOpacity>
+        </View>
     );
 }
 

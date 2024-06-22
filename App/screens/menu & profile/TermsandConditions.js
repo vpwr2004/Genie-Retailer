@@ -1,103 +1,319 @@
-// import { View, Text,  Image, Pressable, ScrollView } from 'react-native'
-// import React from 'react';
-// import { Ionicons } from '@expo/vector-icons';
-// import { Feather } from '@expo/vector-icons';
-// import { FontAwesome6 } from '@expo/vector-icons';
-// import { useNavigation } from '@react-navigation/native';
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React from "react";
+import BucketImg from "../../assets/BucketImg.svg";
+import Card from "../../assets/requestCard.svg";
+import Home2 from "../../assets/Home2.svg";
+import Home3 from "../../assets/Home3.svg";
+import Home4 from "../../assets/Home4.svg";
+import Home5 from "../../assets/Home5.svg";
+import Home6 from "../../assets/Home6.svg";
+import Home7 from "../../assets/Home7.svg";
+import BackArrow from "../../assets/arrow-left.svg";
 
-// import GenieIcon from "../../assets/Genie.svg"
-// import InputBox from "../../assets/InputBox.svg"
-// import Sample1 from "../../assets/SampleItem1.svg"
-// import Sample2 from "../../assets/SampleItem2.svg"
+import ThumbIcon from "../../assets/ThumbIcon.svg";
+import { useNavigation } from "@react-navigation/native";
 
+const TermsandConditions = () => {
+  const navigation = useNavigation();
 
-// import { SafeAreaView } from 'react-native-safe-area-context';
-// const TermsandConditons = () => {
-//     const navigation = useNavigation();
-//     return (
-//         <SafeAreaView style={{ flex: 1 }}>
-//             <ScrollView style={{ flex: 1 }} className="relative">
+  const { width } = Dimensions.get("window");
 
+  return (
+    <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
+        <View className="flex items-center gap-[32px] bg-white">
+          <View className="z-50 absolute top-[40px] left-[40px] pb-[8px] px-[4px]">
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{ padding: 8, borderRadius: 100 }}
+            >
+              <BackArrow width={14} height={10} />
+            </TouchableOpacity>
+          </View>
 
-//                 <View className="z-50 absolute top-[40px] left-[40px] py-[8px] px-[4px]">
-//                     <Pressable onPress={() => { navigation.goBack(); }}>
-//                         <Image source={require('../../assets/arrow-left.png')} />
-//                     </Pressable>
-//                 </View>
+          <Text
+            className="text-center pt-[40px] text-[16px]  "
+            style={{ fontFamily: "Poppins-Bold" }}
+          >
+            Terms & Conditions
+          </Text>
+          <Text
+            className="text-[14px]  text-[#2E2C43] mt-[20px] px-[32px]"
+            style={{ fontFamily: "Poppins-Bold" }}
+          >
+            How it works?
+          </Text>
+          <BucketImg />
 
+          <View className="flex flex-col  px-[32px]">
+            <Text
+              className="text-[14px] text-center"
+              style={{ fontFamily: "Poppins-Regular" }}
+            >
+              CulturTap Genie is a platform where Genie connects you with
+              customers online. You need to attract customers by offering the
+              best price for your products or services.
+            </Text>
+          </View>
+          <View className="flex flex-col justify-center items-center gap-2 ">
+            <Text
+              className="text-[14px]  text-[#2E2C43] px-[32px] text-center"
+              style={{ fontFamily: "Poppins-SemiBold" }}
+            >
+              You get a notification first, like this.
+            </Text>
+            <View
+              className="flex flex-row  justify-center items-center mx-[20px]"
+              style={{
+                backgroundColor: "#fff", // Ensure the background is white
+                // margin: 10, // Add some margin if necessary for better shadow visibility
+                shadowColor: "#bdbdbd",
+                shadowOffset: { width: 9, height: 9 },
+                shadowOpacity: 0.7,
+                shadowRadius: 50,
+                elevation: 80,
+                borderRadius: 8,
+              }}
+            >
+              <Card width={350} className="object-cover shadow-xl" />
+            </View>
+          </View>
+          <View className="flex items-center gap-2 mb-[10px]">
+            <Text
+              className="text-[14px] px-[32px]  text-[#2E2C43]  text-center"
+              style={{ fontFamily: "Poppins-Regular" }}
+            >
+              If you have the right product or service availability, you can
+              accept the customer's request. 
+            </Text>
+            <View
+              style={{
+                backgroundColor: "#fff", // Ensure the background is white
+                // margin: 10, // Add some margin if necessary for better shadow visibility
+                shadowColor: "#bdbdbd",
+                shadowOffset: { width: 9, height: 9 },
+                shadowOpacity: 0.7,
+                shadowRadius: 50,
+                elevation: 80,
+                borderRadius: 8,
+              }}
+            >
+              <Home2 width={350} className="" />
+            </View>
+          </View>
+          <View className="gap-[20px]  items-center">
+            <Text
+              className="text-[14px] px-[32px]  text-[#2E2C43]  text-center"
+              style={{ fontFamily: "Poppins-Regular" }}
+            >
+              If you're okay with the price the customer offered, choose yes. If
+              you're not okay with the price, choose no.
+            </Text>
+            <View
+              style={{
+                backgroundColor: "#fff", // Ensure the background is white
+                // margin: 10, // Add some margin if necessary for better shadow visibility
+                shadowColor: "#bdbdbd",
+                shadowOffset: { width: 9, height: 9 },
+                shadowOpacity: 0.7,
+                shadowRadius: 50,
+                elevation: 80,
+                borderRadius: 8,
+              }}
+            >
+              <Home3 width={350} className=" " />
+            </View>
+          </View>
+          <View className="gap-[24px]  items-center">
+            <Text
+              className="text-[14px] px-[32px]  text-[#2E2C43]  text-center my-[10px]"
+              style={{ fontFamily: "Poppins-Regular" }}
+            >
+              You can ask a question to a customer or make a new offer.
+            </Text>
+            <View
+              style={{
+                backgroundColor: "#fff", // Ensure the background is white
+                // margin: 10, // Add some margin if necessary for better shadow visibility
+                shadowColor: "#bdbdbd",
+                shadowOffset: { width: 9, height: 9 },
+                shadowOpacity: 0.35,
+                shadowRadius: 50,
+                elevation: 80,
+                borderRadius: 8,
+              }}
+            >
+              <Home7 width={350} className=" " />
+            </View>
+          </View>
+          <View className="px-[32px] items-center gap-[30px] mt-[10px]">
+            <Text
+              className="text-[14px]  text-[#2E2C43]  text-center"
+              style={{ fontFamily: "Poppins-Bold" }}
+            >
+              How to send bid to the customer?
+            </Text>
+            <View className="gap-[20px] items-center px-[32px]">
+              <View className="flex-row gap-[5px] justify-center items-center">
+                <Text
+                  className="text-[14px] bg-[#FB8C00] p-2  text-white  text-center"
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
+                  Step1.
+                </Text>
+                <Text
+                  className="text-[14px]  text-[#2E2C43]  text-center"
+                  style={{ fontFamily: "Poppins-Regular" }}
+                >
+                  Type your query{" "}
+                </Text>
+              </View>
+              <Home4 width={width} className=" " />
+            </View>
+            <View className="flex gap-[20px] px-[32px] items-center ">
+              <View className="flex-row gap-[5px] ">
+                <Text
+                  className="text-[14px] bg-[#FB8C00] h-[40px] p-2    text-white   text-center "
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
+                  Step 2.
+                </Text>
+                <Text
+                  className="text-[14px]  text-[#2E2C43]  text-center"
+                  style={{ fontFamily: "Poppins-Regular" }}
+                >
+                  Step 2. Click the real product image for product match and
+                  confirm if it's available.
+                </Text>
+              </View>
+              <Home5 width={width} className=" " />
+            </View>
+            <View className="flex gap-[20px] ">
+              <View className="flex-row gap-[5px] justify-center items-center">
+                <Text
+                  className="text-[14px] bg-[#FB8C00] p-2  text-white  text-center"
+                  style={{ fontFamily: "Poppins-Medium" }}
+                >
+                  Step 3.
+                </Text>
+                <Text
+                  className="text-[14px]  text-[#2E2C43]  text-center"
+                  style={{ fontFamily: "Poppins-Regular" }}
+                >
+                  Type your offered price to the customer{" "}
+                </Text>
+              </View>
+              <Home6 width={width} className=" " />
+            </View>
+          </View>
+          <View className="gap-[20px] -mt-[10px] items-center">
+            <Text
+              className="text-[14px] px-[32px]  text-[#2E2C43]  text-center"
+              style={{ fontFamily: "Poppins-Regular" }}
+            >
+              Preview & Send your offer
+            </Text>
 
-
-//                 <Text className="text-center pt-[42px] text-[16px] font-bold mb-[60px]">Terms and Conditions</Text>
-
+            <View style={styles.container}>
+              <Text style={styles.title}>Terms for requests 
+              </Text>
+              <View>
+              <View style={styles.listItem}>
+                <Text style={styles.dot}></Text>
+               
+                <Text style={{fontFamily:"Poppins-Regular",fontSize:14}}>
+                <Text style={styles.boldText}>Do's:</Text>
+                  {" "}
+                  Only accept customer requests if you have the product
+                  available. Authenticity and honesty are crucial to us and our
+                  customers.
+                </Text>
+              </View>
+              <View style={styles.listItem}>
+                <Text style={styles.dot}></Text>
                 
+                <Text style={{fontFamily:"Poppins-Regular",fontSize:14}}>
+                <Text style={styles.boldText}>Don’ts:</Text>
+                  {" "}
+                  Customer complaints may lead to a permanent account block or a
+                  significant penalty to unlock the account.
+                </Text>
+              </View>
+              <View style={styles.listItem}>
+                <Text style={styles.dot}></Text>
+                <Text style={{fontFamily:"Poppins-Regular",fontSize:14}}>
+                <Text style={styles.boldText}>Support:</Text>
+                  {" "}
+                  Tell us what you want to start, and we'll create your business
+                  category.
+                </Text>
+              </View>
+              <View style={styles.listItem}>
+                <Text style={styles.dot}></Text>
+                <Text style={{fontFamily:"Poppins-Regular",fontSize:14}}> 
+                <Text style={styles.boldText}>Grow Your Business:</Text>
+                {" "}
+                We will help you attract and keep customers.</Text>
+              </View>
+            </View>
+            </View>
+            <Text className="text-[14px] px-[32px] text-center mb-2" style={{fontFamily:"Poppins-Regular"}}>This app is free for now, but there will be fewer charges like 100 rupees for 100 customers soon.</Text>
+             <Text className="text-[14px] px-[32px] text-center mb-2"style={{fontFamily:"Poppins-Regular"}}>Unlock Your Business Potential – Download CulturTap Genie Business and Transform Your Sales Now!</Text>
 
-//                 <View className="flex flex-col justify-center items-center gap-[50px] px-[30px] mb-[100px]">
-//                    <View className="gap-[30px] ">
-//                         <Text className="text-[16px] font-bold text-center">Raise your request precisely</Text>
-//                         <Text className="text-[14px] text-center">Provide proper information about product or service to the sellers</Text>
-//                         <Text className="text-[16px] font-extrabold text-center">Type your message clearly first</Text>
+            <ThumbIcon className=" " />
+          </View>
+          <View className="flex flex-col gap-[32px] px-[32px] my-[40px]">
+             
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 
-//                    </View>
-                   
-//                     <View className="gap-[30px] items-center">
-                        
-//                         <GenieIcon/>
-//                         <Text className="text-center text-[16px] font-bold">
-//                            Raise your request 
-//                         </Text>
-                     
-//                         <Text className="text-center text-[14px] ">
-//                            Ex: My phone charger get damage or I want a 55 inch screen tv !
-//                         </Text>
-//                         <InputBox/>
-//                     </View>
-//                     <View className="gap-[20px] items-center">
-        
-//                         <Text className="text-center text-[16px] font-bold ">
-//                         Provide exact image reference to the 
-//                          sellers for better understanding of your need
-//                         </Text>
-//                         <Sample1/>
-//                         <Sample2/>
-//                     </View>
-//                     <View className="gap-[20px] items-center">
-//                         <Text className="text-center text-[16px] font-bold">
-//                         Tell sellers about your price expectation 
-//                         </Text>
-                     
-//                         <Text className="text-center text-[14px] ">
-//                         Finish your research about your price before raising the request
-//                         </Text>
-//                         <View className="h-[54px] w-[300px] bg-[#FFC882] flex justify-center items-center rounded-[16px]"> 
-//                         <Text className="text-[#558B2F] text-[14px] font-bold ">Ex: 1,200 Rs</Text>
-//                         </View>
-                      
-//                     </View>
-//                     <View className="gap-[20px] items-center">
-//                         <Text className="text-center text-[16px] font-bold">
-//                         Terms for requests 
+export default TermsandConditions;
 
-//                         </Text>
-                     
-//                         <Text className="text-center text-[14px] ">
-//                         If your request start getting bids, there is no refund in this case
-//                         </Text>
-//                         <Text className="text-center text-[14px] ">
-//                         If there is only one seller or no seller for the bid, there will be no charges for the request
-//                         </Text>
-//                         <Text className="text-center text-[14px] ">
-//                         Raise your concern or ask for help to resolve your issues. 
-//                         </Text>
-//                         <Text className="text-center text-[14px] ">
-//                         We are customer focused organization so dont hesitate to share your views.
-//                         </Text>
-                       
-                      
-//                     </View>
-//                 </View>
-//             </ScrollView>
-//         </SafeAreaView>
-//     )
-// }
+const styles = StyleSheet.create({
+  container: {
+   
+    // justifyContent:"center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 16,
+    fontFamily:"Poppins-Black",
+    marginTop: 10,
 
-// export default TermsandConditons;
+    marginBottom: 30,
+  },
+  listItem: {
+    marginBottom: 10,
+    paddingHorizontal:32,
+    flexDirection:"row",
+    gap:4
+    // justifyContent:"center",
+    // alignItems:"center"
+  
+
+  },
+  boldText: {
+    fontFamily:"Poppins-SemiBold"
+  },
+  dot: {
+    width: 4,
+    height: 4,
+    borderRadius: 5,
+    backgroundColor: "black",
+    marginTop:8.5
+   
+  },
+});

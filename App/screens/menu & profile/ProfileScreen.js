@@ -1,7 +1,9 @@
 import {
   ActivityIndicator,
+  Animated,
   Image,
   KeyboardAvoidingView,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -50,6 +52,25 @@ const ProfileScreen = () => {
   const [storeCategory, setStoreCategory] = useState(user?.storeCategory || "");
   const [storeMobileNo, setStoreMobileNo] = useState(user?.storeMobileNo || "");
   const [panCard, setPanCard] = useState(user?.panCard || "");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [scaleAnimation] = useState(new Animated.Value(0));
+
+  const handleImagePress = (image) => {
+    setSelectedImage(image);
+    Animated.timing(scaleAnimation, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleClose = () => {
+    Animated.timing(scaleAnimation, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setSelectedImage(null));
+  };
 
 
   const handleEditPress = (field) => {
@@ -96,7 +117,7 @@ const ProfileScreen = () => {
     }
   };
 
-  const handleEditIconPress = async (type) => {
+  const handleEditIconPress = async(type) => {
     const options = {
       mediaType: "photo",
       saveToPhotos: true,
@@ -239,11 +260,35 @@ const ProfileScreen = () => {
           </Text>
           <View className="flex items-center relative justify-center">
             <View>
-                { user?.storeImages.length>0 &&
-              <Image
+                { user?.storeImages.length>0 && 
+                  <View>
+                    <Pressable
+                            onPress={() => handleImagePress( user?.storeImages[0] )}>
+                    <Image
                 source={{ uri: user?.storeImages[0] }}
                 className="w-[130px] h-[130px] rounded-full object-cover"
               />
+                    </Pressable>
+             
+              <Modal
+                        transparent
+                        visible={!!selectedImage}
+                        onRequestClose={handleClose}
+                      >
+                         <Pressable style={styles.modalContainer}  onPress={handleClose}>
+                          <Animated.Image
+                            source={{ uri: selectedImage }}
+                            style={[
+                              styles.modalImage,
+                              {
+                                transform: [{ scale: scaleAnimation }],
+                              },
+                            ]}
+                          />
+                          
+                        </Pressable>
+                      </Modal>
+                      </View>
                 }
                 { user?.storeImages.length===0 &&
               <View className="w-[130px] h-[130px] rounded-full bg-gray-300 border-[1px] border-gray-500">
@@ -260,12 +305,19 @@ const ProfileScreen = () => {
           <View className="flex-row items-center justify-between px-[32px] my-[10px]">
             <Text style={{ fontFamily: "Poppins-Regular" }}>Store Images</Text>
             <TouchableOpacity onPress={()=>{handleEditIconPress("other")}}>
-              <EditIcon className="p-[10px]" />
+              {/* <EditIcon className="p-[10px]" /> */}
+              <Text style={{ fontFamily: "Poppins-Medium" }}>Add</Text>
+
               </TouchableOpacity>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View className="pl-[32px] flex flex-row gap-[11px] mb-[60px]">
               {user?.storeImages?.map((image, index) => (
+                 <Pressable
+                 key={index}
+                 onPress={() => handleImagePress(image)}
+               >
+
                 <View key={index} className="rounded-[16px]">
                   <Image
                     source={{ uri: image }}
@@ -279,9 +331,29 @@ const ProfileScreen = () => {
                             >
                              <DelImg/>
                             </Pressable>
+                           
                 </View>
+                </Pressable>
               ))}
             </View>
+            <Modal
+                        transparent
+                        visible={!!selectedImage}
+                        onRequestClose={handleClose}
+                      >
+                        <Pressable style={styles.modalContainer}  onPress={handleClose}>
+                          <Animated.Image
+                            source={{ uri: selectedImage }}
+                            style={[
+                              styles.modalImage,
+                              {
+                                transform: [{ scale: scaleAnimation }],
+                              },
+                            ]}
+                          />
+                         
+                        </Pressable>
+                      </Modal>
           </ScrollView>
           <View className="px-[32px] flex flex-col gap-[26px] mb-[20px]">
             <EditableField
@@ -331,7 +403,7 @@ const ProfileScreen = () => {
               isLoading={isLoading}
             />
             <EditableField
-              label="PanCard"
+              label="GST certificate and Labor certificate"
               value={panCard}
               editable={editableField === "panCard"}
               onChangeText={setPanCard}
@@ -424,5 +496,29 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 50,
         padding: 1,
+      },
+      modalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+      },
+      modalImage: {
+        width: 300,
+        height: 400,
+        borderRadius: 10,
+      },
+      closeButton: {
+        position: "absolute",
+        top: 20,
+        right: 20,
+      },
+      deleteIcon: {
+        position: "absolute",
+        top: 5,
+        right: 5,
+        backgroundColor: "white",
+        borderRadius: 50,
+        padding: 2,
       },
 });

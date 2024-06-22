@@ -84,8 +84,9 @@ const CameraScreen = () => {
         const requests = ongoingRequests.filter(
           (request) => request._id ===requestInfo._id
         );
-        console.log("request ongoing",filteredRequests.length,requests.length)
-        const data=[...requests,...filteredRequests];
+        const updatedRequest={...requests[0],updatedAt:new Date().toISOString(),unreadCount:0}
+
+        const data=[updatedRequest,...filteredRequests];
          dispatch(setOngoingRequests(data));
         setIsLoading(false)
 

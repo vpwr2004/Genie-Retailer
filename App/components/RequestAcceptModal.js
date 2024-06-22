@@ -69,7 +69,7 @@ const RequestAcceptModal = ({
             }
           );
           console.log("RequestType new response", res.data);
-          let tmp = { ...requestInfo, requestType: "ongoing" };
+          let tmp = { ...requestInfo, requestType: "ongoing" ,updatedAt:new Date().toISOString()};
 
           dispatch(setRequestInfo(tmp));
           const filteredRequests = newRequests.filter(
@@ -119,10 +119,7 @@ const RequestAcceptModal = ({
               socket.emit("new message", accept.data?.message);
               let tmp = {
                 ...requestInfo,
-                requestId: {
-                  ...requestInfo.requestId,
-                  requestActive: "completed"
-                }
+                requestType:"completed",updatedAt:new Date().toISOString()
               };
               dispatch(setRequestInfo(tmp));
               const updatedMessages = messages.map((message) => {

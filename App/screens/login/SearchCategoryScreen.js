@@ -79,12 +79,13 @@ const SearchCategoryScreen = () => {
           showsVerticalScrollIndicator={false}
         >
           <View className=" flex z-40 flex-row items-center mt-[50px] mb-[10px]">
-            <Pressable
+            <TouchableOpacity
               onPress={() => navigation.goBack()}
               style={styles.backButton}
             >
-              <BackArrow width={14} height={10} />
-            </Pressable>
+                             <BackArrow width={16} height={12} />
+
+            </TouchableOpacity>
             <Text className="flex flex-1 justify-center  items-center text-center text-[16px] " style={{ fontFamily: "Poppins-Bold" }}>
               Select Category
             </Text>
@@ -163,6 +164,14 @@ const styles = {
     flex: 1,
     //  marginTop: Platform.OS === 'android' ? 44 : 0,
     backgroundColor: "white",
+  },
+  backButton: {
+    position: "absolute",
+    left: 0,
+    padding:15,
+    zIndex:100
+  
+  
   },
 
   nextButton: {

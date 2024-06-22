@@ -9,11 +9,30 @@ import { useEffect,useState } from 'react';
 import navigationService from './App/navigation/navigationService';
 
 import { useFonts } from 'expo-font';
+import * as MediaLibrary from 'expo-media-library';
+import * as Notifications from 'expo-notifications';
+
 
 
 
 
 export default function App() {
+  
+
+  
+
+  useEffect(() => {
+    (async () => {
+      const media = await MediaLibrary.requestPermissionsAsync();
+      const notification= await Notifications.requestPermissionsAsync();
+      console.log("status notification", media,notification);
+
+
+     
+    })();
+  }, []);
+  
+ 
 
   let [fontsLoaded]=useFonts(
     {

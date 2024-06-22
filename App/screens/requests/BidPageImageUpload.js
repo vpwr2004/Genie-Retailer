@@ -32,8 +32,7 @@ import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { manipulateAsync } from "expo-image-manipulator";
 import { launchCamera } from "react-native-image-picker";
 import Close from "../../assets/RedClose.svg";
-import BackArrow from "../../assets/arrow-left.svg"
-
+import BackArrow from "../../assets/arrow-left.svg";
 
 const BidPageImageUpload = () => {
   const [images, setImages] = useState([]);
@@ -185,23 +184,22 @@ const BidPageImageUpload = () => {
   return (
     <>
       {!cameraScreen && (
-        <View style={{ flex: 1 ,backgroundColor:"#ffe7c8"}}>
+        <View style={{ flex: 1, backgroundColor: "#ffe7c8" }}>
           <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View className="relative flex-grow bg-[#ffe7c8]">
               <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-evenly gap-[5px] items-center pt-[40px] pb-[20px]">
-                <Pressable
+                <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
                   }}
-                  style={{ padding: 4 }}
+                  style={{ padding: 6 }}
                 >
-                                          <BackArrow width={14} height={10} />
-
-                </Pressable>
+                  <BackArrow width={14} height={10} />
+                </TouchableOpacity>
 
                 <View className="gap-[9px] ml-4">
                   <View className="flex-row gap-[18px] items-center">
-                    <View className="p-2 rounded-full ">
+                    <View className=" rounded-full bg-white p-[4px] ">
                       {requestInfo?.customerId?.pic ? (
                         <Image
                           source={{ uri: requestInfo?.customerId?.pic }}
@@ -221,31 +219,33 @@ const BidPageImageUpload = () => {
                       </Text>
 
                       <Text
-                        className="text-[12px] text-[#c4c4c4]"
+                        className="text-[12px] text-[#79B649]"
                         style={{ fontFamily: "Poppins-Regular" }}
                       >
-                        Active 3 hr ago
+                        Online
                       </Text>
                     </View>
                   </View>
                 </View>
-                <Pressable
-                  onPress={() =>
-                    navigation.navigate("bidOfferedPrice", {
-                      user,
-                      messages,
-                      setMessages,
-                    })
-                  }
-                  className=""
-                >
-                  <Text
-                    className="text-[14px] text-[#FB8C00] "
-                    style={{ fontFamily: "Poppins-SemiBold" }}
+                {images.length === 0 && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("bidOfferedPrice", {
+                        user,
+                        messages,
+                        setMessages,
+                      })
+                    }
+                    className=""
                   >
-                    Skip
-                  </Text>
-                </Pressable>
+                    <Text
+                      className="text-[14px] text-[#FB8C00] "
+                      style={{ fontFamily: "Poppins-SemiBold" }}
+                    >
+                      Skip
+                    </Text>
+                  </TouchableOpacity>
+                )}
 
                 {/* <Pressable onPress={() => { console.log("hii") }}>
                                 <ThreeDots />
@@ -275,7 +275,7 @@ const BidPageImageUpload = () => {
               <View className="flex gap-[16px] px-[50px] pt-[10px] pb-[10px]">
                 <View className="flex-row justify-between">
                   <Text className="" style={{ fontFamily: "Poppins-Bold" }}>
-                    Send a offer
+                    Send an offer
                   </Text>
                   <Text
                     className="text-[#FB8C00] text-[14px] "
@@ -285,186 +285,190 @@ const BidPageImageUpload = () => {
                   </Text>
                 </View>
                 <Text style={{ fontFamily: "Poppins-Regular" }}>
-                  Provide product images for better reference to customers for
-                  product quality and availability
+                  Provide product images for better reference to customers to
+                  showcase product quality and confirm availability.
                 </Text>
               </View>
-
-              
             </View>
             <View className="pb-[100px]">
-                {images.length === 0 && (
-                  <View className="z-0">
-                    <View>
-                      <TouchableOpacity
-                        onPress={() => {
-                          takePicture();
-                        }}
-                      >
-                        <View className="flex-row justify-center">
-                          <ClickImage />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => {
-                          pickImage();
-                          console.log("pressed pickimg");
-                        }}
-                      >
-                        <View className="mx-[28px] mt-[30px] h-[63px] flex-row items-center justify-center border-2 border-[#fb8c00] rounded-3xl">
-                          <Text
-                            className="text-[16px]  text-[#fb8c00] text-center"
-                            style={{ fontFamily: "Poppins-ExtraBold" }}
-                          >
-                            Browse Image
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-                {images.length > 0 && (
+              {images.length === 0 && (
+                <View className="z-0">
                   <View>
-                    <ScrollView
-                      horizontal={true}
-                      showsHorizontalScrollIndicator={false}
-                    >
-                      <View style={styles.container}>
-                        <View style={styles.imageContainer}>
-                          {images.map((image, index) => (
-                            <Pressable
-                              key={index}
-                              onPress={() => handleImagePress(image)}
-                            >
-                              <View style={styles.imageWrapper}>
-                                <Image
-                                  source={{ uri: image }}
-                                  style={styles.image}
-                                />
-                                <Pressable
-                                  onPress={() => deleteImage(index)}
-                                  style={styles.deleteIcon}
-                                >
-                                  <Close />
-                                </Pressable>
-                              </View>
-                            </Pressable>
-                          ))}
-                        </View>
-                        <Modal
-                          transparent
-                          visible={!!selectedImage}
-                          onRequestClose={handleClose}
-                        >
-                          <View style={styles.modalContainer}>
-                            <Animated.Image
-                              source={{ uri: selectedImage }}
-                              style={[
-                                styles.modalImage,
-                                {
-                                  transform: [{ scale: scaleAnimation }],
-                                },
-                              ]}
-                            />
-                            <Pressable
-                              style={styles.closeButton}
-                              onPress={handleClose}
-                            >
-                              <Entypo
-                                name="circle-with-cross"
-                                size={40}
-                                color="white"
-                              />
-                            </Pressable>
-                          </View>
-                        </Modal>
-                      </View>
-                    </ScrollView>
-                    <Pressable
-                      onPress={() => setAddMore(!addMore)}
-                      style={{ alignSelf: "flex-start" }}
-                    >
-                      <View style={{ marginLeft: 36, marginTop: 30 ,position:"relative"}}>
-                        <AddMoreImage />
-                      </View>
-                    </Pressable>
-                  </View>
-                )}
-                {!addMore ? (
-                  images.length > 0 && (
-                    <TouchableOpacity
-                      onPress={handleNext}
-                      style={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: 63,
-                        width: "100%",
-                        backgroundColor: "#FB8C00",
-                        justifyContent: "center", // Center content vertically
-                        alignItems: "center", // Center content horizontally
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontFamily: "Poppins-Black",
-                          color: "white",
-                        }}
-                      >
-                        NEXT
-                      </Text>
-                    </TouchableOpacity>
-                  )
-                ) : (
-                  <View className="w-full absolute bottom-0 items-center left-0 right-0 px-[10px]">
-                    <TouchableOpacity
-                      onPress={() => {
-                        pickImage();
-                        setAddMore(false);
-                      }}
-                    >
-                      <View className="w-full flex flex-row justify-between px-[40px] py-[15px]">
-                        <Text
-                          className="text-[14px]"
-                          style={{ fontFamily: "Poppins-Regular" }}
-                        >
-                          Upload Image
-                        </Text>
-                        <FontAwesome6
-                          name="arrow-right"
-                          size={15}
-                          color="black"
-                        />
-                      </View>
-                    </TouchableOpacity>
-                    <View className="h-[1px] w-full bg-gray-300 "></View>
                     <TouchableOpacity
                       onPress={() => {
                         takePicture();
-                        setAddMore(false);
                       }}
                     >
-                      <View className="w-full flex flex-row justify-between px-[40px] py-[15px]">
+                      <View className="flex-row justify-center">
+                        <ClickImage />
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        pickImage();
+                        console.log("pressed pickimg");
+                      }}
+                    >
+                      <View className="mx-[28px] mt-[30px] h-[63px] flex-row items-center justify-center border-2 border-[#fb8c00] rounded-3xl">
                         <Text
-                          className="text-[14px]"
-                          style={{ fontFamily: "Poppins-Regular" }}
+                          className="text-[16px]  text-[#fb8c00] text-center"
+                          style={{ fontFamily: "Poppins-ExtraBold" }}
                         >
-                          Click Image
+                          Browse Image
                         </Text>
-                        <FontAwesome6
-                          name="arrow-right"
-                          size={15}
-                          color="black"
-                        />
                       </View>
                     </TouchableOpacity>
                   </View>
-                )}
-              </View>
+                </View>
+              )}
+              {images.length > 0 && (
+                <View>
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    <View style={styles.container}>
+                      <View style={styles.imageContainer}>
+                        {images.map((image, index) => (
+                          <Pressable
+                            key={index}
+                            onPress={() => handleImagePress(image)}
+                          >
+                            <View style={styles.imageWrapper}>
+                              <Image
+                                source={{ uri: image }}
+                                style={styles.image}
+                              />
+                              <Pressable
+                                onPress={() => deleteImage(index)}
+                                style={styles.deleteIcon}
+                              >
+                                <Close />
+                              </Pressable>
+                            </View>
+                          </Pressable>
+                        ))}
+                      </View>
+                      <Modal
+                        transparent
+                        visible={!!selectedImage}
+                        onRequestClose={handleClose}
+                      >
+                        <View style={styles.modalContainer}>
+                          <Animated.Image
+                            source={{ uri: selectedImage }}
+                            style={[
+                              styles.modalImage,
+                              {
+                                transform: [{ scale: scaleAnimation }],
+                              },
+                            ]}
+                          />
+                          <Pressable
+                            style={styles.closeButton}
+                            onPress={handleClose}
+                          >
+                            <Entypo
+                              name="circle-with-cross"
+                              size={40}
+                              color="white"
+                            />
+                          </Pressable>
+                        </View>
+                      </Modal>
+                    </View>
+                  </ScrollView>
+                  <TouchableOpacity
+                    onPress={() => setAddMore(!addMore)}
+                    style={{ alignSelf: "flex-start" }}
+                  >
+                    <View
+                      style={{
+                        marginLeft: 36,
+                        marginTop: 30,
+                        position: "relative",
+                      }}
+                    >
+                      <AddMoreImage />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+              {!addMore ? (
+                images.length > 0 && (
+                  <TouchableOpacity
+                    onPress={handleNext}
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: 63,
+                      width: "100%",
+                      backgroundColor: "#FB8C00",
+                      justifyContent: "center", // Center content vertically
+                      alignItems: "center", // Center content horizontally
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontFamily: "Poppins-Black",
+                        color: "white",
+                      }}
+                    >
+                      NEXT
+                    </Text>
+                  </TouchableOpacity>
+                )
+              ) : (
+                <View className="w-full absolute bottom-0 bg-white items-center left-0 right-0 px-[10px]">
+                  <TouchableOpacity
+                    onPress={() => {
+                      pickImage();
+                      setAddMore(false);
+                    }}
+                  >
+                    <View className="w-full flex flex-row justify-between px-[40px] py-[15px]">
+                      <Text
+                        className="text-[14px]"
+                        style={{ fontFamily: "Poppins-Regular" }}
+                      >
+                        Upload Image
+                      </Text>
+                      <FontAwesome6
+                        name="arrow-right"
+                        size={15}
+                        color="black"
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <View className="h-[1px] w-full bg-gray-300 "></View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      takePicture();
+                      setAddMore(false);
+                    }}
+                  >
+                    <View className="w-full flex flex-row justify-between px-[40px] py-[15px]">
+                      <Text
+                        className="text-[14px]"
+                        style={{ fontFamily: "Poppins-Regular" }}
+                      >
+                        Click Image
+                      </Text>
+                      <FontAwesome6
+                        name="arrow-right"
+                        size={15}
+                        color="black"
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
           </ScrollView>
-         
+
           <ModalCancel
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}

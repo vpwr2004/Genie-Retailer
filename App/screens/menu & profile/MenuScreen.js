@@ -112,7 +112,7 @@ const MenuScreen = () => {
 
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={()=>navigation.navigate("termsandconditions")}>
                         <View className="flex flex-row justify-between items-center">
                         <Text className="text-[15px]" style={{ fontFamily: "Poppins-Regular" }}>
                         Terms & Conditions 

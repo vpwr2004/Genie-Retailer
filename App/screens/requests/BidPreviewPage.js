@@ -28,6 +28,7 @@ import {
 } from "../../notification/notificationMessages";
 import BackArrow from "../../assets/arrow-left.svg"
 import { setOngoingRequests } from "../../redux/reducers/requestDataSlice";
+import { setBidImages, setProductWarranty } from "../../redux/reducers/bidSlice";
 
 
 
@@ -101,6 +102,8 @@ const BidPreviewPage = () => {
         console.log("query send", mess);
         mess.push(response.data);
         console.log("query update", mess);
+       
+
 
         setMessages(mess);
         const filteredRequests = ongoingRequests.filter(
@@ -110,7 +113,8 @@ const BidPreviewPage = () => {
           (request) => request._id ===requestInfo._id
         );
         console.log("request ongoing",filteredRequests.length,requests.length)
-        const data=[...requests,...filteredRequests];
+        const updatedRequest={...requests[0],updatedAt:new Date().toISOString(),unreadCount:0}
+        const data=[updatedRequest,...filteredRequests];
          dispatch(setOngoingRequests(data));
         setLoading(false)
 
@@ -128,6 +132,8 @@ const BidPreviewPage = () => {
            redirect_to: "bargain",
          };
          sendCustomNotificationBid(notification);
+         dispatch(setProductWarranty(0));
+         dispatch(setBidImages([]));
         }
 
          
@@ -144,19 +150,19 @@ const BidPreviewPage = () => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="relative flex-grow bg-[#ffe7c8]">
           <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[40px]">
-            <Pressable
+          <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
               }}
-              style={{padding:4}}
+              style={{padding:6}}
             >
                          <BackArrow width={14} height={10} />
 
-            </Pressable>
+            </TouchableOpacity>
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="flex items-center justify-center rounded-full">
+                <View className="flex items-center justify-center rounded-full bg-white p-[4px]">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}
@@ -171,9 +177,9 @@ const BidPreviewPage = () => {
                   <Text className="text-[14px] text-[#2e2c43] capitalize" style={{ fontFamily: "Poppins-Regular" }}>
                     {requestInfo?.customerId?.userName}
                   </Text>
-                  <Text className="text-[12px] text-[#c4c4c4]" style={{ fontFamily: "Poppins-Regular" }}>
-                    Active 3 hr ago
-                  </Text>
+                  <Text className="text-[12px] text-[#79B649]" style={{ fontFamily: "Poppins-Regular" }}>
+                  Online
+                </Text>
                 </View>
               </View>
             </View>
@@ -198,7 +204,7 @@ const BidPreviewPage = () => {
 
           <View className="flex gap-[21px]  pt-[10px] pb-[100px]">
             <View className="flex-row justify-between px-[50px]">
-              <Text className="" style={{ fontFamily: "Poppins-Bold" }}>Preview your bid response</Text>
+              <Text className="" style={{ fontFamily: "Poppins-Bold" }}>Preview your offer response</Text>
             </View>
             <View className="px-[50px]">
               {/* <Text>{user?.storeOwnerName}</Text> */}
@@ -242,7 +248,7 @@ const BidPreviewPage = () => {
             <View className="gap-[0px] px-[50px]">
               <Text className=" text-[14px]" style={{ fontFamily: "Poppins-SemiBold" }}>Offered Price</Text>
               <Text className=" text-[24px] text-[#558B2F]" style={{ fontFamily: "Poppins-Bold" }}>
-                Rs {bidOfferedPrice?bidOfferedPrice:"Na"}
+                 {bidOfferedPrice?`Rs ${bidOfferedPrice}`:"Na"}
               </Text>
             </View>
             <View className="gap-[0px] px-[50px]">
@@ -250,7 +256,7 @@ const BidPreviewPage = () => {
                 Product Warranty
               </Text>
               <Text className=" text-[24px] text-[#558B2F]" style={{ fontFamily: "Poppins-Bold" }}>
-                {warranty?warranty:"Na"}
+                {warranty?`${warranty} Months`:"Na"}
               </Text>
             </View>
           </View>
@@ -268,7 +274,7 @@ const BidPreviewPage = () => {
             {loading ? (
                 <ActivityIndicator size="small" color="#ffffff" />
               ) : (
-              <Text className="text-[16px] text-white" style={{ fontFamily: "Poppins-Black" }}>Next</Text>
+              <Text className="text-[16px] text-white" style={{ fontFamily: "Poppins-Black" }}>Send Offer</Text>
               )}
             </View>
           </TouchableOpacity>

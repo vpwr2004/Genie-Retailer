@@ -198,9 +198,15 @@ const AddImageScreen = () => {
         <View style={{ flex: 1 }}> 
           <View style={{ flex: 1 }}>
             <View className="w-full z-40 pt-16 flex flex-row justify-between items-center px-[32px]">
-            <Pressable onPress={() => navigation.goBack()} className="p-2">
-                <BackArrow width={14} height={10} />
-              </Pressable>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{padding:6}}
+            >
+                             <BackArrow width={14} height={10} />
+
+            </TouchableOpacity>
               <Text className="text-[16px] flex flex-1 justify-center  items-center text-center" style={{ fontFamily: "Poppins-Bold" }}>
                 Add Store Image
               </Text>

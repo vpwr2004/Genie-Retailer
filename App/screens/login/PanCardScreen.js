@@ -270,12 +270,12 @@ const PanCardScreen = () => {
                 paddingHorizontal: 32,
               }}
             >
-              <Pressable
+              <TouchableOpacity 
                 onPress={() => navigation.goBack()}
-                style={{ padding: 4 }}
+                style={{ padding: 6 }}
               >
-                <BackArrow width={14} height={10} />
-              </Pressable>
+                <BackArrow width={16} height={12} />
+              </TouchableOpacity>
               <TouchableOpacity onPress={handleNext}>
                 <Text
                   style={{ fontSize: 14, padding: 2 ,fontFamily: 'Poppins-Bold'}}

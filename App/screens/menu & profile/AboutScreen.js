@@ -1,4 +1,4 @@
-import { View, Text,  Image, Pressable, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text,  Image, Pressable, ScrollView, TouchableOpacity,Dimensions } from 'react-native'
 import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
@@ -6,18 +6,22 @@ import AboutImg from "../../assets/AboutImg.svg"
 import Time from "../../assets/aboutClock.svg"
 import Wealth  from "../../assets/aboutWealth.svg"
 import Health  from "../../assets/aboutHealth.svg"
+import Analytics  from "../../assets/analytics.svg"
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackArrow from "../../assets/arrow-left.svg"
 
 const AboutScreen = () => {
     const navigation = useNavigation();
+  const { width } = Dimensions.get("window");
+
     return (
         <View style={{ flex: 1 ,backgroundColor:"white"}}>
             <ScrollView style={{ flex: 1 }} className="relative">
 
 
                 <View className="z-50 absolute top-[40px] left-[40px] pb-[8px] px-[4px]">
-                    <TouchableOpacity onPress={() => { navigation.goBack(); }} style={{padding:6,borderRadius:100}}>
+                    <TouchableOpacity onPress={() => { navigation.goBack(); }} style={{padding:8,borderRadius:100}}>
                     <BackArrow width={14} height={10} />
 
                     </TouchableOpacity>
@@ -31,46 +35,50 @@ const AboutScreen = () => {
 
                 <View className="flex flex-col justify-center items-center gap-[40px] px-[30px] mb-[100px]">
                    <View>
-                    <AboutImg className=""/>
+                    <AboutImg className="" width={width}/>
                    </View>
-                   <View className="gap-[5px]">
+                   <View className="gap-[20px]">
                       <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>
-                             Bargaining is the consumer's right, money doesn't grow on trees. 
+                      "Get Bigger Profit and More Sales with High Demand"
                       </Text>
                       <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Regular" }}>
-                            Now bargaining is possible from your couch. Want anything new or to repair the old one, Connect with your nearby sellers and bargain for the best prices of products and services available in your city.
+                      Give the best offer to the customer to attract them, and you will experience high demand for your stock products if you engage in smart bargaining.
                       </Text>
                     </View>
-                    <View className="gap-[5px] items-center">
-                        <Text className="text-center text-[14px]" style={{ fontFamily: "Poppins-Bold" }}>
-                               Save Time
+                    <View className="gap-[15px] items-center">
+                        <Text className="text-center text-[14px]" style={{ fontFamily: "Poppins-Black" }}>
+                        We support small business
+                        </Text>
+                        <Analytics/>
+                     
+                        <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Regular" }}>
+                        We're here to help. Let us know what you need to get started. We'll set up a category for your small business on our platform and bring in customers for you.
+                        </Text>
+                    </View>
+                    <View className="gap-[15px] items-center">
+                        <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Black" }}>
+                        Spend time effectively
                         </Text>
                         <Time/>
                      
                         <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Regular" }}>
-                            Save your valuable time to search and explore best cost for any product and service
+                        Spend your working time wisely.Get your regular customers online now. 
                         </Text>
                     </View>
-                    <View className="gap-[5px] items-center">
-                        <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>
-                               Save Wealth
+                    <View className="gap-[15px] items-center">
+                        <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Black" }}>
+                        Be a wealthy business
                         </Text>
                         <Wealth/>
-                     
-                        <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Regular" }}>
-                        You dont need to go out to buy any thing at first place, Collect bids from multiple sellers, 
-                           you will save your fuel cost, even buy product at minimum available cost.
+                       
+                      <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Regular" }}>
+                        Boost your shop and business without spending extra on marketing. Attract the right customers by mastering the art of bargaining.
                         </Text>
-                    </View>
-                    <View className="gap-[5px] items-center">
-                        <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>
-                               Save Health
+                         
+                      <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Regular" }}>
+                      We are dedicated to helping small businesses become more prosperous.
                         </Text>
-                        <Health/>
-                     
-                        <Text className="text-center text-[14px] " style={{ fontFamily: "Poppins-Regular" }}>
-                        Dont need to wander for any product and service anymore, keep your healthy routine continue. 
-                        </Text>
+                        
                     </View>
 
                 </View>

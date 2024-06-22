@@ -42,6 +42,7 @@ const BidOfferedPrice = () => {
       console.log(parsedPrice);
     } else {
       // Handle invalid input (optional)
+      setOfferedPrice(0);
       console.error("Invalid price input:", offeredPrice);
     }
   };
@@ -55,6 +56,7 @@ const BidOfferedPrice = () => {
       // Log the mobile number value
       console.log(parsedWarranty);
     } else {
+      setWarranty(0);
       // Handle invalid input (optional)
       console.error("Invalid warranty input:", warranty);
     }
@@ -76,19 +78,19 @@ const BidOfferedPrice = () => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="relative flex-grow bg-[#ffe7c8]">
           <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[30px] pt-[40px]">
-            <Pressable
+          <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
               }}
-              style={{padding:4}}
+              style={{padding:6}}
             >
-                                      <BackArrow width={14} height={10} />
+                         <BackArrow width={14} height={10} />
 
-            </Pressable>
+            </TouchableOpacity>
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="flex items-center justify-center rounded-full">
+                <View className="flex items-center justify-center rounded-full bg-white p-[4px]">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}
@@ -103,9 +105,9 @@ const BidOfferedPrice = () => {
                   <Text className="text-[14px] text-[#2e2c43] capitalize" style={{ fontFamily: "Poppins-Regular" }}>
                     {requestInfo?.customerId?.userName}
                   </Text>
-                  <Text className="text-[12px] text-[#c4c4c4]" style={{ fontFamily: "Poppins-Regular" }}>
-                    Active 3 hr ago
-                  </Text>
+                  <Text className="text-[12px] text-[#79B649]" style={{ fontFamily: "Poppins-Regular" }}>
+                  Online
+                </Text>
                 </View>
               </View>
             </View>
@@ -130,12 +132,12 @@ const BidOfferedPrice = () => {
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">
               <View className="flex-row justify-between">
-                <Text className="text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>Send a offer</Text>
+                <Text className="text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>Send an offer</Text>
                 <Text className="text-[#FB8C00] text-[14px]" style={{ fontFamily: "Poppins-Medium" }}>
                     Step 3/3
                   </Text>
               </View>
-              <Text style={{ fontFamily: "Poppins-Regular" }}>Tell the offered price to the customer</Text>
+              <Text style={{ fontFamily: "Poppins-Regular" }}>Tell the customer your offered price.</Text>
               <View className="bg-white p-4 rounded-lg text-center">
                 <TextInput
                   onChangeText={handleOfferedPrice}
@@ -166,15 +168,41 @@ const BidOfferedPrice = () => {
       </ScrollView>
 
       {/* Typing Area */}
-      <View className="absolute bottom-0 left-0 right-0">
+      <TouchableOpacity
+          disabled={!offeredPrice} onPress={handleNext}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 63,
+              width: "100%",
+              backgroundColor:
+              !offeredPrice? "#e6e6e6" : "#FB8C00",
+              justifyContent: "center", // Center content vertically
+              alignItems: "center", // Center content horizontally
+            }}
+          >
+           
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily:"Poppins-Black",
+                color:!offeredPrice? "#888888" : "white",
+              }}
+            >
+              Next
+            </Text>
+          </TouchableOpacity>
+      {/* <View className="absolute bottom-0 left-0 right-0">
         <View className="gap-[20px]">
-          <TouchableOpacity disabled={!offeredPrice && !warranty} onPress={handleNext}>
+          <TouchableOpacity disabled={!offeredPrice} onPress={handleNext}>
             <View className="w-full h-[63px] flex items-center justify-center  bg-[#FB8C00] ">
               <Text className=" text-[16px] text-white" style={{ fontFamily: "Poppins-Black" }}>Next</Text>
             </View>
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };

@@ -265,8 +265,21 @@ const RequestPage = () => {
           }
           return message;
         });
+
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
+        const filteredRequests = ongoingRequests.filter(
+          (request) => request._id !==requestInfo._id
+        );
+        const requests = ongoingRequests.filter(
+          (request) => request._id ===requestInfo._id
+        );
+        const updatedRequest={...requests[0],updatedAt:new Date().toISOString()}
+        //             // console.log("request ongoing",requests[0]?.updatedAt, new Date().toISOString());
+       
+        // console.log("request ongoing",filteredRequests.length,requests.length,updatedRequest)
+        const data=[updatedRequest,...filteredRequests];
+         dispatch(setOngoingRequests(data));
         setisLoading(false);
         const token = await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
         if (token.data.length > 0) {
@@ -301,8 +314,8 @@ const RequestPage = () => {
     const handleMessageReceived = (newMessageReceived) => {
       console.log("Message received from socket:", newMessageReceived);
       if (newMessageReceived?.bidType === "update") {
-        let tmp = { ...requestInfo, requestType: "closed" };
-
+        let tmp = { ...requestInfo, requestType: "closed" ,updatedAt:new Date().toISOString(),unreadCount:0};
+       console.log("update",tmp)
         dispatch(setRequestInfo(tmp));
         const filteredRequests = ongoingRequests.filter(
           (request) => request._id !== requestInfo?._id
@@ -313,6 +326,8 @@ const RequestPage = () => {
 
 
       }
+      
+
       setMessages((prevMessages) => {
         if (
           prevMessages[prevMessages.length - 1]?.chat._id ===
@@ -322,6 +337,41 @@ const RequestPage = () => {
             prevMessages[prevMessages.length - 1]?._id ===
             newMessageReceived?._id
           ) {
+            if(newMessageReceived.bidAccepted==="accepted"){
+              let tmp = {
+                ...requestInfo,
+               requestType:"completed",updatedAt:new Date().toISOString(),unreadCount:0,
+              //  requestId:{requestActive:"completed"}
+              };
+              console.log("request updated",tmp);
+              dispatch(setRequestInfo(tmp));
+              const filteredRequests = ongoingRequests.filter(
+                (request) => request._id !==requestInfo._id
+              );
+             
+              //             // console.log("request ongoing",requests[0]?.updatedAt, new Date().toISOString());
+             
+              // console.log("request ongoing",filteredRequests.length,requests.length,updatedRequest)
+              const data=[tmp,...filteredRequests];
+               dispatch(setOngoingRequests(data));
+
+            }
+            // else{
+
+            //   const filteredRequests = ongoingRequests.filter(
+            //     (request) => request._id !==requestInfo._id
+            //   );
+            //   const requests = ongoingRequests.filter(
+            //     (request) => request._id ===requestInfo._id
+            //   );
+            //   const updatedRequest={...requests[0],updatedAt:new Date().toISOString(),unreadCount:0}
+            //   //             // console.log("request ongoing",requests[0]?.updatedAt, new Date().toISOString());
+             
+            //   // console.log("request ongoing",filteredRequests.length,requests.length,updatedRequest)
+            //   const data=[updatedRequest,...filteredRequests];
+            //    dispatch(setOngoingRequests(data));
+
+            // }
             // Update the last message if it's the same as the new one
             return prevMessages.map((message) =>
               message._id === newMessageReceived._id
@@ -330,12 +380,18 @@ const RequestPage = () => {
             );
           } else {
             // Add the new message to the list
+            
             return [...prevMessages, newMessageReceived];
           }
+         
         }
+
+        
         // If the chat ID does not match, return the previous messages unchanged
         return prevMessages;
       });
+
+      
 
       // let mess = [...messages];
       // if(mess[mess.length-1]?.chat?._id===newMessageReceived?.chat?._id){
@@ -381,19 +437,20 @@ const RequestPage = () => {
       <View className="relative" >
 
 
-        <View className=" relative bg-[#ffe7c8] pt-[40px] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={{ padding: 4 }}
-          >
-            <BackArrow width={14} height={10} />
-          </Pressable>
+        <View className=" relative bg-[#FFE7C8] pt-[40px] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
+        <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{padding:6}}
+            >
+                         <BackArrow width={14} height={10} />
+
+            </TouchableOpacity>
 
           <View className="gap-[9px]">
             <View className="flex-row gap-[18px]">
-              <View className=" flex items-center justify-center rounded-full ml-4">
+              <View className=" flex items-center justify-center rounded-full ml-4 bg-white p-[4px]">
                 {requestInfo?.customerId?.pic ? (
                   <Image
                     source={{ uri: requestInfo?.customerId?.pic }}
@@ -406,7 +463,6 @@ const RequestPage = () => {
                   // className="w-[40px] h-[40px] rounded-full"
                   />
                 ) : (
-
                   <Profile className="w-full h-full rounded-full" />
 
                 )}
@@ -415,8 +471,8 @@ const RequestPage = () => {
                 <Text className="text-[14px]  text-[#2e2c43] capitalize" style={{ fontFamily: "Poppins-Regular" }}>
                   {requestInfo?.customerId?.userName}
                 </Text>
-                <Text className="text-[12px] text-[#c4c4c4]" style={{ fontFamily: "Poppins-Regular" }}>
-                  Active 3 hr ago
+                <Text className="text-[12px] text-[#79B649]" style={{ fontFamily: "Poppins-Regular" }}>
+                  Online
                 </Text>
               </View>
             </View>
@@ -590,11 +646,10 @@ const RequestPage = () => {
             <View className="gap-[20px] items-center bg-white pt-[20px] shadow-2xl">
               <View>
                 <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Bold" }}>
-                  Are you accepting the customer bid?
+                Are you accepting the customer request ?
                 </Text>
-                <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Regular" }}>
-                  Please confirm the product availability by {"\n"} accepting
-                  this request
+                <Text className="text-[14px] text-center px-[10px]" style={{ fontFamily: "Poppins-Regular" }}>
+                Please confirm the product/service availability by accepting this request 
                 </Text>
               </View>
 
@@ -615,7 +670,7 @@ const RequestPage = () => {
                 >
                   <View className="h-[63px] flex items-center justify-center border-2 border-[#FB8C00] bg-white">
                     <Text className=" text-[16px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Black" }}>
-                      Product Not Available
+                      Not Available
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -686,12 +741,12 @@ const RequestPage = () => {
             <View className="gap-[20px] items-center bg-white pt-[20px] shadow-2xl">
               <View>
                 <Text className="text-[14px]  text-center" style={{ fontFamily: "Poppins-Bold" }}>
-                  Are you accepting the customer bid?
+                Are you accepting the customer offer ?
                 </Text>
-                <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Regular" }}>
+                {/* <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Regular" }}>
                   If you don’t understand the customer’s need,
                   {"\n"}select no and send query for clarification.
-                </Text>
+                </Text> */}
               </View>
 
               <View className="w-full flex-row justify-between">
@@ -719,9 +774,8 @@ const RequestPage = () => {
               </View>
             </View>
           )}
-        {requestInfo?.requestType !== "closed" &&
+        {
           requestInfo?.requestType === "ongoing" &&
-          requestInfo?.requestType !== "cancelled" &&
           requestInfo?.requestId?.requestActive === "active" &&
           messages &&
           messages.length > 0 &&
@@ -742,12 +796,30 @@ const RequestPage = () => {
               >
                 <View className="h-[63px] flex items-center justify-center bg-[#FB8C00]">
                   <Text className=" text-[16px] text-white" style={{ fontFamily: "Poppins-Black" }}>
-                    Send a offer
+                    Send an offer
                   </Text>
                 </View>
               </TouchableOpacity>
             </View>
           )}
+          {
+              messages &&
+              messages.length > 0 &&
+              messages[messages.length - 1]?.bidType === "true" &&
+              messages[messages.length - 1]?.bidAccepted === "new" && 
+              messages[messages.length - 1]?.sender?.refId === user?._id && (
+                <View className="flex items-center justify-center">
+                <View
+                className=" w-[90%] flex flex-row justify-center bg-[#FFE7C8] rounded-[24px]  py-[15px] mb-[10px] "
+              >
+                <Text className="text-[16px] text-center text-[#FB8C00] " style={{ fontFamily: "Poppins-Regular" }}>
+                  Waiting for customer response
+                </Text>
+              </View>
+              </View>
+
+              )
+          }
       </View>
       <RequestCancelModal
         modalVisible={cancelRequestModal}

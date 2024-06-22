@@ -188,7 +188,7 @@ const LocationScreen = () => {
               onPress={() => {
                 navigation.goBack();
               }}
-              className="flex flex-row p-4 items-center  gap-2"
+              className="flex flex-row p-6 items-center  gap-2"
             >
                            <BackArrow width={14} height={10} />
 

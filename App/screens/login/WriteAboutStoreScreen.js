@@ -41,14 +41,15 @@ const WriteAboutStoreScreen = () => {
               marginTop: 50,
             }}
           >
-            <Pressable
+            <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
               }}
+              style={{padding:10}}
             >
                              <BackArrow width={14} height={10} />
 
-            </Pressable>
+            </TouchableOpacity>
             <Text style={{ flex: 1, textAlign: "center", fontSize: 16,fontFamily:"Poppins-Bold" }}>
             Tell us about your store {"\n"}
             & services

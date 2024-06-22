@@ -25,14 +25,14 @@ const HistoryScreen = () => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView>
-        <View className="flex flex-row justify-between items-center px-[32px] ">
-          <View className="bg-[#FB8C00] p-[4px] rounded-full">
+        <View className="flex flex-row justify-center items-center px-[32px] ">
+          {/* <View className="bg-[#FB8C00] p-[4px] rounded-full">
             <TouchableOpacity onPress={() => navigation.navigate("menu")}>
               <Profile />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <GinieIcon />
-          <View className="bg-[#FB8C00] p-[4px] rounded-full">
+          <View className=" absolute p-[20px] rounded-full right-0">
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Close />
             </TouchableOpacity>

@@ -87,15 +87,15 @@ const [loading,setLoading] = useState(false);
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
         <View className="w-full z-40 mt-[40px]  flex flex-row justify-between items-center  px-[32px]">
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}
-            className="flex p-2 flex-row items-center  gap-2"
-          >
-                           <BackArrow width={14} height={10} />
+        <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{padding:6}}
+            >
+                             <BackArrow width={14} height={10} />
 
-          </Pressable>
+            </TouchableOpacity>
           <Text className="flex flex-1 justify-center items-center text-center text-[16px]" style={{ fontFamily: "Poppins-Bold" }}>
             Select Store Profile Pic
           </Text>

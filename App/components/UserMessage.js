@@ -1,73 +1,182 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
-import React from 'react'
-import { Entypo } from '@expo/vector-icons';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  Animated,
+  Modal,
+  Pressable,
+  Alert,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Entypo } from "@expo/vector-icons";
 import Tick from "../assets/tick.svg";
 import DPIcon from "../assets/DPIcon.svg";
-import { useSelector } from 'react-redux';
-import { formatDateTime } from '../screens/utils/lib';
+import { useSelector } from "react-redux";
+import { formatDateTime, handleDownloadPress } from "../screens/utils/lib";
+import * as FileSystem from "expo-file-system";
+import { Feather } from "@expo/vector-icons";
+import * as MediaLibrary from "expo-media-library";
 
 const UserMessage = ({ bidDetails }) => {
-    // console.log("bidDetails", bidDetails);
-    const { formattedTime, formattedDate } = formatDateTime( bidDetails?.updatedAt);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [scaleAnimation] = useState(new Animated.Value(0));
+  const [downloadProgress, setDownloadProgress] = useState({});
+ 
 
-    // const userDetails = useSelector(store => store.user.userDetails);
-  const requestInfo= useSelector(state => state.requestData.requestInfo || {});
+  const handleImagePress = (image) => {
+    setSelectedImage(image);
+    Animated.timing(scaleAnimation, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
 
+  const handleClose = () => {
+    Animated.timing(scaleAnimation, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setSelectedImage(null));
+  };
+  // console.log("bidDetails", bidDetails);
+  const { formattedTime, formattedDate } = formatDateTime(
+    bidDetails?.updatedAt
+  );
 
+  // const userDetails = useSelector(store => store.user.userDetails);
+  const requestInfo = useSelector(
+    (state) => state.requestData.requestInfo || {}
+  );
 
-    return (
-        <View className="flex gap-[19px]    rounded-3xl w-[297px] h-[max-content] py-[10px] items-center bg-[#fafafa]">
-            <View className="flex-row gap-[18px] ">
-                <View >
-                {
-              requestInfo?.customerId?.pic ? (  <Image
-                source={{ uri:requestInfo?.customerId?.pic  }}
-                style={{ width: 40, height: 40, borderRadius: 20 }}
-            // className="w-[40px] h-[40px] rounded-full"
-            />):(
-                <Image
-                source={{ uri: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" }}
-                style={{ width: 40, height: 40, borderRadius: 20 }}
-            // className="w-[40px] h-[40px] rounded-full"
+  return (
+    <View className="flex gap-[19px]    rounded-3xl w-[297px] h-[max-content] py-[10px] items-center bg-[#fafafa]">
+      <View className="flex-row gap-[18px] ">
+        <View>
+          {requestInfo?.customerId?.pic ? (
+            <Image
+              source={{ uri: requestInfo?.customerId?.pic }}
+              style={{ width: 40, height: 40, borderRadius: 20 }}
+              // className="w-[40px] h-[40px] rounded-full"
             />
-              )
-
-              
-          }
-
-                </View>
-                <View className="w-[60%]">
-                <View className="flex flex-row justify-between">
-            <Text className="text-[14px] text-[#2e2c43] capitalize" style={{ fontFamily: "Poppins-ExtraBold" }}>
+          ) : (
+            <Image
+              source={{
+                uri: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+              }}
+              style={{ width: 40, height: 40, borderRadius: 20 }}
+              // className="w-[40px] h-[40px] rounded-full"
+            />
+          )}
+        </View>
+        <View className="w-[60%]">
+          <View className="flex flex-row justify-between">
+            <Text
+              className="text-[14px] text-[#2e2c43] capitalize"
+              style={{ fontFamily: "Poppins-ExtraBold" }}
+            >
               {requestInfo?.customerId?.userName}
             </Text>
 
-            <Text className="text-[12px] text-[#2e2c43] " style={{ fontFamily: "Poppins-Regular" }}>{formattedTime}</Text>
+            <Text
+              className="text-[12px] text-[#2e2c43] "
+              style={{ fontFamily: "Poppins-Regular" }}
+            >
+              {formattedTime}
+            </Text>
           </View>
-                    <Text className="text-[14px] text-[#2e2c43]" style={{ fontFamily: "Poppins-Regular" }}>{bidDetails.message}</Text>
-                </View>
-            </View>
+          <Text
+            className="text-[14px] text-[#2e2c43]"
+            style={{ fontFamily: "Poppins-Regular" }}
+          >
+            {bidDetails.message}
+          </Text>
+        </View>
+      </View>
 
-            { bidDetails?.bidImages?.length>0 &&
-            
-            <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: 'row', gap: 4, paddingHorizontal: 25, }}>
-                {
-                    bidDetails.bidImages?.map((image, index) => (
-                        <View key={index}>
-                            <Image source={{ uri: image }} style={{ height: 132, width: 96, borderRadius: 24, backgroundColor: '#EBEBEB' }} />
-                        </View>
-                    ))
+      {bidDetails?.bidImages?.length > 0 && (
+        <ScrollView
+          horizontal={true}
+          contentContainerStyle={{
+            flexDirection: "row",
+            gap: 4,
+            paddingHorizontal: 25,
+          }}
+        >
+          {bidDetails?.bidImages.map((image, index) => (
+            <View
+              key={index}
+              style={{ position: "relative", width: 96, height: 132 }}
+            >
+              <Pressable onPress={() => handleImagePress(image)}>
+                <Image
+                  source={{ uri: image }}
+                  style={{ height: 132, width: 96, borderRadius: 20 }}
+                />
+              </Pressable>
+              <Pressable
+                style={{
+                  position: "absolute",
+                  bottom: 5,
+                  right: 5,
+                  backgroundColor: "gray",
+                  padding: 2,
+                  borderRadius: 100,
+                }}
+                onPress={() =>
+                  handleDownloadPress(
+                    image,
+                    index,
+                    downloadProgress,
+                    setDownloadProgress
+                  )
                 }
-            </ScrollView>
-            }
-            {bidDetails?.bidPrice > 0 && <View className="flex-row gap-[5px]" >
-                <Text style={{ fontFamily: "Poppins-Medium" }} >Expected Price: </Text>
-                <Text className="font-bold text-[##79B649]" style={{ fontFamily: "Poppins-SemiBold" }}>Rs. {bidDetails.bidPrice}</Text>
+              >
+                <Feather name="download" size={18} color="white" />
+              </Pressable>
+              {downloadProgress[index] !== undefined && (
+                <View style={styles.progressContainer}>
+                  <Text style={styles.progressText}>
+                    {Math.round(downloadProgress[index] * 100)}%
+                  </Text>
+                </View>
+              )}
+            </View>
+          ))}
+          <Modal
+            transparent
+            visible={!!selectedImage}
+            onRequestClose={handleClose}
+          >
+            <Pressable style={styles.modalContainer} onPress={handleClose}>
+              <Animated.Image
+                source={{ uri: selectedImage }}
+                style={[
+                  styles.modalImage,
+                  {
+                    transform: [{ scale: scaleAnimation }],
+                  },
+                ]}
+              />
+            </Pressable>
+          </Modal>
+        </ScrollView>
+      )}
+      {bidDetails?.bidPrice > 0 && (
+        <View className="flex-row gap-[5px]">
+          <Text style={{ fontFamily: "Poppins-Medium" }}>Expected Price: </Text>
+          <Text
+            className="font-bold text-[#79B649]"
+            style={{ fontFamily: "Poppins-SemiBold" }}
+          >
+            Rs. {bidDetails.bidPrice}
+          </Text>
+        </View>
+      )}
 
-
-            </View>}
-
-            {/* <View className="gap-[4px]">
+      {/* <View className="gap-[4px]">
                 <View className="flex-row gap-[5px]">
                     <Text>Expected Price: </Text>
                     <Text className="font-bold text-[##79B649]">Rs. {bidDetails.bidPrice}</Text>
@@ -95,10 +204,41 @@ const UserMessage = ({ bidDetails }) => {
 
 
             </View> */}
-        </View>
-    )
-}
+    </View>
+  );
+};
 
 export default UserMessage;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
+  modalImage: {
+    width: 300,
+    height: 400,
+    borderRadius: 10,
+  },
+  closeButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+  },
+  progressContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  progressText: {
+    color: "white",
+    fontSize: 16,
+  },
+});

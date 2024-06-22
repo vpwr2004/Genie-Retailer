@@ -30,6 +30,7 @@ import ViewRequestScreen from '../screens/requests/ViewRequestScreen';
 import SplashScreen from '../screens/SplashScreen';
 import MessageLoaderSkeleton from '../screens/utils/MessageLoaderSkeleton';
 import CompleteProfile from '../components/CompleteProfile';
+import TermsandConditions from '../screens/menu & profile/TermsandConditions';
 const Stack = createNativeStackNavigator();
 const GlobalNavigation = () => {
 
@@ -69,6 +70,7 @@ const GlobalNavigation = () => {
         <Stack.Screen name="bidQuery" component={BidQueryPage} />
         <Stack.Screen name="history" component={HistoryScreen} />
         <Stack.Screen name="about" component={AboutScreen} />
+        <Stack.Screen name="termsandconditions" component={TermsandConditions} />
         <Stack.Screen name="help" component={HelpScreen} />
         <Stack.Screen name="viewrequest" component={ViewRequestScreen} />
       </Stack.Navigator>

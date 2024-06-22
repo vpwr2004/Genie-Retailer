@@ -141,9 +141,19 @@ export async function notificationListeners(dispatch, newRequests, ongoingReques
                     //  console.log("hiii received", response.data);
                     // Prepend new data to the existing state
                     // console.log("new notify requests",newRequests)
-                    const updatedRequests = [...response.data, ...newRequests];
+                             const filteredRequests = ongoingRequests.filter(
+                                      (request) => request._id ===response.data[0]._id
+                                    );
+                                    console.log("filtered requests",filteredRequests,filteredRequests.length)
+                                    if(filteredRequests && filteredRequests.length>0){
+                                      
+                                    }
+                                    else{
+                                        const updatedRequests = [...response.data, ...newRequests];
+                                        dispatch(setNewRequests(updatedRequests));
+                                    }
                     // console.log("updated",updatedRequests);
-                    dispatch(setNewRequests(updatedRequests));
+                   
                 }
             } catch (error) {
                 console.error('Error fetching new requests by notify:', error);

@@ -60,18 +60,19 @@ const BidPageInput = () => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="relative flex-grow bg-[#ffe7c8]">
           <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[40px]">
-            <Pressable
+            <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
               }}
+              style={{padding:6}}
             >
                          <BackArrow width={14} height={10} />
 
-            </Pressable>
+            </TouchableOpacity>
 
             <View className="gap-[9px]">
               <View className="flex-row gap-[18px]">
-                <View className="flex items-center justify-center rounded-full">
+                <View className="flex items-center justify-center rounded-full bg-white p-[4px]">
                   {requestInfo?.customerId?.pic ? (
                     <Image
                       source={{ uri: requestInfo?.customerId?.pic }}
@@ -86,9 +87,9 @@ const BidPageInput = () => {
                   <Text className="text-[14px] text-[#2e2c43] capitalize" style={{ fontFamily: "Poppins-Regular" }}>
                     {requestInfo?.customerId?.userName}
                   </Text>
-                  <Text className="text-[12px] text-[#c4c4c4]" style={{ fontFamily: "Poppins-Regular" }}>
-                    Active 3 hr ago
-                  </Text>
+                  <Text className="text-[12px] text-[#79B649]" style={{ fontFamily: "Poppins-Regular" }}>
+                  Online
+                </Text>
                 </View>
               </View>
             </View>
@@ -113,7 +114,7 @@ const BidPageInput = () => {
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">
               <View className="flex-row justify-between">
-                <Text className="" style={{ fontFamily: "Poppins-Bold" }}>Send a offer</Text>
+                <Text className="" style={{ fontFamily: "Poppins-Bold" }}>Send an offer</Text>
                 <Text className="text-[#FB8C00] text-[14px] " style={{ fontFamily: "Poppins-Medium" }}>Step 1/3</Text>
               </View>
               <Text style={{ fontFamily: "Poppins-Regular" }}>Type your response here to the customer</Text>
