@@ -50,7 +50,7 @@ import { setOngoingRequests, setRequestInfo, setRetailerHistory } from "../../re
 import { NotificationBidRejected } from "../../notification/notificationMessages";
 import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 import BackArrow from "../../assets/arrow-left.svg"
-import * as Clipboard from 'expo-clipboard';
+
 
 // import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 // import { setMessages } from "../../redux/reducers/requestDataSlice";
