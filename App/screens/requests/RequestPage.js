@@ -50,6 +50,7 @@ import { setOngoingRequests, setRequestInfo, setRetailerHistory } from "../../re
 import { NotificationBidRejected } from "../../notification/notificationMessages";
 import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 import BackArrow from "../../assets/arrow-left.svg"
+import * as Clipboard from 'expo-clipboard';
 
 // import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 // import { setMessages } from "../../redux/reducers/requestDataSlice";
@@ -509,13 +510,13 @@ const RequestPage = () => {
           </View>
         )}
 
-        <View className="px-[50px] pb-[20px] flex bg-[#ffe7c8]">
+        <View className="px-[20px] pb-[20px] flex bg-[#ffe7c8]">
           <View className="flex-row gap-[10px] items-center">
             <Text className="text-[16px] " style={{ fontFamily: "Poppins-Bold" }}>Request Id</Text>
             <Text style={{ fontFamily: "Poppins-Regular" }}>{requestInfo?.requestId?._id}</Text>
-            {/* {
-              route.params?.data ? ( <Text>{req?.requestId._id}</Text>):( )
-            } */}
+            <TouchableOpacity style={{padding:4}}>
+               <Copy/>
+            </TouchableOpacity>
           </View>
           <Text style={{ fontFamily: "Poppins-Regular" }}>
             {requestInfo?.requestId?.requestDescription
