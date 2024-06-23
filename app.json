@@ -40,7 +40,7 @@
       "package": "com.culturtapgenieretailer.GenieApp"
     },
     "web": {
-      "favicon": "./App/assets/appIcon.png",
+       "favicon": "./App/assets/favicon.png",
       "bundler": "metro"
     },
     "extra": {
