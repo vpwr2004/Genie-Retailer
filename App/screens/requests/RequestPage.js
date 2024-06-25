@@ -53,6 +53,8 @@ import {
 import { NotificationBidRejected } from "../../notification/notificationMessages";
 import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 import BackArrow from "../../assets/arrow-left.svg";
+import * as Clipboard from 'expo-clipboard';
+
 // import Clipboard from '@react-native-clipboard/clipboard';
 
 // import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
@@ -70,6 +72,8 @@ const RequestPage = () => {
   const [messages, setMessages] = useState([]);
   const [accept, setAcceptLocal] = useState(false);
   const [available, setAvailable] = useState(false);
+  const [copied, setCopied] = useState(false);
+
 
   const [modal, setModal] = useState(false);
   const [closeRequestModal, setCloseRequestModal] = useState(false);
@@ -422,6 +426,20 @@ const RequestPage = () => {
     setRating(star);
   };
 
+  const copyToClipboard = async () => {
+    try {
+        await Clipboard.setStringAsync(requestInfo?.requestId?._id);
+        console.log('Text copied to clipboard');
+        setCopied(true);
+
+        // Hide the notification after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+        console.error('Failed to copy text to clipboard', error);
+    }
+};
+
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       {attachmentScreen && (
@@ -518,8 +536,8 @@ const RequestPage = () => {
           </View>
         )}
 
-        <View className="px-[20px] pb-[20px] flex bg-[#ffe7c8]">
-          <View className="flex-row gap-[10px] items-center">
+        <View className="px-[40px] pb-[20px] flex bg-[#ffe7c8]">
+          <View className="flex-row gap-[10px] relative items-center">
             <Text
               className="text-[16px] "
               style={{ fontFamily: "Poppins-Bold" }}
@@ -529,9 +547,10 @@ const RequestPage = () => {
             <Text style={{ fontFamily: "Poppins-Regular" }}>
               {requestInfo?.requestId?._id}
             </Text>
-            <TouchableOpacity style={{ padding: 4 }}>
-              <Copy />
-            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {copyToClipboard()}} style={{padding:4}}>
+                                    <Copy />
+                                </TouchableOpacity>
+                                {copied && <Text className="bg-[#ebebeb] p-2 rounded-lg absolute -top-10 right-0">Copied!</Text>}
           </View>
           <Text style={{ fontFamily: "Poppins-Regular" }}>
             {requestInfo?.requestId?.requestDescription

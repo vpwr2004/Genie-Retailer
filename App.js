@@ -15,13 +15,7 @@ import { notificationListeners } from './App/notification/notificationServices';
 
 
 
-// Notifications.setNotificationHandler({
-//   handleNotification: async () => ({
-//     shouldShowAlert: true,
-//     shouldPlaySound: false,
-//     shouldSetBadge: false,
-//   }),
-// });
+
 
 
 export default function App() {
@@ -37,22 +31,6 @@ export default function App() {
   }, []);
 
 
-  // useEffect(() => {
-
-
-  //   notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-  //     console.log("notification at app.js", notification);
-  //   });
-
-  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-  //     console.log(response);
-  //   });
-
-  //   return () => {
-  //     Notifications.removeNotificationSubscription(notificationListener.current);
-  //     Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
 
 
 
@@ -79,6 +57,12 @@ export default function App() {
 
     }
   )
+
+  useEffect(() => {
+    
+      notificationListeners();
+
+  }, []);
 
 
 

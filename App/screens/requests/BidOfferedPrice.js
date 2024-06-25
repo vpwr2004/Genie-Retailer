@@ -14,6 +14,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Profile from "../../assets/ProfileIcon2.svg";
+import Copy from "../../assets/Copy.svg";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   setBidOfferedPrice,
@@ -21,6 +23,8 @@ import {
 } from "../../redux/reducers/bidSlice";
 import { TouchableOpacity } from "react-native";
 import BackArrow from "../../assets/arrow-left.svg"
+import * as Clipboard from 'expo-clipboard';
+
 
 
 const BidOfferedPrice = () => {
@@ -30,6 +34,7 @@ const BidOfferedPrice = () => {
   const { user, messages, setMessages } = route.params;
   const [offeredPrice, setOfferedPrice] = useState(0);
   const [warranty, setWarranty] = useState(0);
+  const [copied, setCopied] = useState(false);
   const requestInfo = useSelector((state) => state.requestData.requestInfo);
 
   const handleOfferedPrice = (offeredPrice) => {
@@ -72,6 +77,20 @@ const BidOfferedPrice = () => {
       setMessages,
     });
   };
+
+  
+  const copyToClipboard = async () => {
+    try {
+        await Clipboard.setStringAsync(requestInfo?.requestId?._id);
+        console.log('Text copied to clipboard');
+        setCopied(true);
+
+        // Hide the notification after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+        console.error('Failed to copy text to clipboard', error);
+    }
+};
 
   return (
     <View style={{ flex: 1 }}>
@@ -116,19 +135,33 @@ const BidOfferedPrice = () => {
                                 <ThreeDots />
                             </Pressable> */}
           </View>
-          <View className="px-[50px] pb-[20px] flex ">
-            <View className="flex-row gap-[10px] items-center">
-              <Text className="text-[16px]" style={{ fontFamily: "Poppins-Bold" }}>Request Id</Text>
-              <Text style={{ fontFamily: "Poppins-Regular" }}>{requestInfo?.requestId?._id}</Text>
-            </View>
+          <View className="px-[40px] pb-[20px] flex bg-[#FFE7C8]">
+          <View className="flex-row gap-[10px] items-center">
+            <Text
+              className="text-[16px] "
+              style={{ fontFamily: "Poppins-Bold" }}
+            >
+              Request Id
+            </Text>
             <Text style={{ fontFamily: "Poppins-Regular" }}>
+              {requestInfo?.requestId?._id}
+            </Text>
+            <TouchableOpacity onPress={() => {copyToClipboard()}} style={{padding:4}}>
+                                    <Copy />
+                                </TouchableOpacity>
+                                {copied && <Text className="bg-[#ebebeb] p-2 rounded-lg z-50 absolute -top-10 right-0">Copied!</Text>}
+          </View>
+          <Text style={{ fontFamily: "Poppins-Regular" }}>
             {requestInfo?.requestId?.requestDescription
               ?.split(" ")
               .slice(0, 12)
               .join(" ")}
             ....
           </Text>
-          </View>
+          {/* {
+              route.params?.data ? ( <Text>{req?.requestId?.requestDescription}</Text>):( <Text>{requestInfo?.requestId?.requestDescription}</Text>)
+            } */}
+        </View>
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">
               <View className="flex-row justify-between">

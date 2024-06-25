@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import Profile from "../../assets/ProfileIcon.svg";
 import GinieIcon from "../../assets/GinieBusinessIcon.svg";
 import History from "../../assets/HistoryIcon.svg";
-import Close from "../../assets/delImg.svg";
+import Close from "../../assets/Cross.svg";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { setRequestInfo } from "../../redux/reducers/requestDataSlice";
 import ProductOrderCard from "../../components/ProductOrderCard";
@@ -32,8 +32,8 @@ const HistoryScreen = () => {
             </TouchableOpacity>
           </View> */}
           <GinieIcon />
-          <View className=" absolute p-[20px] rounded-full right-0">
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+          <View className=" absolute z-40 p-[20px] rounded-full right-0">
+            <TouchableOpacity onPress={() => navigation.goBack()} style={{paddingRight:20}}>
               <Close />
             </TouchableOpacity>
           </View>

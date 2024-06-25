@@ -13,7 +13,7 @@ const HelpScreen = () => {
     const user=useSelector(state=>state.storeData.userDetails);
     
    //  navigation.navigate('menu')
-    const [loading,setLoading] = useState(false)
+    const [loading,setLoading] = useState(false);
 
     const handleHelp = async () => {
           

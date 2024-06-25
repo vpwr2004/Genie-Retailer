@@ -17,6 +17,8 @@ import {
 import React, { useEffect, useState } from "react";
 import ThreeDots from "../../assets/ThreeDotIcon.svg";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import Copy from "../../assets/Copy.svg";
+
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -33,6 +35,8 @@ import { manipulateAsync } from "expo-image-manipulator";
 import { launchCamera } from "react-native-image-picker";
 import Close from "../../assets/RedClose.svg";
 import BackArrow from "../../assets/arrow-left.svg";
+import * as Clipboard from 'expo-clipboard';
+
 
 const BidPageImageUpload = () => {
   const [images, setImages] = useState([]);
@@ -44,6 +48,8 @@ const BidPageImageUpload = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [cameraScreen, setCameraScreen] = useState(false);
   const [addMore, setAddMore] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [camera, setCamera] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -140,7 +146,7 @@ const BidPageImageUpload = () => {
           const newImageUri = response.assets[0].uri;
           const compressedImage = await manipulateAsync(
             newImageUri,
-            [{ resize: { width: 800, height: 800 } }],
+            [{ resize: { width: 600, height: 800 } }],
             { compress: 0.5, format: "jpeg", base64: true }
           );
           await getImageUrl(compressedImage);
@@ -161,6 +167,8 @@ const BidPageImageUpload = () => {
       quality: 0.5,
     });
 
+
+
     console.log("pickImage", "result");
     if (!result.cancelled) {
       //   const processedUri = await handleImageProcessing(result.assets[0]);
@@ -180,6 +188,20 @@ const BidPageImageUpload = () => {
     setImgIndex(index);
     setModalVisible(true);
   };
+
+
+  const copyToClipboard = async () => {
+    try {
+        await Clipboard.setStringAsync(requestInfo?.requestId?._id);
+        console.log('Text copied to clipboard');
+        setCopied(true);
+
+        // Hide the notification after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+        console.error('Failed to copy text to clipboard', error);
+    }
+};
 
   return (
     <>
@@ -251,26 +273,33 @@ const BidPageImageUpload = () => {
                                 <ThreeDots />
                             </Pressable> */}
               </View>
-              <View className="px-[50px] pb-[20px] flex bg-[#ffe7c8]">
-                <View className="flex-row gap-[10px] items-center">
-                  <Text
-                    className="text-[16px]"
-                    style={{ fontFamily: "Poppins-Bold" }}
-                  >
-                    Request Id
-                  </Text>
-                  <Text style={{ fontFamily: "Poppins-Regular" }}>
-                    {requestInfo?.requestId?._id}
-                  </Text>
-                </View>
-                <Text style={{ fontFamily: "Poppins-Regular" }}>
-                  {requestInfo?.requestId?.requestDescription
-                    ?.split(" ")
-                    .slice(0, 12)
-                    .join(" ")}
-                  ....
-                </Text>
-              </View>
+              <View className="px-[40px] pb-[20px] flex bg-[#FFE7C8]">
+          <View className="flex-row gap-[10px] items-center">
+            <Text
+              className="text-[16px] "
+              style={{ fontFamily: "Poppins-Bold" }}
+            >
+              Request Id
+            </Text>
+            <Text style={{ fontFamily: "Poppins-Regular" }}>
+              {requestInfo?.requestId?._id}
+            </Text>
+            <TouchableOpacity onPress={() => {copyToClipboard()}} style={{padding:4}}>
+                                    <Copy />
+                                </TouchableOpacity>
+                                {copied && <Text className="bg-[#ebebeb] p-2 rounded-lg z-50 absolute -top-10 right-0">Copied!</Text>}
+          </View>
+          <Text style={{ fontFamily: "Poppins-Regular" }}>
+            {requestInfo?.requestId?.requestDescription
+              ?.split(" ")
+              .slice(0, 12)
+              .join(" ")}
+            ....
+          </Text>
+          {/* {
+              route.params?.data ? ( <Text>{req?.requestId?.requestDescription}</Text>):( <Text>{requestInfo?.requestId?.requestDescription}</Text>)
+            } */}
+        </View>
 
               <View className="flex gap-[16px] px-[50px] pt-[10px] pb-[10px]">
                 <View className="flex-row justify-between">

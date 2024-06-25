@@ -27,6 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMessages, setOngoingRequests } from "../../redux/reducers/requestDataSlice";
 import { sendCustomNotificationChat } from "../../notification/notificationMessages";
 import BackArrow from "../../assets/arrow-left.svg"
+import * as Clipboard from 'expo-clipboard';
+
 
 
 const BidQueryPage = () => {
@@ -38,6 +40,8 @@ const BidQueryPage = () => {
   const { user, messages, setMessages } = route.params;
   const requestInfo = useSelector((state) => state.requestData.requestInfo);
   const [loading,setLoading]=useState(false)
+  const [copied, setCopied] = useState(false);
+
   const ongoingRequests = useSelector(
     (state) => state.requestData.ongoingRequests || []
   );
@@ -135,6 +139,22 @@ const BidQueryPage = () => {
       console.log("error sending message", error);
     }
   };
+
+  const copyToClipboard = async () => {
+    try {
+        await Clipboard.setStringAsync(requestInfo?.requestId?._id);
+        console.log('Text copied to clipboard');
+        setCopied(true);
+
+        // Hide the notification after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+        console.error('Failed to copy text to clipboard', error);
+    }
+};
+
+
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -178,19 +198,33 @@ const BidQueryPage = () => {
                                 <ThreeDots />
                             </Pressable> */}
           </View>
-          <View className="px-[50px] pb-[20px] flex bg-[#ffe7c8]">
-            <View className="flex-row gap-[10px] items-center mb-2">
-              <Text className="text-[16px]" style={{ fontFamily: "Poppins-Bold" }}>Request Id</Text>
-              <Text style={{ fontFamily: "Poppins-Regular" }}>{requestInfo?.requestId?._id}</Text>
-            </View>
-            <Text style={{ fontFamily: "Poppins-Regular"}}>
+          <View className="px-[40px] pb-[20px] flex bg-[#FFE7C8]">
+          <View className="flex-row gap-[10px] items-center">
+            <Text
+              className="text-[16px] "
+              style={{ fontFamily: "Poppins-Bold" }}
+            >
+              Request Id
+            </Text>
+            <Text style={{ fontFamily: "Poppins-Regular" }}>
+              {requestInfo?.requestId?._id}
+            </Text>
+            <TouchableOpacity onPress={() => {copyToClipboard()}} style={{padding:4}}>
+                                    <Copy />
+                                </TouchableOpacity>
+                                {copied && <Text className="bg-[#ebebeb] p-2 rounded-lg z-50 absolute -top-10  right-0">Copied!</Text>}
+          </View>
+          <Text style={{ fontFamily: "Poppins-Regular" }}>
             {requestInfo?.requestId?.requestDescription
               ?.split(" ")
               .slice(0, 12)
               .join(" ")}
             ....
           </Text>
-          </View>
+          {/* {
+              route.params?.data ? ( <Text>{req?.requestId?.requestDescription}</Text>):( <Text>{requestInfo?.requestId?.requestDescription}</Text>)
+            } */}
+        </View>
           <KeyboardAvoidingView>
             <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">
               <View className="flex-row justify-between">

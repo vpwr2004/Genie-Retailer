@@ -7,40 +7,49 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setNewRequests, setOngoingRequests, setRetailerHistory } from '../redux/reducers/requestDataSlice';
 import * as Notifications from 'expo-notifications';
-// import notifee from "@notifee/react-native"
+import notifee ,{EventType,AndroidImportance,AndroidStyle} from '@notifee/react-native';
+// import * as Notifications from 'expo-notifications';
+// import * as Clipboard from 'expo-clipboard';
 
-// "@expo/config-plugins": "^7.8.0",
-// "@expo/prebuild-config": "^6.7.0",
-
-// async function onDisplayNotification() {
-//     // Request permissions (required for iOS)
-//     await notifee.requestPermission()
-
-//     // Create a channel (required for Android)
-//     const channelId = await notifee.createChannel({
-//       id: 'default',
-//       name: 'Default Channel',
-//     });
-
-//     // Display a notification
-//     await notifee.displayNotification({
-//       title: 'Notification Title',
-//       body: 'Main body content of the notification',
-//       android: {
-//         channelId,
-//         smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
-//         // pressAction is needed if you want the notification to open the app when pressed
-//         pressAction: {
-//           id: 'default',
-//         },
-//       },
-//     });
-//   }
-// // Import your action
-
-
-// dispatch, newRequests, ongoingRequests, retailerHistory
-export async function notificationListeners(dispatch, newRequests, ongoingRequests, retailerHistory) {
+async function onDisplayNotification(remoteMessage) {
+        // Request permissions (required for iOS)
+        await notifee.requestPermission()
+       
+        const channelId = await notifee.createChannel({
+          id: 'default',
+          name: 'chat',
+        });
+    
+        // Display a notification
+        await notifee.displayNotification({
+          title: remoteMessage.notification.title,
+          body:remoteMessage.notification.body,
+          android: {
+            channelId,
+            pressAction: {
+              id: 'default',
+            },
+            importance: AndroidImportance.HIGH, 
+            // style: { type: AndroidStyle.BIGPICTURE, picture: remoteMessage?.notification?.android?.image },
+            
+        
+          },
+        });
+        return notifee.onForegroundEvent(({ type, detail }) => {
+            switch (type) {
+              case EventType.DISMISSED:
+                // console.log('User dismissed notification', detail.notification);
+                break;
+              case EventType.PRESS:
+                setTimeout(() => {
+                    console.log("pressed",remoteMessage?.data)
+                    navigationService.navigate("home",{ data: remoteMessage?.data })
+                }, 1200);
+                break;
+            }
+          });
+      }
+export async function notificationListeners() {
 
 
 
@@ -76,6 +85,9 @@ export async function notificationListeners(dispatch, newRequests, ongoingReques
 
 
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+        console.log("FCM message", remoteMessage.data);
+        // handleNotifcation(remoteMessage);
+        await onDisplayNotification(remoteMessage);
 
 
 

@@ -194,7 +194,7 @@ export const sendCustomNotificationBid = async (mess) => {
             sound: "default",
             //   icon: "fcm_push_icon",
             //   color:"#fcb800",
-            //   tag:`${mess?.tag}`
+             tag:mess?.tag
           },
         },
         data: {
@@ -251,7 +251,7 @@ export const sendCustomNotificationAttachment = async (mess) => {
             sound: "default",
             //   icon: "fcm_push_icon",
             //   color:"#fcb800",
-            //   tag:`${mess?.tag}`
+              tag:mess?.tag
           },
         },
         data: {

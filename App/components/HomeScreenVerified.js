@@ -199,20 +199,20 @@ const HomeScreenVerified = () => {
   };
 
   // Setting socket for requests
-  useEffect(() => {
-    const setupNotifications = async () => {
-      console.log("notify data", ongoingRequests.length);
-      await notificationListeners(
-        dispatch,
-        newRequests,
-        ongoingRequests,
-        retailerHistory
-      );
+  // useEffect(() => {
+  //   const setupNotifications = async () => {
+  //     console.log("notify data", ongoingRequests.length);
+  //     await notificationListeners(
+  //       dispatch,
+  //       newRequests,
+  //       ongoingRequests,
+  //       retailerHistory
+  //     );
 
-      // setRequest(true);
-    };
-    setupNotifications();
-  }, [newRequests]);
+  //     // setRequest(true);
+  //   };
+  //   setupNotifications();
+  // }, [newRequests]);
 
   useEffect(() => {
     socket.emit("setup", userData?._id);
