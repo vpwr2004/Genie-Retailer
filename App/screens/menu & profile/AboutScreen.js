@@ -29,7 +29,7 @@ const AboutScreen = () => {
 
 
 
-                <Text className="text-center pt-[40px] text-[16px]  mb-[60px]" style={{ fontFamily: "Poppins-Bold" }}>About Culturtap Genie</Text>
+                <Text className="text-center pt-[40px] text-[16px]  mb-[60px]" style={{ fontFamily: "Poppins-Bold" }}>About Culturtap Genie {"\n"}Business</Text>
 
                 
 

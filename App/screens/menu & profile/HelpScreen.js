@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, Pressable, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Image, Pressable, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity ,ActivityIndicator} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackArrow from "../../assets/arrow-left.svg"
 import { useSelector } from 'react-redux';
-import { ActivityIndicator } from 'react-native-paper';
 import axios from 'axios';
 
 
@@ -90,7 +89,7 @@ const HelpScreen = () => {
                         </View>
 
                         <View className="mb-[40px]">
-                            <Text style={{ fontSize: 16, textAlign: 'center', marginBottom: 10,fontFamily:"Poppins-Bold" }}>Or!</Text>
+                            <Text style={{ fontSize: 16, textAlign: 'center', marginBottom: 10,fontFamily:"Poppins-Bold" }}>Or</Text>
                             <Text style={{ fontSize: 16, textAlign: 'center', marginBottom: 10 ,fontFamily:"Poppins-Regular"}}>Submit your concern with us at</Text>
                             <Pressable onPress={() => console.log("hii email")}>
                                 <Text style={{ color: '#FB8C00' ,fontSize: 16, textAlign: 'center' ,fontFamily:"Poppins-Bold"}}>Info@culturtap.com</Text>

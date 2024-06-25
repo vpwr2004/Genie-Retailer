@@ -10,7 +10,6 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
-
 } from "react-native";
 import React, {
   useCallback,
@@ -46,11 +45,15 @@ import UserAttachment from "../../components/UserAttachment";
 import RequestCancelModal from "../../components/RequestCancelModal";
 import { socket } from "../utils/socket.io/socket";
 import Attachment from "../../components/Attachment";
-import { setOngoingRequests, setRequestInfo, setRetailerHistory } from "../../redux/reducers/requestDataSlice";
+import {
+  setOngoingRequests,
+  setRequestInfo,
+  setRetailerHistory,
+} from "../../redux/reducers/requestDataSlice";
 import { NotificationBidRejected } from "../../notification/notificationMessages";
 import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
-import BackArrow from "../../assets/arrow-left.svg"
-
+import BackArrow from "../../assets/arrow-left.svg";
+// import Clipboard from '@react-native-clipboard/clipboard';
 
 // import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 // import { setMessages } from "../../redux/reducers/requestDataSlice";
@@ -77,6 +80,10 @@ const RequestPage = () => {
   const [cameraScreen, setCameraScreen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isLoading, setisLoading] = useState(false);
+  const [feedbackLoading,setFeedbackLoading]=useState(false)
+  const [feedback, setFeedback] = useState("");
+
+  const [rating, setRating] = useState(0);
   const retailerHistory = useSelector(
     (state) => state.requestData.retailerHistory || []
   );
@@ -88,8 +95,6 @@ const RequestPage = () => {
     (state) => state.requestData.requestInfo || {}
   );
   //  console.log("params",route?.params?.data?.requestInfo);
-
-
 
   const fetchRequestData = async () => {
     setLoading(true);
@@ -103,15 +108,13 @@ const RequestPage = () => {
       if (route?.params?.data) {
         req = JSON.parse(route?.params?.data?.requestInfo);
       }
-      // let response = 
-      await axios.get(
-        "http://173.212.193.109:5000/chat/get-spade-messages",
-        {
+      // let response =
+      await axios
+        .get("http://173.212.193.109:5000/chat/get-spade-messages", {
           params: {
             id: requestInfo?._id ? requestInfo?._id : req?._id,
           },
-        }
-      )
+        })
         .then(async (response) => {
           setMessages(response?.data);
 
@@ -122,10 +125,16 @@ const RequestPage = () => {
           console.log("socket join chat setup successfully");
 
           setLoading(false);
-          if (requestInfo?.unreadCount > 0 && requestInfo?.latestMessage?.sender?.type === 'UserRequest') {
-            const res = await axios.patch('http://173.212.193.109:5000/chat/mark-as-read', {
-              id: requestInfo?._id
-            });
+          if (
+            requestInfo?.unreadCount > 0 &&
+            requestInfo?.latestMessage?.sender?.type === "UserRequest"
+          ) {
+            const res = await axios.patch(
+              "http://173.212.193.109:5000/chat/mark-as-read",
+              {
+                id: requestInfo?._id,
+              }
+            );
 
             let tmp = { ...requestInfo, unreadCount: 0 };
 
@@ -133,14 +142,20 @@ const RequestPage = () => {
             const filteredRequests = ongoingRequests.filter(
               (request) => request._id !== requestInfo?._id
             );
-            const data = [tmp, ...filteredRequests];
-            dispatch(setOngoingRequests(data));
-
+            if (requestInfo?.latestMessage?.bidType === "update") {
+              console.log("update");
+              const data = [...filteredRequests];
+              dispatch(setOngoingRequests(data));
+              const data2 = [tmp, ...retailerHistory];
+              dispatch(setRetailerHistory(data2));
+            } else {
+              const data = [tmp, ...filteredRequests];
+              dispatch(setOngoingRequests(data));
+            }
 
             console.log("mark as read", res.data, res.data.unreadCount);
           }
-
-        })
+        });
 
       // dispatch(setMessages(response.data));
 
@@ -151,24 +166,19 @@ const RequestPage = () => {
   };
 
   const SocketSetUp = async (id) => {
-
-    socket.emit(
-      "setup",
-      id
-    );
+    socket.emit("setup", id);
     console.log("socket setup for personal user setup successfully");
     // console.log("user connected with userId", requestInfo.users[0]._id);
 
     socket.on("connected", () => {
       setSocketConnected(true);
     });
-
   };
 
   useEffect(() => {
     // console.log('route.params.data',route?.params?.data);
     if (requestInfo) {
-      console.log("find error of requestPage from home screen")
+      console.log("find error of requestPage from home screen");
       SocketSetUp(requestInfo?.users[0]?._id);
     }
     if (route?.params?.data) {
@@ -189,12 +199,10 @@ const RequestPage = () => {
     return () => {
       if (socket) {
         // socket.disconnect();
-        socket.emit('leave room', requestInfo?.users[0]._id);
+        socket.emit("leave room", requestInfo?.users[0]._id);
       }
-    }
+    };
   }, []);
-
-
 
   // useEffect(() => {
   //   const fetchRequestData = async () => {
@@ -270,19 +278,24 @@ const RequestPage = () => {
         // dispatch(setMessages(updatedMessages));
         setMessages(updatedMessages);
         const filteredRequests = ongoingRequests.filter(
-          (request) => request._id !==requestInfo._id
+          (request) => request._id !== requestInfo._id
         );
         const requests = ongoingRequests.filter(
-          (request) => request._id ===requestInfo._id
+          (request) => request._id === requestInfo._id
         );
-        const updatedRequest={...requests[0],updatedAt:new Date().toISOString()}
+        const updatedRequest = {
+          ...requests[0],
+          updatedAt: new Date().toISOString(),
+        };
         //             // console.log("request ongoing",requests[0]?.updatedAt, new Date().toISOString());
-       
+
         // console.log("request ongoing",filteredRequests.length,requests.length,updatedRequest)
-        const data=[updatedRequest,...filteredRequests];
-         dispatch(setOngoingRequests(data));
+        const data = [updatedRequest, ...filteredRequests];
+        dispatch(setOngoingRequests(data));
         setisLoading(false);
-        const token = await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
+        const token = await axios.get(
+          `http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`
+        );
         if (token.data.length > 0) {
           const notification = {
             token: token.data,
@@ -315,8 +328,13 @@ const RequestPage = () => {
     const handleMessageReceived = (newMessageReceived) => {
       console.log("Message received from socket:", newMessageReceived);
       if (newMessageReceived?.bidType === "update") {
-        let tmp = { ...requestInfo, requestType: "closed" ,updatedAt:new Date().toISOString(),unreadCount:0};
-       console.log("update",tmp)
+        let tmp = {
+          ...requestInfo,
+          requestType: "closed",
+          updatedAt: new Date().toISOString(),
+          unreadCount: 0,
+        };
+        console.log("update", tmp);
         dispatch(setRequestInfo(tmp));
         const filteredRequests = ongoingRequests.filter(
           (request) => request._id !== requestInfo?._id
@@ -324,10 +342,7 @@ const RequestPage = () => {
         dispatch(setOngoingRequests(filteredRequests));
         const newHistory = [tmp, ...retailerHistory];
         dispatch(setRetailerHistory(newHistory));
-
-
       }
-      
 
       setMessages((prevMessages) => {
         if (
@@ -338,42 +353,27 @@ const RequestPage = () => {
             prevMessages[prevMessages.length - 1]?._id ===
             newMessageReceived?._id
           ) {
-            if(newMessageReceived.bidAccepted==="accepted"){
+            if (newMessageReceived.bidAccepted === "accepted") {
               let tmp = {
                 ...requestInfo,
-               requestType:"completed",updatedAt:new Date().toISOString(),unreadCount:0,
-              //  requestId:{requestActive:"completed"}
+                requestType: "completed",
+                updatedAt: new Date().toISOString(),
+                unreadCount: 0,
+                //  requestId:{requestActive:"completed"}
               };
-              console.log("request updated",tmp);
+              console.log("request updated", tmp);
               dispatch(setRequestInfo(tmp));
               const filteredRequests = ongoingRequests.filter(
-                (request) => request._id !==requestInfo._id
+                (request) => request._id !== requestInfo._id
               );
-             
+
               //             // console.log("request ongoing",requests[0]?.updatedAt, new Date().toISOString());
-             
+
               // console.log("request ongoing",filteredRequests.length,requests.length,updatedRequest)
-              const data=[tmp,...filteredRequests];
-               dispatch(setOngoingRequests(data));
-
+              const data = [tmp, ...filteredRequests];
+              dispatch(setOngoingRequests(data));
             }
-            // else{
 
-            //   const filteredRequests = ongoingRequests.filter(
-            //     (request) => request._id !==requestInfo._id
-            //   );
-            //   const requests = ongoingRequests.filter(
-            //     (request) => request._id ===requestInfo._id
-            //   );
-            //   const updatedRequest={...requests[0],updatedAt:new Date().toISOString(),unreadCount:0}
-            //   //             // console.log("request ongoing",requests[0]?.updatedAt, new Date().toISOString());
-             
-            //   // console.log("request ongoing",filteredRequests.length,requests.length,updatedRequest)
-            //   const data=[updatedRequest,...filteredRequests];
-            //    dispatch(setOngoingRequests(data));
-
-            // }
-            // Update the last message if it's the same as the new one
             return prevMessages.map((message) =>
               message._id === newMessageReceived._id
                 ? newMessageReceived
@@ -381,18 +381,14 @@ const RequestPage = () => {
             );
           } else {
             // Add the new message to the list
-            
+
             return [...prevMessages, newMessageReceived];
           }
-         
         }
 
-        
         // If the chat ID does not match, return the previous messages unchanged
         return prevMessages;
       });
-
-      
 
       // let mess = [...messages];
       // if(mess[mess.length-1]?.chat?._id===newMessageReceived?.chat?._id){
@@ -420,6 +416,11 @@ const RequestPage = () => {
   }, []);
 
   // const messages = useSelector(state => state.requestData.messages);
+ 
+
+  const handlePress = (star) => {
+    setRating(star);
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -435,19 +436,16 @@ const RequestPage = () => {
           />
         </View>
       )}
-      <View className="relative" >
-
-
+      <View className="relative">
         <View className=" relative bg-[#FFE7C8] pt-[40px] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
-        <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-              style={{padding:6}}
-            >
-                         <BackArrow width={14} height={10} />
-
-            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={{ padding: 6 }}
+          >
+            <BackArrow width={14} height={10} />
+          </TouchableOpacity>
 
           <View className="gap-[9px]">
             <View className="flex-row gap-[18px]">
@@ -461,18 +459,23 @@ const RequestPage = () => {
                       borderRadius: 20,
                       objectFit: "cover",
                     }}
-                  // className="w-[40px] h-[40px] rounded-full"
+                    // className="w-[40px] h-[40px] rounded-full"
                   />
                 ) : (
                   <Profile className="w-full h-full rounded-full" />
-
                 )}
               </View>
               <View className="w-[60%]">
-                <Text className="text-[14px]  text-[#2e2c43] capitalize" style={{ fontFamily: "Poppins-Regular" }}>
+                <Text
+                  className="text-[14px]  text-[#2e2c43] capitalize"
+                  style={{ fontFamily: "Poppins-Regular" }}
+                >
                   {requestInfo?.customerId?.userName}
                 </Text>
-                <Text className="text-[12px] text-[#79B649]" style={{ fontFamily: "Poppins-Regular" }}>
+                <Text
+                  className="text-[12px] text-[#79B649]"
+                  style={{ fontFamily: "Poppins-Regular" }}
+                >
                   Online
                 </Text>
               </View>
@@ -497,7 +500,12 @@ const RequestPage = () => {
                 navigation.navigate("viewrequest");
               }}
             >
-              <Text className="mx-5  py-3" style={{ fontFamily: "Poppins-Regular" }}>View Request</Text>
+              <Text
+                className="mx-5  py-3"
+                style={{ fontFamily: "Poppins-Regular" }}
+              >
+                View Request
+              </Text>
             </TouchableOpacity>
             {/* <Pressable
               onPress={() => {
@@ -512,10 +520,17 @@ const RequestPage = () => {
 
         <View className="px-[20px] pb-[20px] flex bg-[#ffe7c8]">
           <View className="flex-row gap-[10px] items-center">
-            <Text className="text-[16px] " style={{ fontFamily: "Poppins-Bold" }}>Request Id</Text>
-            <Text style={{ fontFamily: "Poppins-Regular" }}>{requestInfo?.requestId?._id}</Text>
-            <TouchableOpacity style={{padding:4}}>
-               <Copy/>
+            <Text
+              className="text-[16px] "
+              style={{ fontFamily: "Poppins-Bold" }}
+            >
+              Request Id
+            </Text>
+            <Text style={{ fontFamily: "Poppins-Regular" }}>
+              {requestInfo?.requestId?._id}
+            </Text>
+            <TouchableOpacity style={{ padding: 4 }}>
+              <Copy />
             </TouchableOpacity>
           </View>
           <Text style={{ fontFamily: "Poppins-Regular" }}>
@@ -532,7 +547,6 @@ const RequestPage = () => {
 
         {/*  message are mapped here */}
 
-
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 150 }}
           ref={scrollViewRef}
@@ -541,8 +555,7 @@ const RequestPage = () => {
           }
           style={{ marginBottom: 120 }}
         >
-          {
-            loading &&
+          {loading && (
             <View style={{ flex: 1 }}>
               <View style={{ flex: 1, alignSelf: "flex-start" }}>
                 <MessageLoaderSkeleton />
@@ -550,107 +563,207 @@ const RequestPage = () => {
               <View style={{ flex: 1, alignSelf: "flex-end" }}>
                 <MessageLoaderSkeleton />
               </View>
-
-
             </View>
+          )}
 
-
-
-          }
-
-          {!loading && <View className="flex gap-[21px] px-[10px] pt-[40px] pb-[100px]">
-            {/* <ChatMessage
+          {!loading && (
+            <View className="flex gap-[21px] px-[10px] pt-[40px] pb-[100px]">
+              {/* <ChatMessage
               bidDetails={messages[0]}
              
             /> */}
-            {messages &&
-              messages?.map((message) => {
-                // console.log("mapping", message); // You can move console.log outside of the return statement if you want to log the value
-                if (message?.bidType === "update") {
-                  return (
-                    <View
-                      key={message?._id}
-                      className="flex flex-row justify-center bg-[#FFE7C8] rounded-[24px] px-[32px] py-[10px]"
-                    >
-                      <Text className="text-[16px] text-center text-[#FB8C00]" style={{ fontFamily: "Poppins-Regular" }}>
-                        {message?.message}
-                      </Text>
-                    </View>
-                  );
-                } else if (message?.sender?.refId !== user?._id) {
-                  if (message?.bidType === "true" || messages[0] === message) {
+              {messages &&
+                messages?.map((message) => {
+                  // console.log("mapping", message); // You can move console.log outside of the return statement if you want to log the value
+                  if (message?.bidType === "update") {
                     return (
-                      <View
-                        key={message?._id}
-                        className="flex flex-row justify-start"
-                      >
-                        <UserBidMessage bidDetails={message} />
+                      <View key={message?._id} className="flex gap-6" >
+                        <View className="flex justify-center bg-[#FFE7C8] rounded-[24px] px-[32px] py-[10px] ">
+                          <Text
+                            className="text-[16px] text-center text-[#FB8C00]"
+                            style={{ fontFamily: "Poppins-Regular" }}
+                          >
+                            {message?.message}
+                          </Text>
+                        </View>
+                        <View className="px-[32px] py-[10px] bg-[#ffe7c8] rounded-[24px] ">
+                          <View className=" mt-[19px] ">
+                            <Text
+                              className="text-[14px]"
+                              style={{ fontFamily: "Poppins-Bold" }}
+                            >
+                              Rate your experience with customer
+                            </Text>
+                            <View className="flex-row gap-[5px] mt-[10px]">
+                              {[...Array(5)].map((_, index) => {
+                                const star = index + 1;
+                                return (
+                                  <TouchableOpacity
+                                    key={star}
+                                    onPress={() => handlePress(star)}
+                                  >
+                                    <FontAwesome
+                                      name={star <= rating ? "star" : "star-o"}
+                                      size={32}
+                                      color="#fb8c00"
+                                      className="mx-[5px]"
+                                    />
+                                  </TouchableOpacity>
+                                );
+                              })}
+                            </View>
+                          </View>
+
+                          <View className="mb-[20px]">
+                            <Text
+                              className="text-[14px] text-[#2e2c43] mx-[6px] mt-[30px] mb-[15px]"
+                              style={{ fontFamily: "Poppins-ExtraBold" }}
+                            >
+                              Feedback for customer
+                            </Text>
+
+                            <KeyboardAvoidingView className="h-[100px] bg-[#f9f9f9] rounded-xl ">
+                              <TextInput
+                                multiline
+                                numberOfLines={4}
+                                onChangeText={(val) => {
+                                  setFeedback(val);
+                                }}
+                                value={feedback}
+                                placeholder="Type here..."
+                                placeholderTextColor="#dbcdbb"
+                                className="w-full h-[100px] overflow-y-scroll px-[20px] border-[0.3px] border-[#2e2c43] rounded-xl "
+                                style={{
+                                  padding: 20,
+                                  height: 300,
+                                  flex: 1,
+                                  textAlignVertical: "top",
+                                  fontFamily: "Poppins-Regular",
+                                }}
+                              />
+                            </KeyboardAvoidingView>
+                          </View>
+                          <TouchableOpacity
+                          disabled={!rating || !feedback}
+                          //  onPress={sendQuery}
+                          style={{
+                            
+                            height: 50,
+                            width:"100%",
+                            backgroundColor:
+                              (!rating ||!feedback )? "#e6e6e6" : "#FB8C00",
+                            justifyContent: "center", // Center content vertically
+                            alignItems: "center", // Center content horizontally
+                          }}
+                        >
+                          {feedbackLoading ? (
+                            <ActivityIndicator size="small" color="#ffffff" />
+                          ) : (
+                            <Text
+                              style={{
+                                fontSize: 18,
+                                fontFamily: "Poppins-Black",
+                                color:
+                                  (!rating ||!feedback) ? "#888888" : "white",
+                              }}
+                            >
+                              Submit
+                            </Text>
+                          )}
+                        </TouchableOpacity>
+                          
+                        </View>
+                        
+                    
                       </View>
                     );
-                  } else if (message?.bidType === "false") {
-                    return (
-                      <View
-                        key={message?._id}
-                        className="flex flex-row justify-start"
-                      >
-                        <UserMessage bidDetails={message} />
-                      </View>
-                    );
+                  } else if (message?.sender?.refId !== user?._id) {
+                    if (
+                      message?.bidType === "true" ||
+                      messages[0] === message
+                    ) {
+                      return (
+                        <View
+                          key={message?._id}
+                          className="flex flex-row justify-start"
+                        >
+                          <UserBidMessage bidDetails={message} />
+                        </View>
+                      );
+                    } else if (message?.bidType === "false") {
+                      return (
+                        <View
+                          key={message?._id}
+                          className="flex flex-row justify-start"
+                        >
+                          <UserMessage bidDetails={message} />
+                        </View>
+                      );
+                    } else {
+                      return (
+                        <View
+                          key={message?._id}
+                          className="flex flex-row justify-start"
+                        >
+                          <UserAttachment bidDetails={message} />
+                        </View>
+                      );
+                    }
                   } else {
-                    return (
-                      <View
-                        key={message?._id}
-                        className="flex flex-row justify-start"
-                      >
-                        <UserAttachment bidDetails={message} />
-                      </View>
-                    );
+                    if (message?.bidType === "true") {
+                      return (
+                        <View
+                          key={message?._id}
+                          className="flex flex-row justify-end"
+                        >
+                          <RetailerBidMessage
+                            bidDetails={message}
+                            user={user}
+                          />
+                        </View>
+                      );
+                    } else {
+                      return (
+                        <View
+                          key={message?._id}
+                          className="flex flex-row justify-end"
+                        >
+                          <RetailerMessage bidDetails={message} user={user} />
+                        </View>
+                      );
+                    }
                   }
-                } else {
-                  if (message?.bidType === "true") {
-                    return (
-                      <View
-                        key={message?._id}
-                        className="flex flex-row justify-end"
-                      >
-                        <RetailerBidMessage bidDetails={message} user={user} />
-                      </View>
-                    );
-                  } else {
-                    return (
-                      <View
-                        key={message?._id}
-                        className="flex flex-row justify-end"
-                      >
-                        <RetailerMessage bidDetails={message} user={user} />
-                      </View>
-                    );
-                  }
-                }
-              })}
-          </View>
-          }
+                })}
+            </View>
+          )}
 
           {/* Spacer View */}
         </ScrollView>
-
       </View>
 
       {/* Typing Area */}
       <View
-        className={`absolute bottom-0 left-0 right-0 pt-[10] ${attachmentScreen ? "-z-50" : "z-50"
-          } `}
+        className={`absolute bottom-0 left-0 right-0 pt-[10] ${
+          attachmentScreen ? "-z-50" : "z-50"
+        } `}
       >
         {requestInfo?.requestType !== "closed" &&
           requestInfo?.requestType === "new" &&
           available === false && (
             <View className="gap-[20px] items-center bg-white pt-[20px] shadow-2xl">
               <View>
-                <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Bold" }}>
-                Are you accepting the customer request ?
+                <Text
+                  className="text-[14px] text-center"
+                  style={{ fontFamily: "Poppins-Bold" }}
+                >
+                  Are you accepting the customer request ?
                 </Text>
-                <Text className="text-[14px] text-center px-[10px]" style={{ fontFamily: "Poppins-Regular" }}>
-                Please confirm the product/service availability by accepting this request 
+                <Text
+                  className="text-[14px] text-center px-[10px]"
+                  style={{ fontFamily: "Poppins-Regular" }}
+                >
+                  Please confirm the product/service availability by accepting
+                  this request
                 </Text>
               </View>
 
@@ -660,7 +773,10 @@ const RequestPage = () => {
                   style={{ flex: 1 }}
                 >
                   <View className="h-[63px] flex items-center justify-center border-[1px] bg-[#FB8C00] border-[#FB8C00]">
-                    <Text className=" text-[16px] text-white " style={{ fontFamily: "Poppins-Black" }}>
+                    <Text
+                      className=" text-[16px] text-white "
+                      style={{ fontFamily: "Poppins-Black" }}
+                    >
                       Accept
                     </Text>
                   </View>
@@ -670,7 +786,10 @@ const RequestPage = () => {
                   style={{ flex: 1 }}
                 >
                   <View className="h-[63px] flex items-center justify-center border-2 border-[#FB8C00] bg-white">
-                    <Text className=" text-[16px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Black" }}>
+                    <Text
+                      className=" text-[16px] text-[#FB8C00]"
+                      style={{ fontFamily: "Poppins-Black" }}
+                    >
                       Not Available
                     </Text>
                   </View>
@@ -682,7 +801,6 @@ const RequestPage = () => {
         {requestInfo?.requestType !== "closed" &&
           requestInfo?.requestType !== "cancelled" &&
           requestInfo?.requestType !== "new" &&
-
           ((requestInfo?.requestId?.requestActive === "completed" &&
             requestInfo?.requestId?.requestAcceptedChat === user?._id) ||
             (messages[messages.length - 1]?.bidType === "true" &&
@@ -707,7 +825,10 @@ const RequestPage = () => {
                 style={{ backgroundColor: "white", flex: 1 }}
               >
                 <View className="h-[63px] flex items-center justify-center bg-white border-[1px] border-[#FB8C00] rounded-3xl">
-                  <Text className="text-[16px] text-[#fb8c00] text-center" style={{ fontFamily: "Poppins-Bold" }}>
+                  <Text
+                    className="text-[16px] text-[#fb8c00] text-center"
+                    style={{ fontFamily: "Poppins-Bold" }}
+                  >
                     Send Message to Customer
                   </Text>
                 </View>
@@ -724,7 +845,10 @@ const RequestPage = () => {
               >
                 <View className="h-[63px] flex-row items-center justify-center bg-white border-[1px] border-[#FB8C00] rounded-3xl px-[4px]">
                   <Document />
-                  <Text className=" text-[16px] text-[#fb8c00] text-center" style={{ fontFamily: "Poppins-Bold" }}>
+                  <Text
+                    className=" text-[16px] text-[#fb8c00] text-center"
+                    style={{ fontFamily: "Poppins-Bold" }}
+                  >
                     Send attachment
                   </Text>
                 </View>
@@ -741,8 +865,11 @@ const RequestPage = () => {
           messages[messages.length - 1]?.sender?.refId !== user?._id && (
             <View className="gap-[20px] items-center bg-white pt-[20px] shadow-2xl">
               <View>
-                <Text className="text-[14px]  text-center" style={{ fontFamily: "Poppins-Bold" }}>
-                Are you accepting the customer offer ?
+                <Text
+                  className="text-[14px]  text-center"
+                  style={{ fontFamily: "Poppins-Bold" }}
+                >
+                  Are you accepting the customer offer ?
                 </Text>
                 {/* <Text className="text-[14px] text-center" style={{ fontFamily: "Poppins-Regular" }}>
                   If you don’t understand the customer’s need,
@@ -756,7 +883,10 @@ const RequestPage = () => {
                   style={{ flex: 1 }}
                 >
                   <View className="h-[63px] flex items-center justify-center border-[1px] bg-[#FB8C00] border-[#FB8C00]">
-                    <Text className=" text-[16px] text-white" style={{ fontFamily: "Poppins-Black" }}>
+                    <Text
+                      className=" text-[16px] text-white"
+                      style={{ fontFamily: "Poppins-Black" }}
+                    >
                       Yes
                     </Text>
                   </View>
@@ -766,7 +896,10 @@ const RequestPage = () => {
                     {isLoading ? (
                       <ActivityIndicator size="small" color="#FB8C00" />
                     ) : (
-                      <Text className=" text-[16px] text-[#FB8C00]" style={{ fontFamily: "Poppins-Black" }}>
+                      <Text
+                        className=" text-[16px] text-[#FB8C00]"
+                        style={{ fontFamily: "Poppins-Black" }}
+                      >
                         No
                       </Text>
                     )}
@@ -775,8 +908,7 @@ const RequestPage = () => {
               </View>
             </View>
           )}
-        {
-          requestInfo?.requestType === "ongoing" &&
+        {requestInfo?.requestType === "ongoing" &&
           requestInfo?.requestId?.requestActive === "active" &&
           messages &&
           messages.length > 0 &&
@@ -796,36 +928,37 @@ const RequestPage = () => {
                 }
               >
                 <View className="h-[63px] flex items-center justify-center bg-[#FB8C00]">
-                  <Text className=" text-[16px] text-white" style={{ fontFamily: "Poppins-Black" }}>
+                  <Text
+                    className=" text-[16px] text-white"
+                    style={{ fontFamily: "Poppins-Black" }}
+                  >
                     Send an offer
                   </Text>
                 </View>
               </TouchableOpacity>
             </View>
           )}
-          {
-              messages &&
-              messages.length > 0 &&
-              messages[messages.length - 1]?.bidType === "true" &&
-              messages[messages.length - 1]?.bidAccepted === "new" && 
-              messages[messages.length - 1]?.sender?.refId === user?._id && (
-                <View className="flex items-center justify-center">
-                <View
-                className=" w-[90%] flex flex-row justify-center bg-[#FFE7C8] rounded-[24px]  py-[15px] mb-[10px] "
-              >
-                <Text className="text-[16px] text-center text-[#FB8C00] " style={{ fontFamily: "Poppins-Regular" }}>
+        {messages &&
+          messages.length > 0 &&
+          messages[messages.length - 1]?.bidType === "true" &&
+          messages[messages.length - 1]?.bidAccepted === "new" &&
+          messages[messages.length - 1]?.sender?.refId === user?._id && (
+            <View className="flex items-center justify-center">
+              <View className=" w-[90%] flex flex-row justify-center bg-[#FFE7C8] rounded-[24px]  py-[15px] mb-[10px] ">
+                <Text
+                  className="text-[16px] text-center text-[#FB8C00] "
+                  style={{ fontFamily: "Poppins-Regular" }}
+                >
                   Waiting for customer response
                 </Text>
               </View>
-              </View>
-
-              )
-          }
+            </View>
+          )}
       </View>
       <RequestCancelModal
         modalVisible={cancelRequestModal}
         setModalVisible={setCancelRequestModal}
-      // requestInfo={requestInfo}
+        // requestInfo={requestInfo}
       />
       {/* <RequestCancelModal
         modalVisible={closeRequestModal}
@@ -847,7 +980,6 @@ const RequestPage = () => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   overlay: {

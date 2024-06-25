@@ -228,7 +228,7 @@ const HomeScreenVerified = () => {
       // setRequest(true);
     };
     setupNotifications();
-  }, [dispatch,newRequests]);
+  }, [newRequests]);
 
   useEffect(() => {
     socket.emit("setup", userData?._id);

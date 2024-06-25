@@ -94,9 +94,9 @@ const BidPreviewPage = () => {
           userRequest:requestInfo?.requestId?._id
         }
       );
-      console.log("res of meassage", response);
+      // console.log("res of meassage", response);
       if (response.status === 201) {
-        console.log("messages recieved", response.data);
+        // console.log("messages recieved", response.data);
         socket.emit("new message", response.data);
         let mess = [...messages];
         console.log("query send", mess);
