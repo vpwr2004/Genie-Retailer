@@ -70,49 +70,18 @@ const HomeScreenVerified = () => {
   useEffect(() => {
     const handleMessageReceived = (updatedUser) => {
       console.log('Updated user data received at socket', updatedUser._id, updatedUser.latestMessage.message, updatedUser.unreadCount);
-      // if (userData._id === updatedUser.requestId._id) {
 
-
-
-      // const data = formatDateTime(updatedUser.updatedAt);
-      // updatedUser.createdAt = data.formattedDate;
-      // updatedUser.updatedAt = data.formattedTime;
-      console.log("ongoing requests", ongoingRequests.length,updatedUser)
+      console.log("ongoing requests", ongoingRequests.length, updatedUser)
 
       const filteredRequests = ongoingRequests.filter(
         (request) => request?._id !== updatedUser?._id
       );
       console.log("ongoing requests", filteredRequests.length)
-      // if(updatedUser?.latestMessage?.bidType==="update"){
-      //   dispatch(setOngoingRequests(filteredRequests));
-      //   const updatedRequests=[updatedUser,...retailerHistory]
-      //   dispatch(setRetailerHistory(updatedRequests));
-      // }
-      // else{
+
       const updatedRequest = [updatedUser, ...filteredRequests];
       dispatch(setOngoingRequests(updatedRequest));
-      // }
-
-      // dispatch(setCurrentSpadeRetailers((prevUsers) => {
-      //     return prevUsers.map((user) =>
-      //         user._id === updatedUser._id ? updatedUser : user
-      //     );
-      // }));
-      // if (updatedUser.latestMessage.bidType === "true" && updatedUser.latestMessage.bidAccepted === "accepted") {
-      //   const tmp = { ...currentSpade, requestActive: "completed", requestAcceptedChat: updatedUser._id };
-      //   dispatch(setCurrentSpade(tmp));
-      //   let allSpades = [...spades];
-      //   allSpades.map((curr, index) => {
-      //     if (curr._id === tmp._id) {
-      //       allSpades[index] = tmp;
-      //     }
-      //   })
-      //   dispatch(setSpades(allSpades));
-      // }
 
 
-
-      // }
     };
 
     socket.on("updated retailer", handleMessageReceived);
@@ -121,10 +90,25 @@ const HomeScreenVerified = () => {
     return () => {
       socket.off("updated retailer", handleMessageReceived);
     };
-  }, [dispatch,ongoingRequests]);
+  }, [dispatch, ongoingRequests]);
 
 
+  useEffect(() => {
+    const handleNewRequest = (updatedUser) => {
+      console.log('New Request  received at socket', updatedUser._id);
 
+      // console.log("ongoing requests", filteredRequests.length)
+
+      const updatedRequest = [updatedUser, ...newRequests];
+      dispatch(setNewRequests(updatedRequest));
+    }
+
+    socket.on('fetch newRequest', handleNewRequest);
+
+    return () => {
+      socket.off('fetch newRequest', handleNewRequest);
+    }
+  }, [dispatch, newRequests]);
 
 
 
@@ -160,7 +144,7 @@ const HomeScreenVerified = () => {
     }
   });
 
-  const fetchOngoingRequests =useCallback( async () => {
+  const fetchOngoingRequests = useCallback(async () => {
     setIsLoading(true);
 
     try {
@@ -181,7 +165,7 @@ const HomeScreenVerified = () => {
     }
   });
 
-  const fetchRetailerHistory =useCallback( async () => {
+  const fetchRetailerHistory = useCallback(async () => {
     try {
       // const userData = JSON.parse(await AsyncStorage.getItem("userData"));
       const history = await axios.get(

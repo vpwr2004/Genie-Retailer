@@ -17,13 +17,13 @@ import { useSelector } from "react-redux";
 import { formatDateTime, handleDownloadPress } from "../screens/utils/lib";
 import * as FileSystem from "expo-file-system";
 import { Feather } from "@expo/vector-icons";
-import * as MediaLibrary from "expo-media-library";
+// import * as MediaLibrary from "expo-media-library";
 
 const UserMessage = ({ bidDetails }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [scaleAnimation] = useState(new Animated.Value(0));
   const [downloadProgress, setDownloadProgress] = useState({});
- 
+
 
   const handleImagePress = (image) => {
     setSelectedImage(image);
@@ -59,7 +59,7 @@ const UserMessage = ({ bidDetails }) => {
             <Image
               source={{ uri: requestInfo?.customerId?.pic }}
               style={{ width: 40, height: 40, borderRadius: 20 }}
-              // className="w-[40px] h-[40px] rounded-full"
+            // className="w-[40px] h-[40px] rounded-full"
             />
           ) : (
             <Image
@@ -67,7 +67,7 @@ const UserMessage = ({ bidDetails }) => {
                 uri: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
               }}
               style={{ width: 40, height: 40, borderRadius: 20 }}
-              // className="w-[40px] h-[40px] rounded-full"
+            // className="w-[40px] h-[40px] rounded-full"
             />
           )}
         </View>
