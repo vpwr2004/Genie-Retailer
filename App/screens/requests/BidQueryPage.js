@@ -159,7 +159,7 @@ const BidQueryPage = () => {
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="relative  flex-grow bg-[#ffe7c8]">
-          <View className="z-50 bg-[#ffe7c8] w-full flex flex-row px-[32px] justify-between items-center py-[40px]">
+          <View className=" bg-[#ffe7c8] w-full flex relative flex-row px-[32px] justify-between items-center py-[40px]">
           <TouchableOpacity
               onPress={() => {
                 navigation.goBack();
@@ -198,7 +198,7 @@ const BidQueryPage = () => {
                                 <ThreeDots />
                             </Pressable> */}
           </View>
-          <View className="px-[40px] pb-[20px] flex bg-[#FFE7C8]">
+          <View className="px-[40px] pb-[20px] flex bg-[#FFE7C8] ">
           <View className="flex-row gap-[10px] items-center">
             <Text
               className="text-[16px] "
@@ -212,7 +212,7 @@ const BidQueryPage = () => {
             <TouchableOpacity onPress={() => {copyToClipboard()}} style={{padding:4}}>
                                     <Copy />
                                 </TouchableOpacity>
-                                {copied && <Text className="bg-[#ebebeb] p-2 rounded-lg z-50 absolute -top-10  right-0">Copied!</Text>}
+                                {copied && <Text className="bg-[#ebebeb] p-2 rounded-lg z-40 absolute -top-10  right-0">Copied!</Text>}
           </View>
           <Text style={{ fontFamily: "Poppins-Regular" }}>
             {requestInfo?.requestId?.requestDescription

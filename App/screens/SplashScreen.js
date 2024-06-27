@@ -3,18 +3,25 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, Animated, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMobileNumber, setUniqueToken, setUserDetails } from '../redux/reducers/storeDataSlice';
 import Splash from "../assets/SplashImg.svg"
+import { notificationListeners } from '../notification/notificationServices';
 
 
 const SplashScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
- 
+
   const opacity = useRef(new Animated.Value(0)).current;
   const { width } = Dimensions.get("window");
   const { height } = Dimensions.get("window");
+
+//   useEffect(() => {
+    
+//     notificationListeners();
+
+// }, []);
 
 
   useEffect(() => {

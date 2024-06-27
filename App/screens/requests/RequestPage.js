@@ -98,7 +98,7 @@ const RequestPage = () => {
   const requestInfo = useSelector(
     (state) => state.requestData.requestInfo || {}
   );
-  //  console.log("params",route?.params?.data?.requestInfo);
+    console.log("params",route?.params?.data);
 
   const fetchRequestData = async () => {
     setLoading(true);
@@ -110,13 +110,27 @@ const RequestPage = () => {
       console.log("requestInfo page", requestInfo);
       let req;
       if (route?.params?.data) {
-        req = JSON.parse(route?.params?.data?.requestInfo);
+        req =  req = JSON.parse(route?.params?.data?.requestInfo);
+        console.log('reqInfo from notification section',req);
       }
       // let response =
+
+      await axios.get(
+                    `http://173.212.193.109:5000/chat/get-particular-chat`,{
+                      params:{
+                        retailerId:userData?._id, 
+                        requestId:requestInfo?.requestId?._id?requestInfo?.requestId?._id:req?.requestId?._id
+                      }
+                    }
+                ) .then(async (result) => {
+              console.log("new requestInfo fetched successfully",result.data[0]);
+               dispatch(setRequestInfo(result.data[0]))
+
+
       await axios
         .get("http://173.212.193.109:5000/chat/get-spade-messages", {
           params: {
-            id: requestInfo?._id ? requestInfo?._id : req?._id,
+            id:result.data[0]?._id ? result.data[0]?._id : req?._id,
           },
         })
         .then(async (response) => {
@@ -130,13 +144,13 @@ const RequestPage = () => {
 
           setLoading(false);
           if (
-            requestInfo?.unreadCount > 0 &&
-            requestInfo?.latestMessage?.sender?.type === "UserRequest"
+            result?.data[0]?.unreadCount > 0 &&
+            result?.data[0]?.latestMessage?.sender?.type === "UserRequest"
           ) {
             const res = await axios.patch(
               "http://173.212.193.109:5000/chat/mark-as-read",
               {
-                id: requestInfo?._id,
+                id: result?.data[0]?._id,
               }
             );
 
@@ -159,8 +173,9 @@ const RequestPage = () => {
 
             console.log("mark as read", res.data, res.data.unreadCount);
           }
-        });
-
+        })
+      
+      })
       // dispatch(setMessages(response.data));
 
       // socket.emit("join chat", response?.data[0].chat._id);
@@ -197,7 +212,6 @@ const RequestPage = () => {
       //   console.log('reqInfo from params',requestInfo);
       // },2000);
     }
-
     fetchRequestData();
 
     return () => {

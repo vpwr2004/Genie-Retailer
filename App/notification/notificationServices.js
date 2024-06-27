@@ -5,7 +5,7 @@ import navigationService from '../navigation/navigationService';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setNewRequests, setOngoingRequests, setRetailerHistory } from '../redux/reducers/requestDataSlice';
+import { setNewRequests, setOngoingRequests, setRequestInfo, setRetailerHistory } from '../redux/reducers/requestDataSlice';
 import * as Notifications from 'expo-notifications';
 import notifee ,{EventType,AndroidImportance,AndroidStyle} from '@notifee/react-native';
 // import * as Notifications from 'expo-notifications';
@@ -30,7 +30,7 @@ async function onDisplayNotification(remoteMessage) {
               id: 'default',
             },
             importance: AndroidImportance.HIGH, 
-            // style: { type: AndroidStyle.BIGPICTURE, picture: remoteMessage?.notification?.android?.image },
+            // style: { type: AndroidStyle.BIGPICTURE, picture: remoteMessage?.notification?.image },
             
         
           },
@@ -43,7 +43,46 @@ async function onDisplayNotification(remoteMessage) {
               case EventType.PRESS:
                 setTimeout(() => {
                     console.log("pressed",remoteMessage?.data)
-                    navigationService.navigate("home",{ data: remoteMessage?.data })
+                    // const data=JSON.parse(remoteMessage?.data?.requestInfo);
+                    navigationService.navigate("home",{ data:remoteMessage?.data })
+                }, 1200);
+                break;
+            }
+          });
+      }
+      async function onDisplayNotification1(remoteMessage) {
+        // Request permissions (required for iOS)
+        await notifee.requestPermission()
+       
+        const channelId = await notifee.createChannel({
+          id: 'default',
+          name: 'request',
+        });
+    
+        // Display a notification
+        await notifee.displayNotification({
+          title: remoteMessage.notification.title,
+          body:remoteMessage.notification.body,
+          android: {
+            channelId,
+            pressAction: {
+              id: 'default',
+            },
+            importance: AndroidImportance.HIGH, 
+            // style: { type: AndroidStyle.BIGPICTURE, picture: remoteMessage?.notification?.image },
+            
+        
+          },
+        });
+        return notifee.onForegroundEvent(({ type, detail }) => {
+            switch (type) {
+              case EventType.DISMISSED:
+                // console.log('User dismissed notification', detail.notification);
+                break;
+              case EventType.PRESS:
+                setTimeout(() => {
+                    console.log("pressed",remoteMessage?.data)
+                    navigationService.navigate("home")
                 }, 1200);
                 break;
             }
@@ -63,7 +102,7 @@ export async function notificationListeners() {
     messaging().onNotificationOpenedApp(async (remoteMessage) => {
         console.log("Notification caused app to open from background state");
 
-        if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to) {
+        if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to) { 
             setTimeout(() => {
                 navigationService.navigate(remoteMessage?.data?.redirect_to, { data: remoteMessage?.data });
             }, 1200);
@@ -86,8 +125,20 @@ export async function notificationListeners() {
 
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
         console.log("FCM message", remoteMessage.data);
+        // console.log("requestInfo at notification service",requestInfo)
         // handleNotifcation(remoteMessage);
-        await onDisplayNotification(remoteMessage);
+        if(remoteMessage?.data?.userRequest){
+          
+        await onDisplayNotification1(remoteMessage);
+
+        }
+        if(remoteMessage?.data?.requestInfo){
+            // console.log(object)
+            // const res = JSON.parse(remoteMessage.data.requestInfo);
+            // dispatch(setRequestInfo(res));
+           await onDisplayNotification(remoteMessage);
+
+        }
 
 
 

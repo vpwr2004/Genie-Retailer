@@ -62,7 +62,7 @@ const HomeScreenRequests = () => {
                      <Card width={350}  className="object-cover shadow-xl"/>
                     </View>
                  </View>
-                 <View className="flex items-center gap-2 mb-[10px]">
+                 <View className="flex items-center gap-2 mb-[10px] ">
                     <Text className="text-[14px] px-[32px]  text-[#2E2C43]  text-center" style={{ fontFamily: "Poppins-Regular" }}>
                     If you have the right product or service availability, you can accept the customer's request. 
                     </Text>

@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import navigationService from './App/navigation/navigationService';
 
 import { useFonts } from 'expo-font';
-// import * as MediaLibrary from 'expo-media-library';
+import * as MediaLibrary from 'expo-media-library';
 import * as Notifications from 'expo-notifications';
 import { notificationListeners } from './App/notification/notificationServices';
 
@@ -20,12 +20,11 @@ import { notificationListeners } from './App/notification/notificationServices';
 
 export default function App() {
 
-
   useEffect(() => {
     (async () => {
-      // const media = await MediaLibrary.requestPermissionsAsync();
+      const media = await MediaLibrary.requestPermissionsAsync();
       const notification = await Notifications.requestPermissionsAsync();
-      // console.log("status notification", media,notification);
+      console.log("status notification", media,notification);
 
     })();
   }, []);
@@ -60,9 +59,9 @@ export default function App() {
 
   useEffect(() => {
     
-      notificationListeners();
-
-  }, []);
+        notificationListeners();
+    
+    }, []);
 
 
 
