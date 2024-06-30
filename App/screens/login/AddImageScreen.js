@@ -37,6 +37,7 @@ import ModalCancel from "../../components/ModalCancel";
 import { manipulateAsync } from "expo-image-manipulator";
 import { AntDesign } from "@expo/vector-icons";
 import { launchCamera } from "react-native-image-picker";
+import axios from "axios";
 
 const AddImageScreen = () => {
   const [imagesLocal, setImagesLocal] = useState([]);
@@ -99,10 +100,10 @@ const AddImageScreen = () => {
           const newImageUri = response.assets[0].uri;
           const compressedImage = await manipulateAsync(
             newImageUri,
-            [{ resize: { width: 800, height: 800 } }],
+            [{ resize: { width: 600, height: 800 } }],
             { compress: 0.5, format: "jpeg", base64: true }
           );
-          await getImageUrl(compressedImage);
+          await getImageUrl(compressedImage.uri);
         } catch (error) {
           console.error('Error processing image: ', error);
         }
@@ -131,40 +132,70 @@ const AddImageScreen = () => {
   //     await getImageUrl(compressedImage);
   //   }
   // };
-
   const getImageUrl = async (image) => {
-    setLoading(true);
-    const CLOUDINARY_URL =
-      "https://api.cloudinary.com/v1_1/kumarvivek/image/upload";
-    const base64Img = `data:image/jpg;base64,${image.base64}`;
-    const data = {
-      file: base64Img,
-      upload_preset: "CulturTap",
-      quality: 50,
-    };
-
+    setLoading(true)
     try {
-      const response = await fetch(CLOUDINARY_URL, {
-        body: JSON.stringify(data),
+      const formData = new FormData();
+
+      formData.append('storeImages', {
+        uri: image,
+        type: 'image/jpeg',
+        name: `photo-${Date.now()}.jpg`
+      })
+
+      await axios.post('http://173.212.193.109:5000/upload', formData, {
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
-        method: "POST",
-      });
-
-      const result = await response.json();
-      if (result.secure_url) {
-        setImagesLocal((prevImages) => [...prevImages, result.secure_url]);
-        dispatch(setImages(result.secure_url));
-
-        setCameraScreen(false);
-        setLoading(false);
-      }
-    } catch (err) {
-      setLoading(false);
-      console.log(err);
+      })
+        .then(res => {
+          console.log('imageUrl updated from server', res.data[0]);
+          const imgUri = res.data[0];
+          if (imgUri) {
+            console.log("Image Updated Successfully");
+            setImagesLocal((prevImages) => [...prevImages, imgUri]);
+            dispatch(setImages(imgUri));
+            setLoading(false);
+          }
+        })
+    } catch (error) {
+  setLoading(false);
+  console.error('Error getting imageUrl: ', error);
     }
-  };
+  }
+  // const getImageUrl = async (image) => {
+  //   setLoading(true);
+  //   const CLOUDINARY_URL =
+  //     "https://api.cloudinary.com/v1_1/kumarvivek/image/upload";
+  //   const base64Img = `data:image/jpg;base64,${image.base64}`;
+  //   const data = {
+  //     file: base64Img,
+  //     upload_preset: "CulturTap",
+  //     quality: 50,
+  //   };
+
+  //   try {
+  //     const response = await fetch(CLOUDINARY_URL, {
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //       method: "POST",
+  //     });
+
+  //     const result = await response.json();
+  //     if (result.secure_url) {
+  //       setImagesLocal((prevImages) => [...prevImages, result.secure_url]);
+  //       dispatch(setImages(result.secure_url));
+
+  //       setCameraScreen(false);
+  //       setLoading(false);
+  //     }
+  //   } catch (err) {
+  //     setLoading(false);
+  //     console.log(err);
+  //   }
+  // };
 
   const deleteImage = (index) => {
     setImgIndex(index);
@@ -175,13 +206,19 @@ const AddImageScreen = () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3,4],
       base64: true,
-      quality: 0.5,
+      quality: 1,
     });
 
-    if (!result.cancelled) {
-      await getImageUrl(result.assets[0]);
+    if (!result.canceled) {
+      const newImageUri = result.assets[0].uri;
+      const compressedImage = await manipulateAsync(
+        newImageUri,
+        [{ resize: { width: 600, height: 800 } }],
+        { compress: 0.5, format: "jpeg", base64: true }
+      );
+      await getImageUrl(compressedImage.uri);
     }
   };
 
@@ -272,7 +309,7 @@ const AddImageScreen = () => {
                       visible={!!selectedImage}
                       onRequestClose={handleClose}
                     >
-                      <View style={styles.modalContainer}>
+                      <Pressable style={styles.modalContainer}  onPress={handleClose}>
                         <Animated.Image
                           source={{ uri: selectedImage }}
                           style={[
@@ -282,17 +319,8 @@ const AddImageScreen = () => {
                             },
                           ]}
                         />
-                        <Pressable
-                          style={styles.closeButton}
-                          onPress={handleClose}
-                        >
-                          <Entypo
-                            name="circle-with-cross"
-                            size={40}
-                            color="white"
-                          />
-                        </Pressable>
-                      </View>
+                        
+                      </Pressable>
                     </Modal>
                   </View>
                 </ScrollView>

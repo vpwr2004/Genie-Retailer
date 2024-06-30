@@ -136,7 +136,7 @@ const RequestPage = () => {
         .then(async (response) => {
           setMessages(response?.data);
 
-          // console.log("Messages found successfully",response.data);
+          console.log("Messages found successfully",response.data);
           // console.log("user joined chat with chatId", response.data[0].chat._id);
           socket.emit("join chat", response?.data[0].chat._id);
 

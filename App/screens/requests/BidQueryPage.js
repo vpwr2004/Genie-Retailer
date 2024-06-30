@@ -226,7 +226,7 @@ const BidQueryPage = () => {
             } */}
         </View>
           <KeyboardAvoidingView>
-            <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">
+            <View className="flex gap-[21px] px-[40px] pt-[10px] pb-[100px]">
               <View className="flex-row justify-between">
                 <Text className="" style={{ fontFamily: "Poppins-Bold" }}>Send a Query</Text>
                 {/* <Text>Step 1/3</Text> */}

@@ -78,25 +78,33 @@ const BidPreviewPage = () => {
   const sendBid = async () => {
     setLoading(true)
     try {
-      
+      const formData = new FormData();
+    bidImages.forEach((uri, index) => {
+      formData.append('bidImages', {
+        uri: uri,  // Correctly use the URI property from ImagePicker result
+        type: 'image/jpeg', // Adjust this based on the image type
+        name: `photo-${Date.now()}.jpg`,
+      });
+    });
+
+    formData.append('sender', JSON.stringify({  type: "Retailer",
+      refId: user?._id, }));
+    formData.append('userRequest', requestInfo?.requestId?._id);
+    formData.append('message', bidDetails);
+    formData.append('bidType', "true");
+    formData.append('chat',requestInfo?._id);
+    formData.append('bidPrice',bidOfferedPrice);
+    formData.append('warranty',warranty);
+
+   
 
       // console.log("requestinfo", requestInfo);
       // console.log("warranty", warranty);
 
       const response = await axios.post(
         "http://173.212.193.109:5000/chat/send-message",
-        {
-          sender: {
-            type: "Retailer",
-            refId: user?._id,
-          },
-          message: bidDetails,
-          bidType: "true",
-          bidPrice: bidOfferedPrice,
-          bidImages: bidImages,
-          chat: requestInfo?._id,
-          warranty: warranty,
-          userRequest:requestInfo?.requestId?._id
+        formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
         }
       );
       // console.log("res of meassage", response);
@@ -236,7 +244,7 @@ const BidPreviewPage = () => {
         </View>
 
           <View className="flex gap-[21px]  pt-[10px] pb-[100px]">
-            <View className="flex-row justify-between px-[50px]">
+            <View className="flex-row justify-between px-[40px]">
               <Text className="" style={{ fontFamily: "Poppins-Bold" }}>Preview your offer response</Text>
             </View>
             <View className="px-[50px]">

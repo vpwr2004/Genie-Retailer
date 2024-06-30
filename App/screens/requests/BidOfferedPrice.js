@@ -163,7 +163,7 @@ const BidOfferedPrice = () => {
             } */}
         </View>
           <KeyboardAvoidingView>
-            <View className="flex gap-[21px] px-[50px] pt-[10px] pb-[100px]">
+            <View className="flex gap-[21px] px-[40px] pt-[10px] pb-[100px]">
               <View className="flex-row justify-between">
                 <Text className="text-[14px] " style={{ fontFamily: "Poppins-Bold" }}>Send an offer</Text>
                 <Text className="text-[#FB8C00] text-[14px]" style={{ fontFamily: "Poppins-Medium" }}>

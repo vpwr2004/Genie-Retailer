@@ -81,38 +81,38 @@ const BidPageImageUpload = () => {
     }).start(() => setSelectedImage(null));
   };
 
-  const getImageUrl = async (image) => {
-    setLoading(true);
-    const CLOUDINARY_URL =
-      "https://api.cloudinary.com/v1_1/kumarvivek/image/upload";
-    const base64Img = `data:image/jpg;base64,${image.base64}`;
-    const data = {
-      file: base64Img,
-      upload_preset: "CulturTap",
-      quality: 50,
-    };
+  // const getImageUrl = async (image) => {
+  //   setLoading(true);
+  //   const CLOUDINARY_URL =
+  //     "https://api.cloudinary.com/v1_1/kumarvivek/image/upload";
+  //   const base64Img = `data:image/jpg;base64,${image.base64}`;
+  //   const data = {
+  //     file: base64Img,
+  //     upload_preset: "CulturTap",
+  //     quality: 50,
+  //   };
 
-    try {
-      const response = await fetch(CLOUDINARY_URL, {
-        body: JSON.stringify(data),
-        headers: {
-          "content-type": "application/json",
-        },
-        method: "POST",
-      });
+  //   try {
+  //     const response = await fetch(CLOUDINARY_URL, {
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //       method: "POST",
+  //     });
 
-      const result = await response.json();
-      if (result.secure_url) {
-        setImages((prevImages) => [...prevImages, result.secure_url]);
+  //     const result = await response.json();
+  //     if (result.secure_url) {
+  //       setImages((prevImages) => [...prevImages, result.secure_url]);
 
-        setCameraScreen(false);
-        setLoading(false);
-      }
-    } catch (err) {
-      setLoading(false);
-      console.log(err);
-    }
-  };
+  //       setCameraScreen(false);
+  //       setLoading(false);
+  //     }
+  //   } catch (err) {
+  //     setLoading(false);
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
     (async () => {
@@ -149,7 +149,8 @@ const BidPageImageUpload = () => {
             [{ resize: { width: 600, height: 800 } }],
             { compress: 0.5, format: "jpeg", base64: true }
           );
-          await getImageUrl(compressedImage);
+          setImages((prevImages) => [...prevImages,compressedImage.uri]);
+          // await getImageUrl(compressedImage);
         } catch (error) {
           console.error("Error processing image: ", error);
         }
@@ -162,18 +163,25 @@ const BidPageImageUpload = () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3,4],
       base64: true,
-      quality: 0.5,
+      quality: 1,
     });
 
 
 
     console.log("pickImage", "result");
-    if (!result.cancelled) {
+    if (!result.canceled) {
+      const newImageUri = result.assets[0].uri;
+          const compressedImage = await manipulateAsync(
+            newImageUri,
+            [{ resize: { width: 600, height: 800 } }],
+            { compress: 0.5, format: "jpeg", base64: true }
+          );
+          setImages((prevImages) => [...prevImages,compressedImage.uri]);
       //   const processedUri = await handleImageProcessing(result.assets[0]);
       //   console.log("photodrive", processedUri);
-      await getImageUrl(result.assets[0]);
+      // await getImageUrl(result.assets[0]);
     }
   };
 
@@ -383,7 +391,7 @@ const BidPageImageUpload = () => {
                         visible={!!selectedImage}
                         onRequestClose={handleClose}
                       >
-                        <View style={styles.modalContainer}>
+                        <Pressable style={styles.modalContainer} onPress={handleClose}>
                           <Animated.Image
                             source={{ uri: selectedImage }}
                             style={[
@@ -393,17 +401,8 @@ const BidPageImageUpload = () => {
                               },
                             ]}
                           />
-                          <Pressable
-                            style={styles.closeButton}
-                            onPress={handleClose}
-                          >
-                            <Entypo
-                              name="circle-with-cross"
-                              size={40}
-                              color="white"
-                            />
-                          </Pressable>
-                        </View>
+                          
+                        </Pressable>
                       </Modal>
                     </View>
                   </ScrollView>

@@ -128,10 +128,10 @@ const ProfileScreen = () => {
           const newImageUri = response.assets[0].uri;
           const compressedImage = await manipulateAsync(
             newImageUri,
-            [{ resize: { width: 800, height: 800 } }],
+            [{ resize: { width: 600, height: 800 } }],
             { compress: 0.5, format: "jpeg", base64: true }
           );
-          await getImageUrl({ image: compressedImage, type: type });
+          await getImageUrl({ image: compressedImage.uri, type: type });
 
           // Update user or perform other operations here
         } catch (error) {
@@ -142,56 +142,105 @@ const ProfileScreen = () => {
   };
 
   const getImageUrl = async ({ image, type }) => {
-    setLoading(true);
-    const CLOUDINARY_URL =
-      "https://api.cloudinary.com/v1_1/kumarvivek/image/upload";
-    const base64Img = `data:image/jpg;base64,${image.base64}`;
-    const data = {
-      file: base64Img,
-      upload_preset: "CulturTap",
-      quality: 50,
-    };
-
+    setLoading(true)
     try {
-      const response = await fetch(CLOUDINARY_URL, {
-        body: JSON.stringify(data),
-        headers: {
-          "content-type": "application/json",
-        },
-        method: "POST",
-      });
+      const formData = new FormData();
 
-      const result = await response.json();
-      if (result.secure_url) {
-        console.log("user image", result.secure_url);
-        let updatedUser;
-        if (type === "main") {
-          updatedUser = {
-            ...user,
-            storeImages: [result.secure_url, ...user.storeImages.slice(1)],
-          };
-        } else {
-          updatedUser = {
-            ...user,
-            storeImages: [...user.storeImages, result.secure_url],
-          };
-        }
-        dispatch(setUserDetails(updatedUser));
-        await AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
-        const response = await axios.patch(
-          `http://173.212.193.109:5000/retailer/editretailer`,
-          {
-            _id: user?._id,
-            storeImages: updatedUser.storeImages,
+      formData.append('storeImages', {
+        uri: image,
+        type: 'image/jpeg',
+        name: `photo-${Date.now()}.jpg`
+      })
+
+      await axios.post('http://173.212.193.109:5000/upload', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then(async(res) => {
+          console.log('imageUrl updated from server', res.data[0]);
+          const imgUri = res.data[0];
+          let updatedUser;
+          if (type === "main") {
+            updatedUser = {
+              ...user,
+              storeImages: [imgUri, ...user.storeImages.slice(1)],
+            };
+          } else {
+            updatedUser = {
+              ...user,
+              storeImages: [...user.storeImages, imgUri],
+            };
           }
-        );
-        setLoading(false);
-      }
-    } catch (err) {
+          dispatch(setUserDetails(updatedUser));
+          await AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
+          const response = await axios.patch(
+            `http://173.212.193.109:5000/retailer/editretailer`,
+            {
+              _id: user?._id,
+              storeImages: updatedUser.storeImages,
+            }
+          );
+          setLoading(false);
+        })
+      
+    } catch (error) {
       setLoading(false);
-      console.log(err);
+      console.log(error);
     }
-  };
+  }
+
+  // const getImageUrl = async ({ image, type }) => {
+  //   setLoading(true);
+  //   const CLOUDINARY_URL =
+  //     "https://api.cloudinary.com/v1_1/kumarvivek/image/upload";
+  //   const base64Img = `data:image/jpg;base64,${image.base64}`;
+  //   const data = {
+  //     file: base64Img,
+  //     upload_preset: "CulturTap",
+  //     quality: 50,
+  //   };
+
+  //   try {
+  //     const response = await fetch(CLOUDINARY_URL, {
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //       method: "POST",
+  //     });
+
+  //     const result = await response.json();
+  //     if (result.secure_url) {
+  //       console.log("user image", result.secure_url);
+  //       let updatedUser;
+  //       if (type === "main") {
+  //         updatedUser = {
+  //           ...user,
+  //           storeImages: [result.secure_url, ...user.storeImages.slice(1)],
+  //         };
+  //       } else {
+  //         updatedUser = {
+  //           ...user,
+  //           storeImages: [...user.storeImages, result.secure_url],
+  //         };
+  //       }
+  //       dispatch(setUserDetails(updatedUser));
+  //       await AsyncStorage.setItem("userData", JSON.stringify(updatedUser));
+  //       const response = await axios.patch(
+  //         `http://173.212.193.109:5000/retailer/editretailer`,
+  //         {
+  //           _id: user?._id,
+  //           storeImages: updatedUser.storeImages,
+  //         }
+  //       );
+  //       setLoading(false);
+  //     }
+  //   } catch (err) {
+  //     setLoading(false);
+  //     console.log(err);
+  //   }
+  // };
 
   const deleteImage = async (index) => {
     if (index >= 0 && index < user.storeImages.length) {

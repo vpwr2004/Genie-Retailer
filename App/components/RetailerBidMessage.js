@@ -5,11 +5,15 @@ import { Feather } from "@expo/vector-icons";
 import Tick from "../assets/tick.svg";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { formatDateTime, handleDownloadPress } from "../screens/utils/lib";
+import { useSelector } from "react-redux";
 
 const RetailerBidMessage = ({ bidDetails, user }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [scaleAnimation] = useState(new Animated.Value(0));
   const [downloadProgress, setDownloadProgress] = useState({});
+  const requestInfo = useSelector(
+    (state) => state.requestData.requestInfo || {}
+  );
 
 
   const handleImagePress = (image) => {
@@ -56,6 +60,7 @@ const RetailerBidMessage = ({ bidDetails, user }) => {
       {bidDetails?.bidImages?.length > 0 && (
         <ScrollView
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             flexDirection: "row",
             gap: 4,
@@ -121,7 +126,7 @@ const RetailerBidMessage = ({ bidDetails, user }) => {
           </Modal>
         </ScrollView>
       )}
-      <View className="gap-[4px]">
+      <View className="gap-[4px] px-[10px]">
         <View className="flex-row gap-[5px]">
           <Text style={{ fontFamily: "Poppins-Medium" }}>Offered Price: </Text>
           <Text className=" text-[#79B649]" style={{ fontFamily: "Poppins-SemiBold" }}>
@@ -139,13 +144,13 @@ const RetailerBidMessage = ({ bidDetails, user }) => {
         {bidDetails?.bidAccepted === "rejected" && (
           <View className="flex-row items-center gap-1">
             <Entypo name="circle-with-cross" size={20} color="#E76063" />
-            <Text className="text-[14px] text-[#E76063]" style={{ fontFamily: "Poppins-Regular" }}>Bid Rejected</Text>
+            <Text className="text-[14px] text-[#E76063]" style={{ fontFamily: "Poppins-Regular" }}>Bid Rejected by {requestInfo?.customerId?.userName}</Text>
           </View>
         )}
         {bidDetails?.bidAccepted === "accepted" && (
           <View className="flex-row items-center gap-1">
             <Tick width={18} height={18} />
-            <Text className="text-[14px] text-[#79B649]" style={{ fontFamily: "Poppins-Regular" }}>Bid Accepted</Text>
+            <Text className="text-[14px] text-[#79B649]" style={{ fontFamily: "Poppins-Regular" }}>Bid Accepted by {requestInfo?.customerId?.userName}</Text>
           </View>
         )}
       </View>

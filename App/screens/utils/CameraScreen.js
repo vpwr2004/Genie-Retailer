@@ -54,18 +54,25 @@ const CameraScreen = () => {
   const sendAttachment = async () => {
     // console.log('res', query, imageUri);
     setIsLoading(true)
+    const formData = new FormData();
+    // imageUri.forEach((uri, index) => {
+    formData.append('bidImages', {
+        uri: imageUri,  // Correctly use the URI property from ImagePicker result
+        type: 'image/jpeg', // Adjust this based on the image type
+        name: `photo-${Date.now()}.jpg`,
+    });        // });
+
+    formData.append('sender', JSON.stringify({   type: "Retailer", refId: user?._id, }));
+    formData.append('userRequest', requestInfo?.requestId?._id);
+    formData.append('message', query);
+    formData.append('bidType', "false");
+    formData.append('chat', requestInfo?._id);
+    formData.append('bidPrice', 0);
     await axios
-      .post("http://173.212.193.109:5000/chat/send-message", {
-        sender: {
-          type: "Retailer",
-          refId: user?._id,
+      .post("http://173.212.193.109:5000/chat/send-message", formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
         },
-        message: query,
-        bidType: "false",
-        bidImages: [imageUri],
-        bidAccepted: "new",
-        chat: requestInfo?._id,
-        userRequest:requestInfo?.requestId?._id
       })
       .then(async (res) => {
         console.log(res.data);
@@ -116,44 +123,44 @@ const CameraScreen = () => {
       });
   };
 
-  const getImageUrl = async (image) => {
-    setLoading(true);
-    setCamScreen(false);
-    let CLOUDINARY_URL =
-      "https://api.cloudinary.com/v1_1/kumarvivek/image/upload";
+  // const getImageUrl = async (image) => {
+  //   setLoading(true);
+  //   setCamScreen(false);
+  //   let CLOUDINARY_URL =
+  //     "https://api.cloudinary.com/v1_1/kumarvivek/image/upload";
 
-    let base64Img = `data:image/jpg;base64,${image.base64}`;
+  //   let base64Img = `data:image/jpg;base64,${image.base64}`;
 
-    let data = {
-      file: base64Img,
-      upload_preset: "CulturTap",
-    };
+  //   let data = {
+  //     file: base64Img,
+  //     upload_preset: "CulturTap",
+  //   };
 
-    // console.log('base64', data);
-    fetch(CLOUDINARY_URL, {
-      body: JSON.stringify(data),
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "POST",
-    })
-      .then(async (r) => {
-        let data = await r.json();
+  //   // console.log('base64', data);
+  //   fetch(CLOUDINARY_URL, {
+  //     body: JSON.stringify(data),
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //     method: "POST",
+  //   })
+  //     .then(async (r) => {
+  //       let data = await r.json();
 
-        // setPhoto(data.url);
-        const imgUri = data.secure_url;
-        if (imgUri) {
-          setImageUri(imgUri);
-          setLoading(false);
-        }
-        console.log("dataImg", data.secure_url);
-        // return data.secure_url;
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  };
+  //       // setPhoto(data.url);
+  //       const imgUri = data.secure_url;
+  //       if (imgUri) {
+  //         setImageUri(imgUri);
+  //         setLoading(false);
+  //       }
+  //       console.log("dataImg", data.secure_url);
+  //       // return data.secure_url;
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setLoading(false);
+  //     });
+  // };
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
 
@@ -204,10 +211,11 @@ const CameraScreen = () => {
           const newImageUri = response.assets[0].uri;
           const compressedImage = await manipulateAsync(
             newImageUri,
-            [{ resize: { width: 800, height: 800 } }], 
+            [{ resize: { width: 600, height: 800 } }], 
             { compress: 0.5, format: "jpeg", base64: true }
           );
-          await getImageUrl(compressedImage);
+          // await getImageUrl(compressedImage);
+          setImageUri(compressedImage.uri);
         } catch (error) {
           console.error("Error processing image: ", error);
         }
@@ -220,14 +228,22 @@ const CameraScreen = () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 4],
       base64: true,
-      quality: 0.25,
+      quality: 1,
     });
 
     console.log("pickImage", "result");
-    if (!result.cancelled) {
-      getImageUrl(result.assets[0]);
+    if (!result.canceled) {
+      // getImageUrl(result.assets[0]);
+      const newImageUri = result.assets[0].uri;
+          const compressedImage = await manipulateAsync(
+            newImageUri,
+            [{ resize: { width: 600, height: 800 } }], 
+            { compress: 0.5, format: "jpeg", base64: true }
+          );
+          // await getImageUrl(compressedImage);
+          setImageUri(compressedImage.uri);
     }
   };
 
