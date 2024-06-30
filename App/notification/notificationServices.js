@@ -28,6 +28,7 @@ async function onDisplayNotification(remoteMessage) {
             channelId,
             pressAction: {
               id: 'default',
+              launchActivity:remoteMessage?.data?.requestInfo
             },
             importance: AndroidImportance.HIGH, 
             // style: { type: AndroidStyle.BIGPICTURE, picture: remoteMessage?.notification?.image },
@@ -42,14 +43,24 @@ async function onDisplayNotification(remoteMessage) {
                 break;
               case EventType.PRESS:
                 setTimeout(() => {
-                    console.log("pressed",remoteMessage?.data)
-                    // const data=JSON.parse(remoteMessage?.data?.requestInfo);
-                    navigationService.navigate("home",{ data:remoteMessage?.data })
+                    // console.log("pressed",remoteMessage?.data)
+                    // const req=JSON.parse(remoteMessage?.data?.requestInfo);
+                    // console.log("data",req)
+                    const reqt = detail.notification.android.pressAction.launchActivity;
+                    console.log("pressed", reqt);
+            
+                    // Assuming requestInfo is stored in the notification data
+                    const req = JSON.parse(reqt);
+                    console.log("data", req);
+                    navigationService.navigate("requestPage",{req})
                 }, 1200);
                 break;
             }
           });
-      }
+          
+     
+        }
+      
       async function onDisplayNotification1(remoteMessage) {
         // Request permissions (required for iOS)
         await notifee.requestPermission()
@@ -67,6 +78,8 @@ async function onDisplayNotification(remoteMessage) {
             channelId,
             pressAction: {
               id: 'default',
+              launchActivity:remoteMessage?.data?.userRequest
+
             },
             importance: AndroidImportance.HIGH, 
             // style: { type: AndroidStyle.BIGPICTURE, picture: remoteMessage?.notification?.image },
@@ -74,7 +87,7 @@ async function onDisplayNotification(remoteMessage) {
         
           },
         });
-        return notifee.onForegroundEvent(({ type, detail }) => {
+      return notifee.onForegroundEvent(({ type, detail }) => {
             switch (type) {
               case EventType.DISMISSED:
                 // console.log('User dismissed notification', detail.notification);
@@ -87,24 +100,35 @@ async function onDisplayNotification(remoteMessage) {
                 break;
             }
           });
+               
+       
+   
       }
 export async function notificationListeners() {
 
 
 
-    messaging().getInitialNotification().then(async (remoteMessage) => {
-        if (remoteMessage) {
-            console.log("Notifications caused app to open from quit state");
-            // handleNotification(remoteMessage);
-        }
-    });
+  messaging().getInitialNotification().then(async remoteMessage => {
+    if (remoteMessage) {
+      console.log("Notification caused app to open from quit state", remoteMessage);
+      // handleNotification(remoteMessage);
+    }
+  });
 
     messaging().onNotificationOpenedApp(async (remoteMessage) => {
         console.log("Notification caused app to open from background state");
 
         if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to) { 
             setTimeout(() => {
-                navigationService.navigate(remoteMessage?.data?.redirect_to, { data: remoteMessage?.data });
+              if(remoteMessage?.data?.userRequest){
+                navigationService.navigate("home");
+              }
+              else if(remoteMessage?.data?.requestInfo){
+                     const req=JSON.parse(remoteMessage?.data?.requestInfo);
+                     console.log("data", req);
+                     navigationService.navigate("requestPage",{req})
+              }
+
             }, 1200);
         }
         // handleNotification(remoteMessage);
@@ -115,7 +139,15 @@ export async function notificationListeners() {
 
         if (!!remoteMessage?.data && remoteMessage?.data?.redirect_to) {
             setTimeout(() => {
-                navigationService.navigate(remoteMessage?.data?.redirect_to, { data: remoteMessage?.data });
+              if(remoteMessage?.data?.userRequest){
+                navigationService.navigate("home");
+              }
+              else if(remoteMessage?.data?.requestInfo){
+                     const req=JSON.parse(remoteMessage?.data?.requestInfo);
+                     console.log("data", req);
+                     navigationService.navigate("requestPage",{req})
+              }
+
             }, 1200);
         }
         // handleNotification(remoteMessage);
@@ -124,7 +156,7 @@ export async function notificationListeners() {
 
 
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-        console.log("FCM message", remoteMessage.data);
+        // console.log("FCM message", remoteMessage.data);
         // console.log("requestInfo at notification service",requestInfo)
         // handleNotifcation(remoteMessage);
         if(remoteMessage?.data?.userRequest){

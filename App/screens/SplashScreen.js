@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMobileNumber, setUniqueToken, setUserDetails } from '../redux/reducers/storeDataSlice';
 import Splash from "../assets/SplashImg.svg"
 import { notificationListeners } from '../notification/notificationServices';
+import { setIsHome } from '../redux/reducers/requestDataSlice';
 
 
 const SplashScreen = () => {
@@ -40,6 +41,7 @@ const SplashScreen = () => {
 
         // Check if user data exists in local storage
         const userData = JSON.parse(await AsyncStorage.getItem("userData"));
+        
         // const authData = JSON.parse(await AsyncStorage.getItem("authData"));
         setTimeout(() => {
           if (userData!==null) {
@@ -56,6 +58,7 @@ const SplashScreen = () => {
           else {
             navigation.navigate('mobileNumber');
           }
+          dispatch(setIsHome(true));
         }, 5000); // Delay for 3 seconds
       } catch (error) {
         console.error("Error checking stored user:", error);

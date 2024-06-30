@@ -34,7 +34,7 @@ export const BidAcceptedOtherRetailer = async (mess) => {
 }
 
     for (const token of tokens) {
-      if(token.length > 0) {
+      if(token?.length > 0) {
       const message = {
         message: {
           token: token,

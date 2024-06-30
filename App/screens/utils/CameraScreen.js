@@ -25,7 +25,7 @@ import { manipulateAsync } from "expo-image-manipulator";
 import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { launchCamera } from "react-native-image-picker";
 import { sendCustomNotificationAttachment } from "../../notification/notificationMessages";
-import { setOngoingRequests } from "../../redux/reducers/requestDataSlice";
+import { setOngoingRequests, setRequestInfo } from "../../redux/reducers/requestDataSlice";
 import { socket } from "../utils/socket.io/socket";
 
 
@@ -95,10 +95,16 @@ const CameraScreen = () => {
 
         const data=[updatedRequest,...filteredRequests];
          dispatch(setOngoingRequests(data));
-        setIsLoading(false)
+         dispatch(setRequestInfo(updatedRequest));
+       
+        const req={
+          requestId:updatedRequest?.requestId?._id,
+          userId:updatedRequest?.users[0]._id
+        };
 
         // console.log("notification send", notification);
-        navigation.navigate("requestPage", { data: requestInfo });
+        navigation.navigate("requestPage", {req});
+        setIsLoading(false)
         const token = await axios.get(
           `http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`
         );

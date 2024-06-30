@@ -2,7 +2,7 @@ import {NavigationActions} from '@react-navigation/native';
 
 let _navigator;
 
-function setTopLevelNavigator(navigatorRef) {
+function setTopLevelNavigator(navigatorRef){
 	_navigator = navigatorRef;
 }
 

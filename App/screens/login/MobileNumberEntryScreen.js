@@ -135,32 +135,32 @@ const MobileNumberEntryScreen = () => {
     console.log(otp);
   };
 
-  useEffect(() => {
-    const startSmsRetriever = async () => {
-      try {
-        const registered = await SmsRetriever.startSmsRetriever();
-        if (registered) {
-          SmsRetriever.addSmsListener(event => {
-            const message = event.message;
-            const otpRegex = /\b\d{6}\b/; // Adjust the regex based on your OTP format
-            const extractedOtp = message.match(otpRegex);
-            if (extractedOtp) {
-              setOtp(extractedOtp[0]);
-              SmsRetriever.removeSmsListener();
-            }
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // useEffect(() => {
+  //   const startSmsRetriever = async () => {
+  //     try {
+  //       const registered = await SmsRetriever.startSmsRetriever();
+  //       if (registered) {
+  //         SmsRetriever.addSmsListener(event => {
+  //           const message = event.message;
+  //           const otpRegex = /\b\d{6}\b/; // Adjust the regex based on your OTP format
+  //           const extractedOtp = message.match(otpRegex);
+  //           if (extractedOtp) {
+  //             setOtp(extractedOtp[0]);
+  //             SmsRetriever.removeSmsListener();
+  //           }
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
-    startSmsRetriever();
+  //   startSmsRetriever();
 
-    return () => {
-      SmsRetriever.removeSmsListener();
-    };
-  }, []);
+  //   return () => {
+  //     SmsRetriever.removeSmsListener();
+  //   };
+  // }, []);
 
   const sendVerification = async () => {
    
@@ -272,7 +272,7 @@ const MobileNumberEntryScreen = () => {
          
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <KeyboardAvoidingView behavior="position">
-              <View style={{ flex: 1, backgroundColor: "white" }}>
+              <View style={{ flex: 1, backgroundColor: "white" ,paddingBottom:30}}>
                 <View className="bg-white flex-col justify-center">
                   <View className="flex flex-col justify-center items-center gap-[20px]">
                     <MobileNumberImg
@@ -297,7 +297,7 @@ const MobileNumberEntryScreen = () => {
                         </Text>
                         <View className="flex flex-row items-center gap-[10px] px-[8px] bg-[#F9F9F9] py-[11px] border-[1px] border-[#c9c8c7] border-opacity-10 rounded-[16px] ">
                           <View className="text-[16px] font-extrabold border-r-[1px] border-[#b6b5b4] flex flex-row gap-[9px] pr-[9px] items-center">
-                            <Text className="text-[16px] " style={{ fontFamily: "Poppins-ExtraBold" }}>
+                            <Text className="text-[16px]" style={{ fontFamily: "Poppins-ExtraBold" }}>
                               +91
                             </Text>
                             <Entypo

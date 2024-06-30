@@ -24,7 +24,7 @@ import Profile from "../../assets/ProfileIcon2.svg";
 import axios from "axios";
 import { socket } from "../utils/socket.io/socket";
 import { useDispatch, useSelector } from "react-redux";
-import { setMessages, setOngoingRequests } from "../../redux/reducers/requestDataSlice";
+import { setMessages, setOngoingRequests, setRequestInfo } from "../../redux/reducers/requestDataSlice";
 import { sendCustomNotificationChat } from "../../notification/notificationMessages";
 import BackArrow from "../../assets/arrow-left.svg"
 import * as Clipboard from 'expo-clipboard';
@@ -60,23 +60,41 @@ const BidQueryPage = () => {
   const sendQuery = async () => {
     setLoading(true)
     try {
+      const formData = new FormData();
+     
+  
+      formData.append('sender', JSON.stringify({  type: "Retailer",
+        refId: user?._id, }));
+      formData.append('userRequest', requestInfo?.requestId?._id);
+      formData.append('message',query);
+      formData.append('bidType', "false");
+      formData.append('chat',requestInfo?._id);
+      formData.append('bidPrice',0);
+      formData.append('warranty',0);
+      formData.append('bidImages',[]);
      
 
+      // const response = await axios.post(
+      //   "http://173.212.193.109:5000/chat/send-message",
+      //   {
+      //     sender: {
+      //       type: "Retailer",
+      //       refId: user?._id,
+      //     },
+      //     message: query,
+      //     bidType: "false",
+      //     warranty: 0,
+      //     bidPrice: 0,
+      //     bidImages: [],
+      //     chat: requestInfo?._id,
+      //     userRequest:requestInfo?.requestId?._id
+
+      //   }
+      // );
       const response = await axios.post(
         "http://173.212.193.109:5000/chat/send-message",
-        {
-          sender: {
-            type: "Retailer",
-            refId: user?._id,
-          },
-          message: query,
-          bidType: "false",
-          warranty: 0,
-          bidPrice: 0,
-          bidImages: [],
-          chat: requestInfo?._id,
-          userRequest:requestInfo?.requestId?._id
-
+        formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
         }
       );
       //    console.log("res",response);
@@ -103,11 +121,17 @@ const BidQueryPage = () => {
         // console.log("request ongoing",filteredRequests.length,requests.length,updatedRequest)
         const data=[updatedRequest,...filteredRequests];
          dispatch(setOngoingRequests(data));
+         dispatch(setRequestInfo(updatedRequest));
+         const req={
+          requestId:updatedRequest?.requestId?._id,
+          userId:updatedRequest?.users[0]._id
+        };
         
        
         // console.log("notification", notification.requestInfo);
+       
+        navigation.navigate("requestPage",{req});
         setLoading(false)
-        navigation.navigate("requestPage");
         const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
         console.log("token",token.data);
         if(token.data.length > 0){

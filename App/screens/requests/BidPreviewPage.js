@@ -30,7 +30,7 @@ import {
   
 } from "../../notification/notificationMessages";
 import BackArrow from "../../assets/arrow-left.svg"
-import { setOngoingRequests } from "../../redux/reducers/requestDataSlice";
+import { setOngoingRequests, setRequestInfo } from "../../redux/reducers/requestDataSlice";
 import { setBidImages, setProductWarranty } from "../../redux/reducers/bidSlice";
 
 
@@ -129,9 +129,15 @@ const BidPreviewPage = () => {
         const updatedRequest={...requests[0],updatedAt:new Date().toISOString(),unreadCount:0}
         const data=[updatedRequest,...filteredRequests];
          dispatch(setOngoingRequests(data));
-        setLoading(false)
+         dispatch(setRequestInfo(updatedRequest));
+         
+         const req={
+          requestId:updatedRequest?.requestId?._id,
+          userId:updatedRequest?.users[0]._id
+        };
 
-        navigation.navigate("requestPage");
+        navigation.navigate("requestPage",{req});
+        setLoading(false)
         const token=await axios.get(`http://173.212.193.109:5000/user/unique-token?id=${requestInfo?.customerId._id}`);
         if(token.data.length>0){
         const notification = {

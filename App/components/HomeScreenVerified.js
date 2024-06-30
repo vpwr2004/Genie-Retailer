@@ -222,7 +222,13 @@ const HomeScreenVerified = () => {
     <TouchableOpacity
       onPress={() => {
         dispatch(setRequestInfo(item));
-        navigation.navigate("requestPage");
+        // console.log(item)
+        const req={
+          requestId:item?.requestId?._id,
+          userId:item?.users[0]._id
+        };
+        console.log('request details', req);
+        navigation.navigate("requestPage",{req});
       }}
       style={{
         backgroundColor: "#fff",

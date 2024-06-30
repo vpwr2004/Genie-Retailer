@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import React, {
   useCallback,
@@ -88,6 +89,7 @@ const RequestPage = () => {
   const [feedback, setFeedback] = useState("");
 
   const [rating, setRating] = useState(0);
+  const {req}=route.params;
   const retailerHistory = useSelector(
     (state) => state.requestData.retailerHistory || []
   );
@@ -98,7 +100,11 @@ const RequestPage = () => {
   const requestInfo = useSelector(
     (state) => state.requestData.requestInfo || {}
   );
-    console.log("params",route?.params?.data);
+  const isHome= useSelector(
+    (state) => state.requestData.isHome
+  );
+     console.log("params",isHome);
+  
 
   const fetchRequestData = async () => {
     setLoading(true);
@@ -107,38 +113,38 @@ const RequestPage = () => {
       setUser(userData);
       console.log("User data found successfully");
 
-      console.log("requestInfo page", requestInfo);
-      let req;
-      if (route?.params?.data) {
-        req =  req = JSON.parse(route?.params?.data?.requestInfo);
+      // console.log("requestInfo page", requestInfo);
+     
+      // if (route?.params?.data) {
+      // const  req =route?.params?.data
         console.log('reqInfo from notification section',req);
-      }
+      // }
       // let response =
 
       await axios.get(
                     `http://173.212.193.109:5000/chat/get-particular-chat`,{
                       params:{
                         retailerId:userData?._id, 
-                        requestId:requestInfo?.requestId?._id?requestInfo?.requestId?._id:req?.requestId?._id
+                        requestId:req?.requestId
                       }
                     }
                 ) .then(async (result) => {
-              console.log("new requestInfo fetched successfully",result.data[0]);
-               dispatch(setRequestInfo(result.data[0]))
+              console.log("new requestInfo fetched successfully",result?.data[0]);
+               dispatch(setRequestInfo(result?.data[0]))
 
 
       await axios
         .get("http://173.212.193.109:5000/chat/get-spade-messages", {
           params: {
-            id:result.data[0]?._id ? result.data[0]?._id : req?._id,
+            id:result?.data[0]?._id 
           },
         })
         .then(async (response) => {
           setMessages(response?.data);
 
-          console.log("Messages found successfully",response.data);
+          // console.log("Messages found successfully",response.data);
           // console.log("user joined chat with chatId", response.data[0].chat._id);
-          socket.emit("join chat", response?.data[0].chat._id);
+          socket.emit("join chat", response?.data[0]?.chat?._id);
 
           console.log("socket join chat setup successfully");
 
@@ -154,11 +160,11 @@ const RequestPage = () => {
               }
             );
 
-            let tmp = { ...requestInfo, unreadCount: 0 };
+            let tmp = { ...result?.data[0], unreadCount: 0 };
 
             dispatch(setRequestInfo(tmp));
             const filteredRequests = ongoingRequests.filter(
-              (request) => request._id !== requestInfo?._id
+              (request) => request._id !== result?.data[0]?._id
             );
             if (requestInfo?.latestMessage?.bidType === "update") {
               console.log("update");
@@ -171,7 +177,7 @@ const RequestPage = () => {
               dispatch(setOngoingRequests(data));
             }
 
-            console.log("mark as read", res.data, res.data.unreadCount);
+            console.log("mark as read", res?.data, res?.data?.unreadCount);
           }
         })
       
@@ -196,28 +202,29 @@ const RequestPage = () => {
 
   useEffect(() => {
     // console.log('route.params.data',route?.params?.data);
-    if (requestInfo) {
-      console.log("find error of requestPage from home screen");
-      SocketSetUp(requestInfo?.users[0]?._id);
-    }
-    if (route?.params?.data) {
+    // if (requestInfo) {
+    //   console.log("find error of requestPage from home screen");
+    //   SocketSetUp(requestInfo?.users[0]._id);
+    // }
+    if (req) {
       console.log("Params data found");
-      let req = JSON.parse(route?.params?.data?.requestInfo);
+      // let req = route?.params?.data;
       // console.log('reqInfo from notification section',req);
 
-      dispatch(setRequestInfo(req));
-      SocketSetUp(req?.users[0]._id);
+      // dispatch(setRequestInfo(req));
+      SocketSetUp(req?.userId);
 
       // setTimeout(()=>{
       //   console.log('reqInfo from params',requestInfo);
       // },2000);
+      fetchRequestData();
+
     }
-    fetchRequestData();
 
     return () => {
       if (socket) {
         // socket.disconnect();
-        socket.emit("leave room", requestInfo?.users[0]._id);
+        socket.emit("leave room", requestInfo?.users[0]?._id);
       }
     };
   }, []);
@@ -453,9 +460,28 @@ const RequestPage = () => {
     }
 };
 
+useEffect(() => {
+  const backAction = () => {
+    if (isHome) {
+      navigation.navigate("home");
+      return true; 
+    } else {
+      BackHandler.exitApp();
+      return true;
+    }
+  };
+
+  const backHandler = BackHandler.addEventListener(
+    'hardwareBackPress', 
+    backAction
+  );
+
+  return () => backHandler.remove(); // Clean up the event listener
+}, [isHome]);
+
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: "white"}}>
       {attachmentScreen && (
         <View style={styles.overlay}>
           <Attachment
@@ -470,14 +496,19 @@ const RequestPage = () => {
       )}
       <View className="relative">
         <View className=" relative bg-[#FFE7C8] pt-[40px] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
-              navigation.goBack();
+              if(isHome){
+                navigation.navigate("home");
+              }
+              else{
+
+              }
             }}
             style={{ padding: 6 }}
           >
             <BackArrow width={14} height={10} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View className="gap-[9px]">
             <View className="flex-row gap-[18px]">
