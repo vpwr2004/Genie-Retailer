@@ -49,7 +49,12 @@ const HistoryScreen = () => {
                   onPress={() => {
                     dispatch(setRequestInfo(product));
                     // console.log("requestInfo at history", product);
-                    navigation.navigate("requestPage");
+                    const req={
+                      requestId:product?.requestId?._id,
+                      userId:product?.users[0]._id
+                    };
+                    console.log('request details', req);
+                    navigation.navigate("requestPage",{req});
                   }}
                   style={{
                     backgroundColor: '#fff', // Ensure the background is white

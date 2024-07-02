@@ -13,11 +13,18 @@ function navigate(routeName, params) {
 function goBack() {
 	_navigator.dispatch(NavigationActions.back());
 }
-
+function getCurrentRoute() {
+	if (!_navigator || !_navigator.getCurrentRoute) {
+	  return null;
+	}
+  
+	return _navigator.getCurrentRoute();
+  }
 
 export default {
 	navigate,
 	setTopLevelNavigator,
 	goBack,
+	getCurrentRoute
 };
 

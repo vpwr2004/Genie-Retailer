@@ -28,6 +28,7 @@ import Send from "../../assets/Send.svg";
 import {
   useIsFocused,
   useNavigation,
+  useNavigationState,
   useRoute,
 } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -56,10 +57,12 @@ import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 import BackArrow from "../../assets/arrow-left.svg";
 import * as Clipboard from 'expo-clipboard';
 
+
 // import Clipboard from '@react-native-clipboard/clipboard';
 
 // import MessageLoaderSkeleton from "../utils/MessageLoaderSkeleton";
 // import { setMessages } from "../../redux/reducers/requestDataSlice";
+
 
 const RequestPage = () => {
   const navigation = useNavigation();
@@ -103,10 +106,14 @@ const RequestPage = () => {
   const isHome= useSelector(
     (state) => state.requestData.isHome
   );
-     console.log("params",isHome);
+    
+
+  //    const navigationState = useNavigationState(state => state);
+  // const isChat = navigationState.routes[navigationState.index].name === 'requestPage';
+  // console.log("params",isHome,isChat);
   
 
-  const fetchRequestData = async () => {
+  const fetchRequestData = useCallback(async () => {
     setLoading(true);
     try {
       const userData = JSON.parse(await AsyncStorage.getItem("userData"));
@@ -117,7 +124,7 @@ const RequestPage = () => {
      
       // if (route?.params?.data) {
       // const  req =route?.params?.data
-        console.log('reqInfo from notification section',req);
+        console.log('reqInfo from notification section');
       // }
       // let response =
 
@@ -128,15 +135,16 @@ const RequestPage = () => {
                         requestId:req?.requestId
                       }
                     }
-                ) .then(async (result) => {
-              console.log("new requestInfo fetched successfully",result?.data[0]);
-               dispatch(setRequestInfo(result?.data[0]))
+                ) .then(async (resul) => {
+              console.log("new requestInfo fetched successfully");
+              const result=resul.data[0];
+               dispatch(setRequestInfo(result))
 
 
       await axios
         .get("http://173.212.193.109:5000/chat/get-spade-messages", {
           params: {
-            id:result?.data[0]?._id 
+            id:result?._id 
           },
         })
         .then(async (response) => {
@@ -148,25 +156,24 @@ const RequestPage = () => {
 
           console.log("socket join chat setup successfully");
 
-          setLoading(false);
+          
           if (
-            result?.data[0]?.unreadCount > 0 &&
-            result?.data[0]?.latestMessage?.sender?.type === "UserRequest"
+            result?.unreadCount > 0 &&
+            result?.latestMessage?.sender?.type === "UserRequest"
           ) {
-            const res = await axios.patch(
+             await axios.patch(
               "http://173.212.193.109:5000/chat/mark-as-read",
               {
-                id: result?.data[0]?._id,
+                id: result?._id,
               }
-            );
-
-            let tmp = { ...result?.data[0], unreadCount: 0 };
+            ).then(async(res)=>{
+            let tmp = { ...result, unreadCount: 0 };
 
             dispatch(setRequestInfo(tmp));
             const filteredRequests = ongoingRequests.filter(
-              (request) => request._id !== result?.data[0]?._id
+              (request) => request._id !== result?._id
             );
-            if (requestInfo?.latestMessage?.bidType === "update") {
+            if (result?.latestMessage?.bidType === "update") {
               console.log("update");
               const data = [...filteredRequests];
               dispatch(setOngoingRequests(data));
@@ -177,18 +184,24 @@ const RequestPage = () => {
               dispatch(setOngoingRequests(data));
             }
 
-            console.log("mark as read", res?.data, res?.data?.unreadCount);
-          }
-        })
+            console.log("mark as read",  res?.data?.unreadCount);
+          
+          })
+        
+        }
+        setLoading(false);
+                })
+              }
+                )
       
-      })
+      
       // dispatch(setMessages(response.data));
 
       // socket.emit("join chat", response?.data[0].chat._id);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
-  };
+  });
 
   const SocketSetUp = async (id) => {
     socket.emit("setup", id);
@@ -201,7 +214,7 @@ const RequestPage = () => {
   };
 
   useEffect(() => {
-    // console.log('route.params.data',route?.params?.data);
+    console.log('route.params.data',req);
     // if (requestInfo) {
     //   console.log("find error of requestPage from home screen");
     //   SocketSetUp(requestInfo?.users[0]._id);
@@ -217,9 +230,9 @@ const RequestPage = () => {
       // setTimeout(()=>{
       //   console.log('reqInfo from params',requestInfo);
       // },2000);
-      fetchRequestData();
-
+       
     }
+    fetchRequestData();
 
     return () => {
       if (socket) {
@@ -229,50 +242,7 @@ const RequestPage = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const fetchRequestData = async () => {
-  //     try {
-  //       const userData = JSON.parse(await AsyncStorage.getItem("userData"));
-  //       setUser(userData);
-  //       // console.log(userData);
-
-  //        console.log("requestPage", requestInfo);
-  //        let response;
-  //        if (route.params?.data) {
-  //         response = await axios.get(
-  //           "https://genie-backend-meg1.onrender.com/chat/get-spade-messages",
-  //           {
-  //             params: {
-  //               id: req?._id,
-  //             },
-  //           }
-  //         );
-  //       }
-  //       else{
-  //        response = await axios.get(
-  //         "https://genie-backend-meg1.onrender.com/chat/get-spade-messages",
-  //         {
-  //           params: {
-  //             id: requestInfo?._id,
-  //           },
-  //         }
-  //       );
-  //     }
-
-  //       // dispatch(setMessages(response.data));
-  //       setMessages(response.data);
-  //       // console.log("user joined chat with chatId", response.data[0].chat._id);
-  //       socket.emit("join chat", response?.data[0]?.chat?._id);
-  //       // socket.emit("join chat",response.data[0].chat._id);
-  //     } catch (error) {
-  //       console.error("Error fetching user data:", error);
-  //     }
-  //   };
-
-  //   fetchRequestData();
-  // }, []);
-
-  // Fetch request data
+ 
 
   const RejectBid = async () => {
     setisLoading(true);
@@ -389,7 +359,7 @@ const RequestPage = () => {
               console.log("request updated", tmp);
               dispatch(setRequestInfo(tmp));
               const filteredRequests = ongoingRequests.filter(
-                (request) => request._id !== requestInfo._id
+                (request) => request._id !== requestInfo?._id
               );
 
               //             // console.log("request ongoing",requests[0]?.updatedAt, new Date().toISOString());
@@ -460,24 +430,24 @@ const RequestPage = () => {
     }
 };
 
-useEffect(() => {
-  const backAction = () => {
-    if (isHome) {
-      navigation.navigate("home");
-      return true; 
-    } else {
-      BackHandler.exitApp();
-      return true;
-    }
-  };
+// useEffect(() => {
+//   const backAction = () => {
+//     if (isHome && isChat) {
+//       navigation.navigate("home");
+//       return true; 
+//     } else if(!isHome && isChat) {
+//       BackHandler.exitApp();
+//       return true;
+//     }
+//   };
 
-  const backHandler = BackHandler.addEventListener(
-    'hardwareBackPress', 
-    backAction
-  );
+//   const backHandler = BackHandler.addEventListener(
+//     'hardwareBackPress', 
+//     backAction
+//   );
 
-  return () => backHandler.remove(); // Clean up the event listener
-}, [isHome]);
+//   return () => backHandler.remove(); // Clean up the event listener
+// }, [isHome,isChat]);
 
 
   return (
@@ -496,7 +466,7 @@ useEffect(() => {
       )}
       <View className="relative">
         <View className=" relative bg-[#FFE7C8] pt-[40px] w-full flex flex-row px-[32px] justify-between items-center py-[30px]">
-          {/* <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
               if(isHome){
                 navigation.navigate("home");
@@ -508,7 +478,7 @@ useEffect(() => {
             style={{ padding: 6 }}
           >
             <BackArrow width={14} height={10} />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
 
           <View className="gap-[9px]">
             <View className="flex-row gap-[18px]">
