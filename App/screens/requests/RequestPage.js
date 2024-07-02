@@ -85,11 +85,11 @@ const RequestPage = () => {
   const [cameraScreen, setCameraScreen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isLoading, setisLoading] = useState(false);
-  const [feedbackLoading,setFeedbackLoading]=useState(false)
+  const [feedbackLoading, setFeedbackLoading] = useState(false)
   const [feedback, setFeedback] = useState("");
 
   const [rating, setRating] = useState(0);
-  const {req}=route.params;
+  const { req } = route.params;
   const retailerHistory = useSelector(
     (state) => state.requestData.retailerHistory || []
   );
@@ -100,11 +100,14 @@ const RequestPage = () => {
   const requestInfo = useSelector(
     (state) => state.requestData.requestInfo || {}
   );
-  const isHome= useSelector(
+  const isHome = useSelector(
     (state) => state.requestData.isHome
   );
-     console.log("params",isHome);
-  
+
+  const userDetails = useSelector(state => state.storeData.userDetails);
+
+  console.log("params", isHome);
+
 
   const fetchRequestData = async () => {
     setLoading(true);
@@ -114,73 +117,73 @@ const RequestPage = () => {
       console.log("User data found successfully");
 
       // console.log("requestInfo page", requestInfo);
-     
+
       // if (route?.params?.data) {
       // const  req =route?.params?.data
-        console.log('reqInfo from notification section',req);
+      console.log('reqInfo from notification section', req);
       // }
       // let response =
 
       await axios.get(
-                    `http://173.212.193.109:5000/chat/get-particular-chat`,{
-                      params:{
-                        retailerId:userData?._id, 
-                        requestId:req?.requestId
-                      }
-                    }
-                ) .then(async (result) => {
-              console.log("new requestInfo fetched successfully",result?.data[0]);
-               dispatch(setRequestInfo(result?.data[0]))
+        `http://173.212.193.109:5000/chat/get-particular-chat`, {
+        params: {
+          retailerId: userData?._id,
+          requestId: req?.requestId
+        }
+      }
+      ).then(async (result) => {
+        console.log("new requestInfo fetched successfully", result?.data[0]);
+        dispatch(setRequestInfo(result?.data[0]))
 
 
-      await axios
-        .get("http://173.212.193.109:5000/chat/get-spade-messages", {
-          params: {
-            id:result?.data[0]?._id 
-          },
-        })
-        .then(async (response) => {
-          setMessages(response?.data);
+        await axios
+          .get("http://173.212.193.109:5000/chat/get-spade-messages", {
+            params: {
+              id: result?.data[0]?._id
+            },
+          })
+          .then(async (response) => {
+            setMessages(response?.data);
 
-          // console.log("Messages found successfully",response.data);
-          // console.log("user joined chat with chatId", response.data[0].chat._id);
-          socket.emit("join chat", response?.data[0]?.chat?._id);
+            // console.log("Messages found successfully",response.data);
+            // console.log("user joined chat with chatId", response.data[0].chat._id);
+            socket.emit("join chat", response?.data[0]?.chat?._id);
 
-          console.log("socket join chat setup successfully");
+            console.log("socket join chat setup successfully");
 
-          setLoading(false);
-          if (
-            result?.data[0]?.unreadCount > 0 &&
-            result?.data[0]?.latestMessage?.sender?.type === "UserRequest"
-          ) {
-            const res = await axios.patch(
-              "http://173.212.193.109:5000/chat/mark-as-read",
-              {
-                id: result?.data[0]?._id,
+            setLoading(false);
+            if (
+              result?.data[0]?.unreadCount > 0 &&
+              result?.data[0]?.latestMessage?.sender?.type === "UserRequest"
+            ) {
+              const res = await axios.patch(
+                "http://173.212.193.109:5000/chat/mark-as-read",
+                {
+                  id: result?.data[0]?._id,
+                }
+              );
+
+              let tmp = { ...result?.data[0], unreadCount: 0 };
+
+              dispatch(setRequestInfo(tmp));
+              const filteredRequests = ongoingRequests.filter(
+                (request) => request._id !== result?.data[0]?._id
+              );
+              if (requestInfo?.latestMessage?.bidType === "update") {
+                console.log("update");
+                const data = [...filteredRequests];
+                dispatch(setOngoingRequests(data));
+                const data2 = [tmp, ...retailerHistory];
+                dispatch(setRetailerHistory(data2));
+              } else {
+                const data = [tmp, ...filteredRequests];
+                dispatch(setOngoingRequests(data));
               }
-            );
 
-            let tmp = { ...result?.data[0], unreadCount: 0 };
-
-            dispatch(setRequestInfo(tmp));
-            const filteredRequests = ongoingRequests.filter(
-              (request) => request._id !== result?.data[0]?._id
-            );
-            if (requestInfo?.latestMessage?.bidType === "update") {
-              console.log("update");
-              const data = [...filteredRequests];
-              dispatch(setOngoingRequests(data));
-              const data2 = [tmp, ...retailerHistory];
-              dispatch(setRetailerHistory(data2));
-            } else {
-              const data = [tmp, ...filteredRequests];
-              dispatch(setOngoingRequests(data));
+              console.log("mark as read", res?.data, res?.data?.unreadCount);
             }
+          })
 
-            console.log("mark as read", res?.data, res?.data?.unreadCount);
-          }
-        })
-      
       })
       // dispatch(setMessages(response.data));
 
@@ -441,7 +444,7 @@ const RequestPage = () => {
   }, []);
 
   // const messages = useSelector(state => state.requestData.messages);
- 
+
 
   const handlePress = (star) => {
     setRating(star);
@@ -449,39 +452,44 @@ const RequestPage = () => {
 
   const copyToClipboard = async () => {
     try {
-        await Clipboard.setStringAsync(requestInfo?.requestId?._id);
-        console.log('Text copied to clipboard');
-        setCopied(true);
+      await Clipboard.setStringAsync(requestInfo?.requestId?._id);
+      console.log('Text copied to clipboard');
+      setCopied(true);
 
-        // Hide the notification after 2 seconds
-        setTimeout(() => setCopied(false), 2000);
+      // Hide the notification after 2 seconds
+      setTimeout(() => setCopied(false), 2000);
     } catch (error) {
-        console.error('Failed to copy text to clipboard', error);
-    }
-};
-
-useEffect(() => {
-  const backAction = () => {
-    if (isHome) {
-      navigation.navigate("home");
-      return true; 
-    } else {
-      BackHandler.exitApp();
-      return true;
+      console.error('Failed to copy text to clipboard', error);
     }
   };
 
-  const backHandler = BackHandler.addEventListener(
-    'hardwareBackPress', 
-    backAction
-  );
+  useEffect(() => {
+    const backAction = () => {
+      if (isHome) {
+        navigation.navigate("home");
+        return true;
+      } else {
+        BackHandler.exitApp();
+        return true;
+      }
+    };
 
-  return () => backHandler.remove(); // Clean up the event listener
-}, [isHome]);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove(); // Clean up the event listener
+  }, [isHome]);
+
+
+
+
+
 
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white"}}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       {attachmentScreen && (
         <View style={styles.overlay}>
           <Attachment
@@ -522,7 +530,7 @@ useEffect(() => {
                       borderRadius: 20,
                       objectFit: "cover",
                     }}
-                    // className="w-[40px] h-[40px] rounded-full"
+                  // className="w-[40px] h-[40px] rounded-full"
                   />
                 ) : (
                   <Profile className="w-full h-full rounded-full" />
@@ -592,10 +600,10 @@ useEffect(() => {
             <Text style={{ fontFamily: "Poppins-Regular" }}>
               {requestInfo?.requestId?._id}
             </Text>
-            <TouchableOpacity onPress={() => {copyToClipboard()}} style={{padding:4}}>
-                                    <Copy />
-                                </TouchableOpacity>
-                                {copied && <Text className="bg-[#ebebeb] p-2 rounded-lg absolute -top-10 right-0">Copied!</Text>}
+            <TouchableOpacity onPress={() => { copyToClipboard() }} style={{ padding: 4 }}>
+              <Copy />
+            </TouchableOpacity>
+            {copied && <Text className="bg-[#ebebeb] p-2 rounded-lg absolute -top-10 right-0">Copied!</Text>}
           </View>
           <Text style={{ fontFamily: "Poppins-Regular" }}>
             {requestInfo?.requestId?.requestDescription
@@ -708,37 +716,37 @@ useEffect(() => {
                             </KeyboardAvoidingView>
                           </View>
                           <TouchableOpacity
-                          disabled={!rating || !feedback}
-                          //  onPress={sendQuery}
-                          style={{
-                            
-                            height: 50,
-                            width:"100%",
-                            backgroundColor:
-                              (!rating ||!feedback )? "#e6e6e6" : "#FB8C00",
-                            justifyContent: "center", // Center content vertically
-                            alignItems: "center", // Center content horizontally
-                          }}
-                        >
-                          {feedbackLoading ? (
-                            <ActivityIndicator size="small" color="#ffffff" />
-                          ) : (
-                            <Text
-                              style={{
-                                fontSize: 18,
-                                fontFamily: "Poppins-Black",
-                                color:
-                                  (!rating ||!feedback) ? "#888888" : "white",
-                              }}
-                            >
-                              Submit
-                            </Text>
-                          )}
-                        </TouchableOpacity>
-                          
+                            disabled={!rating || !feedback}
+                            //  onPress={sendQuery}
+                            style={{
+
+                              height: 50,
+                              width: "100%",
+                              backgroundColor:
+                                (!rating || !feedback) ? "#e6e6e6" : "#FB8C00",
+                              justifyContent: "center", // Center content vertically
+                              alignItems: "center", // Center content horizontally
+                            }}
+                          >
+                            {feedbackLoading ? (
+                              <ActivityIndicator size="small" color="#ffffff" />
+                            ) : (
+                              <Text
+                                style={{
+                                  fontSize: 18,
+                                  fontFamily: "Poppins-Black",
+                                  color:
+                                    (!rating || !feedback) ? "#888888" : "white",
+                                }}
+                              >
+                                Submit
+                              </Text>
+                            )}
+                          </TouchableOpacity>
+
                         </View>
-                        
-                    
+
+
                       </View>
                     );
                   } else if (message?.sender?.refId !== user?._id) {
@@ -807,9 +815,8 @@ useEffect(() => {
 
       {/* Typing Area */}
       <View
-        className={`absolute bottom-0 left-0 right-0 pt-[10] ${
-          attachmentScreen ? "-z-50" : "z-50"
-        } `}
+        className={`absolute bottom-0 left-0 right-0 pt-[10] ${attachmentScreen ? "-z-50" : "z-50"
+          } `}
       >
         {requestInfo?.requestType !== "closed" &&
           requestInfo?.requestType === "new" &&
@@ -833,7 +840,7 @@ useEffect(() => {
 
               <View className="w-full flex-row justify-between bg-white">
                 <TouchableOpacity
-                  onPress={() => setAcceptRequestModal(true)}
+                  onPress={() => { userDetails.freeSpades > 0 ? setAcceptRequestModal(true) : navigation.navigate('payment-gateway'); }}
                   style={{ flex: 1 }}
                 >
                   <View className="h-[63px] flex items-center justify-center border-[1px] bg-[#FB8C00] border-[#FB8C00]">
@@ -1022,7 +1029,7 @@ useEffect(() => {
       <RequestCancelModal
         modalVisible={cancelRequestModal}
         setModalVisible={setCancelRequestModal}
-        // requestInfo={requestInfo}
+      // requestInfo={requestInfo}
       />
       {/* <RequestCancelModal
         modalVisible={closeRequestModal}
