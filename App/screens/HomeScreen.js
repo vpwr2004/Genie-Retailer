@@ -11,6 +11,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { setUserDetails } from '../redux/reducers/storeDataSlice'
+
  
 
 const HomeScreen = () => {
@@ -152,10 +153,9 @@ const fetchUserData = async () => {
 
 
 useEffect(()=>{
-  if(isFocused) {
+  // if(isFocused) {
    fetchUserData();
-  
-}}, [isFocused])
+  }, [])
 
 
 

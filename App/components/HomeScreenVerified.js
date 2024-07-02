@@ -183,7 +183,7 @@ const HomeScreenVerified = () => {
   });
 
   const handleRefresh = () => {
-    setRefreshing(true); // Show the refresh indicator
+    // setRefreshing(true); // Show the refresh indicator
     setLoading(true)
     try {
       // Fetch new data from the server
@@ -195,7 +195,7 @@ const HomeScreenVerified = () => {
       console.error("Error fetching data:", error);
     }
     setLoading(false);
-    setRefreshing(false); // Hide the refresh indicator
+    // setRefreshing(false); // Hide the refresh indicator
   };
 
   // Setting socket for requests
@@ -248,13 +248,13 @@ const HomeScreenVerified = () => {
   return (
     <View>
       <View
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            colors={["#9Bd35A", "#689F38"]}
-          />
-        }
+        // refreshControl={
+        //   // <RefreshControl
+        //   //   refreshing={refreshing}
+        //   //   onRefresh={handleRefresh}
+        //   //   colors={["#9Bd35A", "#689F38"]}
+        //   // />
+        // }
       >
 
         {(newRequests?.length > 0 ||

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, TextInput, Button } from 'react-native';
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import GlobalNavigation from './App/navigation/appNavigation';
 import './global.css';
 import { Provider, useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,8 @@ import { useFonts } from 'expo-font';
 // import * as MediaLibrary from 'expo-media-library';
 import * as Notifications from 'expo-notifications';
 import { notificationListeners } from './App/notification/notificationServices';
+import { getCurrentUserId } from './App/screens/utils/getCurrentUserId';
+
 
 
 
@@ -19,6 +21,7 @@ import { notificationListeners } from './App/notification/notificationServices';
 
 
 export default function App() {
+  // const [userId,setUserId] = useState("")
 
   useEffect(() => {
     (async () => {
@@ -56,6 +59,20 @@ export default function App() {
 
     }
   )
+  // const ReduxWrapper = () => {
+
+  //   const requestInfo = useSelector(
+  //     (state) => state.requestData?.requestInfo
+  //   );
+  //       const chatUserId =getCurrentUserId(requestInfo);
+  //       console.log("Chat User ID in App.js:", chatUserId);
+  //       useEffect(() => {
+  //         setUserId(chatUserId);
+  //       }, [chatUserId]);
+
+  //       return null; // This component doesn't render anything
+  //     };
+
 
   useEffect(() => {
 
@@ -69,11 +86,13 @@ export default function App() {
 
 
 
+
+
   return (
     <Provider store={store}>
       <NavigationContainer ref={(ref) => navigationService.setTopLevelNavigator(ref)} >
         <GlobalNavigation />
-
+        {/* <ReduxWrapper />  */}
         <StatusBar style="auto" />
       </NavigationContainer>
     </Provider>
