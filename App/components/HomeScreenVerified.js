@@ -26,6 +26,7 @@ import { notificationListeners } from "../notification/notificationServices";
 import RequestLoader from "../screens/utils/RequestLoader";
 import { socket } from "../screens/utils/socket.io/socket";
 import { formatDateTime } from "../screens/utils/lib";
+import { addScreen } from "../redux/reducers/navigationSlice";
 
 const HomeScreenVerified = () => {
   const navigation = useNavigation();
@@ -223,12 +224,17 @@ const HomeScreenVerified = () => {
       onPress={() => {
         dispatch(setRequestInfo(item));
         // console.log(item)
-        const req={
-          requestId:item?.requestId?._id,
-          userId:item?.users[0]._id
+        const req = {
+          requestId: item?.requestId?._id,
+          userId: item?.users[0]._id
         };
         console.log('request details', req);
-        navigation.navigate("requestPage",{req});
+        dispatch(addScreen(item._id));
+        // navigation.navigate("requestPage", { req });
+        setTimeout(() => {
+          navigation.navigate(item._id, { req });
+        }, 200);
+
       }}
       style={{
         backgroundColor: "#fff",
@@ -248,13 +254,13 @@ const HomeScreenVerified = () => {
   return (
     <View>
       <View
-        // refreshControl={
-        //   // <RefreshControl
-        //   //   refreshing={refreshing}
-        //   //   onRefresh={handleRefresh}
-        //   //   colors={["#9Bd35A", "#689F38"]}
-        //   // />
-        // }
+      // refreshControl={
+      //   // <RefreshControl
+      //   //   refreshing={refreshing}
+      //   //   onRefresh={handleRefresh}
+      //   //   colors={["#9Bd35A", "#689F38"]}
+      //   // />
+      // }
       >
 
         {(newRequests?.length > 0 ||

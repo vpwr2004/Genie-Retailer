@@ -32,8 +32,11 @@ import MessageLoaderSkeleton from '../screens/utils/MessageLoaderSkeleton';
 import CompleteProfile from '../components/CompleteProfile';
 import TermsandConditions from '../screens/menu & profile/TermsandConditions';
 import PaymentScreen from '../screens/utils/paymentGateway/PaymentScreen';
+import { useSelector } from 'react-redux';
 const Stack = createNativeStackNavigator();
 const GlobalNavigation = () => {
+
+  const screens = useSelector(state => state.navigation.screens);
 
   return (
 
@@ -75,7 +78,12 @@ const GlobalNavigation = () => {
       <Stack.Screen name="termsandconditions" component={TermsandConditions} />
       <Stack.Screen name="help" component={HelpScreen} />
       <Stack.Screen name="viewrequest" component={ViewRequestScreen} />
-    </Stack.Navigator>
+      {
+        screens.map((screen, index) => (
+          <Stack.Screen key={index} name={screen} component={RequestPage} />
+        ))
+      }
+    </Stack.Navigator >
   )
 }
 

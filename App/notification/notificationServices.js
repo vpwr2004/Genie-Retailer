@@ -8,6 +8,8 @@ import notifee, {
   AndroidImportance,
   AndroidStyle,
 } from "@notifee/react-native";
+import store from "../redux/store";
+import { addScreen } from "../redux/reducers/navigationSlice";
 
 
 async function onDisplayNotification(remoteMessage) {
@@ -51,7 +53,11 @@ async function onDisplayNotification(remoteMessage) {
           // Assuming requestInfo is stored in the notification data
           const req = JSON.parse(reqt);
           console.log("data", req);
-          navigationService.navigate("requestPage", { req });
+          store.dispatch(addScreen(req.requestId));
+          setTimeout(() => {
+            navigationService.navigate(req.requestId, { req });
+          }, 200);
+          // navigationService.navigate("requestPage", { req });
         }, 1200);
         break;
     }
@@ -97,7 +103,7 @@ async function onDisplayNotification1(remoteMessage) {
     }
   });
 }
-export  function notificationListeners() {
+export function notificationListeners() {
   messaging()
     .getInitialNotification()
     .then(async (remoteMessage) => {
@@ -110,7 +116,7 @@ export  function notificationListeners() {
       }
     });
 
- messaging().onNotificationOpenedApp(
+  messaging().onNotificationOpenedApp(
     async (remoteMessage) => {
       console.log("Notification caused app to open from background state");
 
@@ -129,7 +135,7 @@ export  function notificationListeners() {
     }
   );
 
- messaging().setBackgroundMessageHandler(
+  messaging().setBackgroundMessageHandler(
     async (remoteMessage) => {
       console.log("Message handled in the background!");
 
@@ -165,7 +171,7 @@ export  function notificationListeners() {
 
       await onDisplayNotification1(remoteMessage);
     }
-    if (remoteMessage?.data?.requestInfo ){
+    if (remoteMessage?.data?.requestInfo) {
       // console.log(object)
       // const res = JSON.parse(remoteMessage.data.requestInfo);
       // dispatch(setRequestInfo(res));
